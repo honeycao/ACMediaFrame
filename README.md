@@ -1,5 +1,6 @@
 # ACMediaFrame
 一个完整的媒体选择流程框架封装，包括：图片视频选择、录制；任意页面布局展示图片视频，可删除；直接存储了供上传的数据类型，所以距离上传就一步之遥（发送请求而已）。
+
 ![ACMediFrame展示.gif](https://github.com/honeycao/ACMediaFrame/blob/master/ACMediFrame%E5%B1%95%E7%A4%BA.gif)
 
 ------

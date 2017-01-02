@@ -105,22 +105,43 @@
         [UIAlertController showAlertWithTitle:@"最多只能选择9张" message:nil actionTitles:@[@"确定"] cancelTitle:nil style:UIAlertControllerStyleAlert completion:nil];
         return;
     }
+    
+    __weak typeof(self) weakSelf = self;
     //点击的是添加媒体的按钮
     if (indexPath.row == _mediaArray.count) {
-        ACShowMediaTypeView *fileView = [[ACShowMediaTypeView alloc] init];
-        [fileView show];
-        __weak typeof(self) weakSelf = self;
-        [fileView selectedIndexBlock:^(NSInteger itemIndex) {
-            if (itemIndex == 0) {
-                [weakSelf openAlbum];
-            }else if (itemIndex == 1) {
-                [weakSelf openCamera];
-            }else if (itemIndex == 2) {
-                [weakSelf openVideotape];
-            }else {
-                [weakSelf openVideo];
+        switch (_type) {
+            case ACMediaTypePhoto:
+                [self openAlbum];
+                break;
+            case ACMediaTypePhotoAndCamera:
+            {
+                [UIAlertController showAlertWithTitle:@"选择图片来源" message:nil actionTitles:@[@"相册", @"相机"] cancelTitle:@"取消" style:UIAlertControllerStyleActionSheet completion:^(NSInteger index) {
+                    if (index == 0) {
+                        [weakSelf openAlbum];
+                    }else {
+                        [weakSelf openCamera];
+                    }
+                }];
             }
-        }];
+                break;
+            default:
+            {
+                ACShowMediaTypeView *fileView = [[ACShowMediaTypeView alloc] init];
+                [fileView show];
+                [fileView selectedIndexBlock:^(NSInteger itemIndex) {
+                    if (itemIndex == 0) {
+                        [weakSelf openAlbum];
+                    }else if (itemIndex == 1) {
+                        [weakSelf openCamera];
+                    }else if (itemIndex == 2) {
+                        [weakSelf openVideotape];
+                    }else {
+                        [weakSelf openVideo];
+                    }
+                }];
+            }
+                break;
+        }
     }
     //展示媒体
     else {

@@ -30,11 +30,13 @@
     UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 44, self.view.bounds.size.width, height)];
     //2、初始化
     ACSelectMediaView *mediaView = [[ACSelectMediaView alloc] initWithFrame:CGRectMake(0, 0, bgView.frame.size.width, bgView.frame.size.height)];
-    //3、随时获取新的布局高度
+    //3、选择媒体类型：是否仅选择图片或者其他的等
+    mediaView.type = ACMediaTypePhoto;
+    //4、随时获取新的布局高度
     [mediaView observeViewHeight:^(CGFloat value) {
         bgView.height = value;
     }];
-    //4、随时获取已经选择的媒体文件
+    //5、随时获取已经选择的媒体文件
     [mediaView observeSelectedMediaArray:^(NSArray<ACMediaModel *> *list) {
         for (ACMediaModel *model in list) {
             NSLog(@"%@",model);

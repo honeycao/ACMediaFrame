@@ -33,11 +33,13 @@ CGFloat height = [ACSelectMediaView defaultViewHeight];
 UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 44, self.view.bounds.size.width, height)];
 //2、初始化 媒体页面
 ACSelectMediaView *mediaView = [[ACSelectMediaView alloc] initWithFrame:CGRectMake(0, 0, bgView.frame.size.width, bgView.frame.size.height)];
-//3、随时获取新的布局高度
+//3、选择媒体类型：是否只选择图片或者其他的等（不设置默认所有媒体资源）
+//mediaView.type = ACMediaTypePhoto;
+//4、随时获取新的布局高度
 [mediaView observeViewHeight:^(CGFloat value) {
     bgView.height = value;
 }];
-//4、随时获取已经选择的媒体文件
+//5、随时获取已经选择的媒体文件
 [mediaView observeSelectedMediaArray:^(NSArray<ACMediaModel *> *list) {
     for (ACMediaModel *model in list) {
         NSLog(@"%@",model);
@@ -48,13 +50,18 @@ ACSelectMediaView *mediaView = [[ACSelectMediaView alloc] initWithFrame:CGRectMa
 ```
 
 -------
-#### 3、问题及完善
+####3、版本更新
+* `1.0.1` : 添加一个媒体类型，默认媒体资源是本地图片、视频，拍摄的图片、录像等，现在可以自己选择类型，例如：当只需要图片时，就设置媒体类型属性即可。 
+* `1.0.0` : 最初原型，封装的选择媒体以及布局的页面，把媒体资源的处理全进行封装，减少重复工作，只需添加到视图上，然后接收获取的媒体数据。
+
+-------
+#### 4、问题及完善
 
 * 一开始一次性添加多张照片的时候，出现过返回缺少的情况，后来又没有出现过，所以记录并统计下。
 
 -------
 
-#### 4、备注
+#### 5、备注
 
 * **I am a rookie ，I am not God （有建议或想法请q：331864805 ，你的点赞是我最大的动力）**
 * 框架内容详细解析：[简书--iOS 媒体库完整流程封装：图片视频选择、展示布局、上传等。](http://www.jianshu.com/p/9ff1e8e68a21)

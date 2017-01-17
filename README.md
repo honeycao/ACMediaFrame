@@ -5,12 +5,12 @@
 
 ------
 ###导航
-1.  [功能](https://github.com/honeycao/ACMediaFrame#功能)
-2.  [环境配置](https://github.com/honeycao/ACMediaFrame#环境配置)
-3.  [使用](https://github.com/honeycao/ACMediaFrame#使用)
-4.  [版本更新](https://github.com/honeycao/ACMediaFrame#版本更新)
-5.  [问题及完善](https://github.com/honeycao/ACMediaFrame#问题及完善)
-6.  [备注](https://github.com/honeycao/ACMediaFrame#备注)
+1.  [功能](https://github.com/honeycao/ACMediaFrame#1、功能)
+2.  [环境配置](https://github.com/honeycao/ACMediaFrame#2、环境配置)
+3.  [使用](https://github.com/honeycao/ACMediaFrame#3、使用)
+4.  [版本更新](https://github.com/honeycao/ACMediaFrame#4、版本更新)
+5.  [问题及完善](https://github.com/honeycao/ACMediaFrame#5、问题及完善)
+6.  [备注](https://github.com/honeycao/ACMediaFrame#6、备注)
 
 -------
 ### 1、功能

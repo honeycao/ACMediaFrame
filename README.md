@@ -5,10 +5,12 @@
 
 ------
 ###导航
-* [功能]()
-* [使用]()
-* [问题及完善]()
-* [备注]()
+* [功能](https://github.com/honeycao/ACMediaFrame#功能)
+* [环境配置](https://github.com/honeycao/ACMediaFrame#环境配置)
+* [使用](https://github.com/honeycao/ACMediaFrame#使用)
+* [版本更新](https://github.com/honeycao/ACMediaFrame#版本更新)
+* [问题及完善](https://github.com/honeycao/ACMediaFrame#问题及完善)
+* [备注](https://github.com/honeycao/ACMediaFrame#备注)
 
 -------
 ### 1、功能
@@ -20,7 +22,11 @@
 * 结果：添加该框架到任意页面之后不再需要做其他操作，只需要写上文件上传的网络请求即可。
 
 -------
-### 2、使用
+### 2、环境配置
+* iOS 8.1 及以上
+
+-------
+### 3、使用
 
 * 下载代码集成：添加`ACMediaFrame`文件夹即可
 * 添加本框架必要第三方：[TZImagePickerController](https://github.com/banchichen/TZImagePickerController)和[MWPhotoBrowser](https://github.com/mwaterfall/MWPhotoBrowser)
@@ -50,18 +56,18 @@ ACSelectMediaView *mediaView = [[ACSelectMediaView alloc] initWithFrame:CGRectMa
 ```
 
 -------
-####3、版本更新
+####4、版本更新
 * `1.0.1` : 添加一个媒体类型，默认媒体资源是本地图片、视频，拍摄的图片、录像等，现在可以自己选择类型，例如：当只需要图片时，就设置媒体类型属性即可。 
 * `1.0.0` : 最初原型，封装的选择媒体以及布局的页面，把媒体资源的处理全进行封装，减少重复工作，只需添加到视图上，然后接收获取的媒体数据。
 
 -------
-#### 4、问题及完善
+#### 5、问题及完善
 
 * 一开始一次性添加多张照片的时候，出现过返回缺少的情况，后来又没有出现过，所以记录并统计下。
 
 -------
 
-#### 5、备注
+#### 6、备注
 
 * **I am a rookie ，I am not God （有建议或想法请q：331864805 ，你的点赞是我最大的动力）**
 * 框架内容详细解析：[简书--iOS 媒体库完整流程封装：图片视频选择、展示布局、上传等。](http://www.jianshu.com/p/9ff1e8e68a21)

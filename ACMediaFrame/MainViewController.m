@@ -7,7 +7,7 @@
 //
 
 #import "MainViewController.h"
-#import "ACSelectMediaView.h"
+#import "ACMediaFrame.h"
 
 @interface MainViewController ()
 
@@ -28,20 +28,39 @@
     //1、得到默认布局高度（唯一获取高度方法）
     CGFloat height = [ACSelectMediaView defaultViewHeight];
     UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 44, self.view.bounds.size.width, height)];
+    
     //2、初始化
     ACSelectMediaView *mediaView = [[ACSelectMediaView alloc] initWithFrame:CGRectMake(0, 0, bgView.frame.size.width, bgView.frame.size.height)];
-    //3、选择媒体类型：是否仅选择图片或者其他的等
-    mediaView.type = ACMediaTypePhoto;
-    //4、随时获取新的布局高度
+    
+    //3、选择媒体类型：ACMediaType
+    mediaView.type = ACMediaTypePhotoAndCamera;
+    
+    //4、是否有需要提前显示的图片等媒体资源（以下是3种初始化的方式）
+    NSArray *ary = @[[UIImage imageNamed:@"poem"]];
+    
+    //NSArray *ary = @[@"poem"];
+    
+    //ACMediaModel *model = [ACMediaModel new];
+    //model.image = [UIImage imageNamed:@"poem"];
+    //NSArray *ary = @[model];
+    
+    mediaView.mediaArray = (NSMutableArray *)ary;
+    
+    //是否需要显示图片上的删除按钮
+    //mediaView.showDelete = NO;
+    
+    //5、随时获取新的布局高度
     [mediaView observeViewHeight:^(CGFloat value) {
         bgView.height = value;
     }];
-    //5、随时获取已经选择的媒体文件
+    
+    //6、随时获取已经选择的媒体文件
     [mediaView observeSelectedMediaArray:^(NSArray<ACMediaModel *> *list) {
         for (ACMediaModel *model in list) {
             NSLog(@"%@",model);
         }
     }];
+    
     [bgView addSubview:mediaView];
     [self.view addSubview:bgView];
 }

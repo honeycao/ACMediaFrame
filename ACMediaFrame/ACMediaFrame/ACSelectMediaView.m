@@ -11,6 +11,7 @@
 #import "ACMediaManager.h"
 #import "TZImagePickerController.h"
 #import "MWPhotoBrowser.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface ACSelectMediaView ()<UICollectionViewDelegate, UICollectionViewDataSource, TZImagePickerControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, MWPhotoBrowserDelegate>
 {
@@ -21,8 +22,7 @@
 
 @property (nonatomic, copy) ACMediaHeightBlock block;
 @property (nonatomic, copy) ACSelectMediaBackBlock backBlock;
-/** 媒体信息数组 */
-@property (nonatomic, strong) NSMutableArray *mediaArray;
+
 /** MWPhoto对象数组 */
 @property (nonatomic, strong) NSMutableArray *photos;
 
@@ -36,6 +36,10 @@
     self = [super initWithFrame:frame];
     if (self) {
         _mediaArray = [NSMutableArray array];
+        _type = ACMediaTypeAll;
+        _showDelete = YES;
+        _showAddButton = YES;
+        _backgroundColor = [UIColor whiteColor];
         rootVC = [[UIApplication sharedApplication] keyWindow].rootViewController;
         [self configureCollectionView];
     }
@@ -52,8 +56,47 @@
     [_collectionView registerClass:[ACMediaImageCell class] forCellWithReuseIdentifier:NSStringFromClass([ACMediaImageCell class])];
     _collectionView.delegate = self;
     _collectionView.dataSource = self;
-    _collectionView.backgroundColor = [UIColor whiteColor];
+    _collectionView.backgroundColor = _backgroundColor;
     [self addSubview:_collectionView];
+}
+
+#pragma mark - setter
+
+- (void)setShowDelete:(BOOL)showDelete {
+    _showDelete = showDelete;
+}
+
+- (void)setShowAddButton:(BOOL)showAddButton {
+    _showAddButton = showAddButton;
+}
+
+- (void)setMediaArray:(NSMutableArray *)mediaArray {
+    
+    for (id object in mediaArray) {
+        ACMediaModel *model = [ACMediaModel new];
+        if ([object isKindOfClass:[UIImage class]]) {
+            model.image = object;
+        }else if ([object isKindOfClass:[NSString class]]) {
+            if ([(NSString *)object containsString:@"http://"] || [(NSString *)object containsString:@"https://"]) {
+                model.imageUrlString = object;
+            }else {
+                model.image = [UIImage imageNamed:object];
+            }
+        }else if ([object isKindOfClass:[ACMediaModel class]]) {
+            model = object;
+        }
+        [_mediaArray addObject:model];
+        [self.collectionView reloadData];
+    }
+}
+
+- (void)setAllowPickingVideo:(BOOL)allowPickingVideo {
+    _allowPickingVideo = allowPickingVideo;
+}
+
+- (void)setBackgroundColor:(UIColor *)backgroundColor {
+    _backgroundColor = backgroundColor;
+    [_collectionView setBackgroundColor:backgroundColor];
 }
 
 #pragma mark - public method
@@ -85,9 +128,15 @@
     }else{
         ACMediaModel *model = [[ACMediaModel alloc] init];
         model = _mediaArray[indexPath.row];
+        if (!model.isVideo && model.imageUrlString) {
+        [cell.icon sd_setImageWithURL:[NSURL URLWithString:model.imageUrlString]];
+        }else {
+            cell.icon.image = model.image;
+        }
+        
         cell.icon.image = model.image;
         cell.videoImageView.hidden = !model.isVideo;
-        cell.deleteButton.hidden = NO;
+        cell.deleteButton.hidden = !_showDelete;
         [cell setACMediaClickDeleteButton:^{
             [_mediaArray removeObjectAtIndex:indexPath.row];
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -205,12 +254,12 @@
 /** 相册 */
 - (void)openAlbum {
     TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:9 - _mediaArray.count delegate:self];
-    ///是否 在相册中显示拍照按钮
+    //是否 在相册中显示拍照按钮
     imagePickerVc.allowTakePicture = NO;
-    ///是否可以选择显示原图
+    //是否可以选择显示原图
     imagePickerVc.allowPickingOriginalPhoto = NO;
-    ///是否 在相册中可以选择视频
-    imagePickerVc.allowPickingVideo = YES;
+    //是否 在相册中可以选择视频
+    imagePickerVc.allowPickingVideo = _allowPickingVideo;
     [rootVC presentViewController:imagePickerVc animated:YES completion:nil];
 }
 

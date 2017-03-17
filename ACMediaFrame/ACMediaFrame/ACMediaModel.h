@@ -22,6 +22,9 @@
 /** 媒体照片 */
 @property (nonatomic, strong) UIImage *image;
 
+/** url string image */
+@property (nonatomic, copy) NSString *imageUrlString;
+
 /** iOS8 之后的媒体属性 */
 @property (nonatomic, strong) PHAsset *asset;
 

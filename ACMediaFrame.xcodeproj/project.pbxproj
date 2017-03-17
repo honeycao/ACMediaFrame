@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		370F0CFD1E7AB455004B8663 /* NSString+ACMediaExt.m in Sources */ = {isa = PBXBuildFile; fileRef = 370F0CFC1E7AB455004B8663 /* NSString+ACMediaExt.m */; };
+		370F0D001E7B6FC7004B8663 /* poem.png in Resources */ = {isa = PBXBuildFile; fileRef = 370F0CFF1E7B6FC7004B8663 /* poem.png */; };
 		3741E4791E0D90CC0008653C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3741E4781E0D90CC0008653C /* main.m */; };
 		3741E47C1E0D90CC0008653C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3741E47B1E0D90CC0008653C /* AppDelegate.m */; };
 		3741E4821E0D90CC0008653C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3741E4801E0D90CC0008653C /* Main.storyboard */; };
@@ -20,7 +22,6 @@
 		3741E4A41E0D974D0008653C /* UIViewController+ACMediaExt.m in Sources */ = {isa = PBXBuildFile; fileRef = 3741E4A31E0D974D0008653C /* UIViewController+ACMediaExt.m */; };
 		3741E4A81E0D9FBA0008653C /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3741E4A71E0D9FBA0008653C /* MainViewController.m */; };
 		37F09EA31E0FC7F600A186CA /* ACMediaModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F09EA21E0FC7F600A186CA /* ACMediaModel.m */; };
-		37F09EA61E0FCCB900A186CA /* ACMediaFrameConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F09EA51E0FCCB900A186CA /* ACMediaFrameConst.m */; };
 		37F09EA81E0FE92C00A186CA /* ACMediaFrame.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 37F09EA71E0FE92C00A186CA /* ACMediaFrame.bundle */; };
 		F236C858D7816D6D613BF793 /* Pods_ACMediaFrame.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F429807B8F0320332B18F933 /* Pods_ACMediaFrame.framework */; };
 /* End PBXBuildFile section */
@@ -28,6 +29,10 @@
 /* Begin PBXFileReference section */
 		2FC65FC59B371EDCB5E8D737 /* Pods-ACMediaFrame.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ACMediaFrame.release.xcconfig"; path = "Pods/Target Support Files/Pods-ACMediaFrame/Pods-ACMediaFrame.release.xcconfig"; sourceTree = "<group>"; };
 		33D877D816EDAD4BDAF4573E /* Pods-ACMediaFrame.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ACMediaFrame.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ACMediaFrame/Pods-ACMediaFrame.debug.xcconfig"; sourceTree = "<group>"; };
+		370F0CFB1E7AB455004B8663 /* NSString+ACMediaExt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ACMediaExt.h"; sourceTree = "<group>"; };
+		370F0CFC1E7AB455004B8663 /* NSString+ACMediaExt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ACMediaExt.m"; sourceTree = "<group>"; };
+		370F0CFE1E7ABDBC004B8663 /* ACMediaFrame.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACMediaFrame.h; sourceTree = "<group>"; };
+		370F0CFF1E7B6FC7004B8663 /* poem.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = poem.png; sourceTree = "<group>"; };
 		3741E4741E0D90CC0008653C /* ACMediaFrame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ACMediaFrame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3741E4781E0D90CC0008653C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3741E47A1E0D90CC0008653C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -53,7 +58,6 @@
 		37F09EA11E0FC7F600A186CA /* ACMediaModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACMediaModel.h; sourceTree = "<group>"; };
 		37F09EA21E0FC7F600A186CA /* ACMediaModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACMediaModel.m; sourceTree = "<group>"; };
 		37F09EA41E0FCCB900A186CA /* ACMediaFrameConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACMediaFrameConst.h; sourceTree = "<group>"; };
-		37F09EA51E0FCCB900A186CA /* ACMediaFrameConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACMediaFrameConst.m; sourceTree = "<group>"; };
 		37F09EA71E0FE92C00A186CA /* ACMediaFrame.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ACMediaFrame.bundle; sourceTree = "<group>"; };
 		F429807B8F0320332B18F933 /* Pods_ACMediaFrame.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ACMediaFrame.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -96,6 +100,7 @@
 				3741E47B1E0D90CC0008653C /* AppDelegate.m */,
 				3741E4A61E0D9FBA0008653C /* MainViewController.h */,
 				3741E4A71E0D9FBA0008653C /* MainViewController.m */,
+				370F0CFF1E7B6FC7004B8663 /* poem.png */,
 				3741E4801E0D90CC0008653C /* Main.storyboard */,
 				3741E4831E0D90CC0008653C /* Assets.xcassets */,
 				3741E4851E0D90CC0008653C /* LaunchScreen.storyboard */,
@@ -116,10 +121,8 @@
 		3741E48E1E0D93F50008653C /* ACMediaFrame */ = {
 			isa = PBXGroup;
 			children = (
-				37F09EA71E0FE92C00A186CA /* ACMediaFrame.bundle */,
-				3741E49B1E0D95E60008653C /* Libraries */,
+				370F0CFE1E7ABDBC004B8663 /* ACMediaFrame.h */,
 				37F09EA41E0FCCB900A186CA /* ACMediaFrameConst.h */,
-				37F09EA51E0FCCB900A186CA /* ACMediaFrameConst.m */,
 				3741E4911E0D93F50008653C /* ACMediaManager.h */,
 				3741E4921E0D93F50008653C /* ACMediaManager.m */,
 				37F09EA11E0FC7F600A186CA /* ACMediaModel.h */,
@@ -130,6 +133,8 @@
 				3741E4941E0D93F50008653C /* ACSelectMediaView.m */,
 				3741E4951E0D93F50008653C /* ACShowMediaTypeView.h */,
 				3741E4961E0D93F50008653C /* ACShowMediaTypeView.m */,
+				37F09EA71E0FE92C00A186CA /* ACMediaFrame.bundle */,
+				3741E49B1E0D95E60008653C /* Libraries */,
 			);
 			path = ACMediaFrame;
 			sourceTree = "<group>";
@@ -141,6 +146,8 @@
 				3741E4A01E0D96400008653C /* UIView+ACMediaExt.m */,
 				3741E4A21E0D974D0008653C /* UIViewController+ACMediaExt.h */,
 				3741E4A31E0D974D0008653C /* UIViewController+ACMediaExt.m */,
+				370F0CFB1E7AB455004B8663 /* NSString+ACMediaExt.h */,
+				370F0CFC1E7AB455004B8663 /* NSString+ACMediaExt.m */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
@@ -224,6 +231,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3741E4871E0D90CC0008653C /* LaunchScreen.storyboard in Resources */,
+				370F0D001E7B6FC7004B8663 /* poem.png in Resources */,
 				3741E4841E0D90CC0008653C /* Assets.xcassets in Resources */,
 				37F09EA81E0FE92C00A186CA /* ACMediaFrame.bundle in Resources */,
 				3741E4821E0D90CC0008653C /* Main.storyboard in Resources */,
@@ -260,7 +268,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		FC7E85CBD20507D01132924B /* [CP] Copy Pods Resources */ = {
@@ -289,10 +297,10 @@
 				3741E4981E0D93F50008653C /* ACMediaManager.m in Sources */,
 				37F09EA31E0FC7F600A186CA /* ACMediaModel.m in Sources */,
 				3741E4971E0D93F50008653C /* ACMediaImageCell.m in Sources */,
-				37F09EA61E0FCCB900A186CA /* ACMediaFrameConst.m in Sources */,
 				3741E4A81E0D9FBA0008653C /* MainViewController.m in Sources */,
 				3741E47C1E0D90CC0008653C /* AppDelegate.m in Sources */,
 				3741E4A11E0D96400008653C /* UIView+ACMediaExt.m in Sources */,
+				370F0CFD1E7AB455004B8663 /* NSString+ACMediaExt.m in Sources */,
 				3741E4791E0D90CC0008653C /* main.m in Sources */,
 				3741E4A41E0D974D0008653C /* UIViewController+ACMediaExt.m in Sources */,
 				3741E4991E0D93F50008653C /* ACSelectMediaView.m in Sources */,

@@ -7,7 +7,7 @@
 
 ------
 
-###导航
+### 导航
 1.  [功能](https://github.com/honeycao/ACMediaFrame#1、功能)
 2.  [环境配置](https://github.com/honeycao/ACMediaFrame#2、环境配置)
 3.  [使用](https://github.com/honeycao/ACMediaFrame#3、使用)
@@ -84,7 +84,7 @@ NSLog(@"%@",model);
 
 -------
 
-####4、版本更新
+#### 4、版本更新
 * `1.1.0` : 
   * 添加了几个属性，使得框架更容易集成和修改。现在不仅可以用来选择图片等媒体资源，同时也可以只是用来展示等。
   * 修改了添加框架的头文件等

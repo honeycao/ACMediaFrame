@@ -72,6 +72,7 @@
 
 - (void)setMediaArray:(NSMutableArray *)mediaArray {
     
+    NSMutableArray *temp = [NSMutableArray array];
     for (id object in mediaArray) {
         ACMediaModel *model = [ACMediaModel new];
         if ([object isKindOfClass:[UIImage class]]) {
@@ -85,8 +86,10 @@
         }else if ([object isKindOfClass:[ACMediaModel class]]) {
             model = object;
         }
-        [_mediaArray addObject:model];
-        [self.collectionView reloadData];
+        [temp addObject:model];
+    }
+    if (temp.count > 0) {
+        [self layoutCollection:temp];
     }
 }
 
@@ -103,6 +106,10 @@
 
 - (void)observeViewHeight:(ACMediaHeightBlock)value {
     _block = value;
+    //预防先加载数据源的情况
+    if (_mediaArray.count > 3) {
+        _block(_collectionView.height);
+    }
 }
 
 - (void)observeSelectedMediaArray: (ACSelectMediaBackBlock)backBlock {

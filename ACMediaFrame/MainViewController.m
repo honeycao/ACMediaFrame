@@ -33,10 +33,12 @@
     ACSelectMediaView *mediaView = [[ACSelectMediaView alloc] initWithFrame:CGRectMake(0, 0, bgView.frame.size.width, bgView.frame.size.height)];
     
     //3、选择媒体类型：ACMediaType
-    mediaView.type = ACMediaTypePhotoAndCamera;
+    mediaView.type = ACMediaTypeAll;
+    
+    mediaView.allowPickingVideo = YES;
     
     //4、是否有需要提前显示的图片等媒体资源（以下是3种初始化的方式）
-    NSArray *ary = @[[UIImage imageNamed:@"poem"]];
+    NSArray *ary = @[[UIImage imageNamed:@"poem"], [UIImage imageNamed:@"poem"], [UIImage imageNamed:@"poem"], [UIImage imageNamed:@"poem"]];
     
     //NSArray *ary = @[@"poem"];
     

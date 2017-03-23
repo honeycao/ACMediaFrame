@@ -203,6 +203,7 @@
 				TargetAttributes = {
 					3741E4731E0D90CC0008653C = {
 						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = KV856G9KZB;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -424,10 +425,11 @@
 			baseConfigurationReference = 33D877D816EDAD4BDAF4573E /* Pods-ACMediaFrame.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = KV856G9KZB;
 				INFOPLIST_FILE = ACMediaFrame/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = ArthurCao.ACMediaFrame;
+				PRODUCT_BUNDLE_IDENTIFIER = honeycao.Frame;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -437,10 +439,11 @@
 			baseConfigurationReference = 2FC65FC59B371EDCB5E8D737 /* Pods-ACMediaFrame.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = KV856G9KZB;
 				INFOPLIST_FILE = ACMediaFrame/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = ArthurCao.ACMediaFrame;
+				PRODUCT_BUNDLE_IDENTIFIER = honeycao.Frame;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

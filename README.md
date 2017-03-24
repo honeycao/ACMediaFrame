@@ -66,6 +66,12 @@ mediaView.mediaArray = (NSMutableArray *)ary;
 //是否需要显示图片上的删除按钮
 //mediaView.showDelete = NO;
 
+//是否显示添加图片按钮
+//    mediaView.showAddButton = NO;
+
+//图片最大选择张数
+//    mediaView.maxImageSelected = 5;
+
 //5、随时获取新的布局高度
 [mediaView observeViewHeight:^(CGFloat value) {
 bgView.height = value;
@@ -85,6 +91,7 @@ NSLog(@"%@",model);
 -------
 
 #### 4、版本更新
+* `1.2.0` : 由于上次的提交，导致一个问题（设置的隐藏添加图片按钮失效的问题），当时没有考虑完全，所以这次进行修改并修复有默认图片是显示的一些布局问题；另外继续完善几个开放接口，比如设置选择图片数量等。
 * `1.1.0` : 
   * 添加了几个属性，使得框架更容易集成和修改。现在不仅可以用来选择图片等媒体资源，同时也可以只是用来展示等。
   * 修改了添加框架的头文件等

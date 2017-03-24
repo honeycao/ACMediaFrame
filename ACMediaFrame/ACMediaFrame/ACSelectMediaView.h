@@ -25,6 +25,8 @@ typedef void(^ACSelectMediaBackBlock)(NSArray<ACMediaModel *> *list);
 /** 选择媒体 并 排列展示 的页面 */
 @interface ACSelectMediaView : UIView
 
+#pragma mark - properties
+
 /** 
  * 需要展示的媒体的资源类型：如仅显示图片等，默认是 ACMediaTypeAll 
  */
@@ -51,8 +53,18 @@ typedef void(^ACSelectMediaBackBlock)(NSArray<ACMediaModel *> *list);
  */
 @property (nonatomic, assign) BOOL allowPickingVideo;
 
-/** 底部collectionView的backgroundColor */
+
+/**
+ * 最大图片选择张数. default is 9
+ */
+@property (nonatomic, assign) NSInteger maxImageSelected;
+
+/** 
+ * 底部collectionView的 backgroundColor
+ */
 @property (nonatomic, strong) UIColor *backgroundColor;
+
+#pragma mark - methods
 
 /** 
  * 监控view的高度变化

@@ -39,6 +39,7 @@
         _type = ACMediaTypeAll;
         _showDelete = YES;
         _showAddButton = YES;
+        _maxImageSelected = 9;
         _backgroundColor = [UIColor whiteColor];
         rootVC = [[UIApplication sharedApplication] keyWindow].rootViewController;
         [self configureCollectionView];
@@ -68,6 +69,9 @@
 
 - (void)setShowAddButton:(BOOL)showAddButton {
     _showAddButton = showAddButton;
+    if (_mediaArray.count > 3) {
+        [self layoutCollection:@[]];
+    }
 }
 
 - (void)setMediaArray:(NSMutableArray *)mediaArray {
@@ -123,7 +127,7 @@
 #pragma mark -  Collection View DataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return _mediaArray.count + 1;
+    return _showAddButton ? _mediaArray.count + 1 : _mediaArray.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -157,8 +161,8 @@
 #pragma mark - collection view delegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == _mediaArray.count && _mediaArray.count >= 9) {
-        [UIAlertController showAlertWithTitle:@"最多只能选择9张" message:nil actionTitles:@[@"确定"] cancelTitle:nil style:UIAlertControllerStyleAlert completion:nil];
+    if (indexPath.row == _mediaArray.count && _mediaArray.count >= _maxImageSelected) {
+        [UIAlertController showAlertWithTitle:[NSString stringWithFormat:@"最多只能选择%ld张",(long)_maxImageSelected] message:nil actionTitles:@[@"确定"] cancelTitle:nil style:UIAlertControllerStyleAlert completion:nil];
         return;
     }
     
@@ -245,9 +249,9 @@
 ///添加选中的image，然后重新布局collectionview
 - (void)layoutCollection: (NSArray *)images {
     [_mediaArray addObjectsFromArray:images];
-    NSInteger allImageCount = _mediaArray.count + 1;
+    NSInteger allImageCount = _showAddButton ? _mediaArray.count + 1 : _mediaArray.count;
     NSInteger maxRow = (allImageCount - 1) / 4 + 1;
-    _collectionView.height = maxRow * ACMedia_ScreenWidth/4;
+    _collectionView.height = allImageCount == 0 ? 0 : maxRow * ACMedia_ScreenWidth/4;
     self.height = _collectionView.height;
     //block回调
     !_block ?  : _block(_collectionView.height);
@@ -260,7 +264,7 @@
 
 /** 相册 */
 - (void)openAlbum {
-    TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:9 - _mediaArray.count delegate:self];
+    TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:_maxImageSelected - _mediaArray.count delegate:self];
     //是否 在相册中显示拍照按钮
     imagePickerVc.allowTakePicture = NO;
     //是否可以选择显示原图

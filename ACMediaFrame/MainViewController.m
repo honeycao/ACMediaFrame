@@ -50,6 +50,11 @@
     
     //是否需要显示图片上的删除按钮
     //mediaView.showDelete = NO;
+    //是否显示添加图片按钮
+//    mediaView.showAddButton = NO;
+    
+    //图片最大选择张数
+//    mediaView.maxImageSelected = 5;
     
     //5、随时获取新的布局高度
     [mediaView observeViewHeight:^(CGFloat value) {

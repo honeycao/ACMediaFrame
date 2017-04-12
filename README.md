@@ -1,113 +1,71 @@
 # ACMediaFrame
-一个完整的媒体选择流程框架封装。
-包括：图片视频选择、录制；任意页面布局展示图片视频，可删除；
-     直接存储了供上传的数据 类型，所以距离上传就一步之遥（发送请求而已）。
+一个完整的媒体库选择和展示的框架。包括本地图片、视频选取，拍摄、录像等，并得到对应的用于上传的数据类型，再也不用担心媒体文件上传了。
 
-![ACMediFrame展示.gif](https://github.com/honeycao/ACMediaFrame/blob/master/ACMediFrame%E5%B1%95%E7%A4%BA.gif)
+![ACMediaFrameExampleGif.gif](https://github.com/honeycao/ACMediaFrame/blob/master/ACMediaFrameExampleGif.gif)
 
-------
+## 导航
+* [基本要求](#Requirements)
+* [实现功能](#function)
+* [结构层次](#Architecture)
+  * [如何添加](#add)
+  * [使用详情](#detail)
+  * [属性自定义](#custom)
+* [版本更新](#version)
+* [Hope](#hope)
 
-### 导航
-1.  [功能](https://github.com/honeycao/ACMediaFrame#1、功能)
-2.  [环境配置](https://github.com/honeycao/ACMediaFrame#2、环境配置)
-3.  [使用](https://github.com/honeycao/ACMediaFrame#3、使用)
-4.  [版本更新](https://github.com/honeycao/ACMediaFrame#4、版本更新)
-5.  [问题及完善](https://github.com/honeycao/ACMediaFrame#5、问题及完善)
-6.  [备注](https://github.com/honeycao/ACMediaFrame#6、备注)
 
--------
+## <a id="Requirements"></a>基本要求
 
-### 1、功能
+* iOS 8.0  or later
 
-* 本地图片视频选择、拍照录制等全封装使用
-* 主体是一个展示的页面，可添加到任何地方，同时处理好了一切布局。
-* 选择图片和图片预览等用到了`TZImagePickerController`和`MWPhotoBrowser`两个第三方
-* 自定义媒体model，存储图片、视频上传数据类型，如：NSData或视频路径。
-* 结果：添加该框架到任意页面之后不再需要做其他操作，只需要写上文件上传的网络请求即可。
+* Xcode 7.0 or later
 
--------
+* 用到github上第三方：[TZImagePickerController](https://github.com/banchichen/TZImagePickerController)和[MWPhotoBrowser](https://github.com/mwaterfall/MWPhotoBrowser)和 [ACAlertController](https://github.com/honeycao/ACAlertController)
 
-### 2、环境配置
-* iOS 8.1，Xcode 7.0 及以上
-* 用到github上第三方：`TZImagePickerController`和`MWPhotoBrowser`
 
--------
+## <a id="function"></a>实现功能
+* 本地图片视频选择、拍照录制等一条龙轻松实现
+* 框架主体是一个view，已经实现高度配置，不用再去做任何处理
+* 框架主体形势支持：添加媒体、预览展示媒体、混合编辑（添加和预览展示一起实现）
+* 选择媒体上支持：删除、限定最大选择数数量、同个媒体资源是否多次选择等。、
+* 从本地相册选择图片用到了`TZImagePickerController`；查看图片视频用到了`MWPhotoBrowser`；底部弹出框用到`ACAlertController`替代系统弹框
+* 自定义媒体model，返回图片、视频上传数据类型，如：NSData或视频路径。不用为了得到上传的数据类型做任何处理了。
 
-### 3、使用
+## <a id="Architecture">结构层次
 
-* 下载代码集成：添加`ACMediaFrame`文件夹即可
-* 添加本框架必要第三方：[TZImagePickerController](https://github.com/banchichen/TZImagePickerController)和[MWPhotoBrowser](https://github.com/mwaterfall/MWPhotoBrowser)
+* [如何添加](#add)
+* [使用详情](#detail)
+* [属性自定义](#custom)
 
-```objective-c
-//添加头文件
-#import "ACMediaFrame.h"
+### <a id="add"></a>如何添加
 
-//1、得到默认布局高度（唯一获取高度方法）
-CGFloat height = [ACSelectMediaView defaultViewHeight];
-UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 44, self.view.bounds.size.width, height)];
+* 使用 `CocoaPods`
+  - 待支持
+* 手动添加
+  - 把`ACMediaFrame`文件拉到项目中
+  - 添加头文件`#import "ACMediaFrame.h"`
 
-//2、初始化
-ACSelectMediaView *mediaView = [[ACSelectMediaView alloc] initWithFrame:CGRectMake(0, 0, bgView.frame.size.width, bgView.frame.size.height)];
-
-//3、选择媒体类型：ACMediaType
-mediaView.type = ACMediaTypePhotoAndCamera;
-
-//4、是否有需要提前显示的图片等媒体资源（以下是3种初始化的方式）
-NSArray *ary = @[[UIImage imageNamed:@"poem"]];
-
-//NSArray *ary = @[@"poem"];
-
-//ACMediaModel *model = [ACMediaModel new];
-//model.image = [UIImage imageNamed:@"poem"];
-//NSArray *ary = @[model];
-
-mediaView.mediaArray = (NSMutableArray *)ary;
-
-//是否需要显示图片上的删除按钮
-//mediaView.showDelete = NO;
-
-//是否显示添加图片按钮
-//    mediaView.showAddButton = NO;
-
-//图片最大选择张数
-//    mediaView.maxImageSelected = 5;
-
-//5、随时获取新的布局高度
-[mediaView observeViewHeight:^(CGFloat value) {
-bgView.height = value;
-}];
-
-//6、随时获取已经选择的媒体文件
-[mediaView observeSelectedMediaArray:^(NSArray<ACMediaModel *> *list) {
-for (ACMediaModel *model in list) {
-NSLog(@"%@",model);
-}
-}];
-
-[bgView addSubview:mediaView];
-[self.view addSubview:bgView];
+### <a id="detail"></a>使用详情（具体看`ACMediaFrameExample`示例）
+```
+简单演示
 ```
 
--------
+### <a id="custom"></a>属性自定义
+>demo中有些属性可能没用上，不同属性的设置可以达成不同的效果
 
-#### 4、版本更新
+## <a id="version"></a>版本更新
+* `1.3.0` : 改动比较大的一次，首先是代码整体层次上变动了下，另外添加了自己写的一个底部弹出框功能，添加几个开放属性（是否在图片中可以选择视频、选择的图片下次是否可以继续选择等）
 * `1.2.0` : 由于上次的提交，导致一个问题（设置的隐藏添加图片按钮失效的问题），当时没有考虑完全，所以这次进行修改并修复有默认图片是显示的一些布局问题；另外继续完善几个开放接口，比如设置选择图片数量等。
 * `1.1.0` : 
-  * 添加了几个属性，使得框架更容易集成和修改。现在不仅可以用来选择图片等媒体资源，同时也可以只是用来展示等。
-  * 修改了添加框架的头文件等
+* 添加了几个属性，使得框架更容易集成和修改。现在不仅可以用来选择图片等媒体资源，同时也可以只是用来展示等。
+* 修改了添加框架的头文件等
 * `1.0.1` : 添加一个媒体类型，默认媒体资源是本地图片、视频，拍摄的图片、录像等，现在可以自己选择类型，例如：当只需要图片时，就设置媒体类型属性即可。 
 * `1.0.0` : 最初原型，封装的选择媒体以及布局的页面，把媒体资源的处理全进行封装，减少重复工作，只需添加到视图上，然后接收获取的媒体数据。
-
--------
-
-#### 5、问题及完善
-
-* 一开始一次性添加多张照片的时候，出现过返回缺少的情况，后来又没有出现过，所以记录并统计下。
-
--------
-123123
-
-#### 6、备注
-
-* **I am a rookie ，I am not God （有建议或想法请q：331864805 ，你的点赞是我最大的动力）**
-* 框架内容详细解析：[简书--iOS 媒体库完整流程封装：图片视频选择、展示布局、上传等。](http://www.jianshu.com/p/9ff1e8e68a21)
+   
+## <a id="hope"></a>Hope
+* 代码使用过程中，发现任何问题，可以随时[issues me](https://github.com/honeycao/ACMediaFrame/issues/new)
+* 如果有更多建议或者想法也可以直接联系我 QQ:331864805
+* 觉得框架对你有一点点帮助的，就请支持下，点个赞。
+​
+## Licenses
+All source code is licensed under the MIT License.

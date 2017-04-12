@@ -1,10 +1,12 @@
 platform :ios, '8.0'
 use_frameworks!
 
-target "ACMediaFrame" do
+target "ACMediaFrameExample" do
 
    pod 'TZImagePickerController'
 
    pod 'MWPhotoBrowser'
+   
+   pod 'ACAlertController'
 
 end

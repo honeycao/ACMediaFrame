@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>ACAlertController.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>DACircularProgress.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -24,7 +29,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-ACMediaFrame.xcscheme</key>
+		<key>Pods-ACMediaFrameExample.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -52,6 +57,21 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>17D75DECC3DE8C06D486EDEF077B8AF3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>2F6DB0FB58B647D60045DE677BC5DFAE</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>3A3E6D931273023958885C5EEED944F2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>6B1714E816AE794962516E2ECBB40A5A</key>
 		<dict>
 			<key>primary</key>
@@ -63,16 +83,6 @@
 			<true/>
 		</dict>
 		<key>A3B3CA69641375F94D39F255650BF877</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>B8562B326F27805EF10DA4794DBAE734</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>BC0607B8DA8EA2443B18229C1376BA4C</key>
 		<dict>
 			<key>primary</key>
 			<true/>

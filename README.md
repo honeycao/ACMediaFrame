@@ -33,10 +33,6 @@
 
 ## <a id="Architecture">结构层次
 
-* [如何添加](#add)
-* [使用详情](#detail)
-* [属性自定义](#custom)
-
 ### <a id="add"></a>如何添加
 
 * 使用 `CocoaPods`
@@ -66,6 +62,6 @@
 * 代码使用过程中，发现任何问题，可以随时[issues me](https://github.com/honeycao/ACMediaFrame/issues/new)
 * 如果有更多建议或者想法也可以直接联系我 QQ:331864805
 * 觉得框架对你有一点点帮助的，就请支持下，点个赞。
-​
+
 ## Licenses
 All source code is licensed under the MIT License.

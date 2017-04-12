@@ -41,7 +41,7 @@
   - 把`ACMediaFrame`文件拉到项目中
   - 添加头文件`#import "ACMediaFrame.h"`
 
-### <a id="detail"></a>使用详情（具体看`ACMediaFrameExample`示例）
+### <a id="detail"></a>使用详情（具体看 `ACMediaFrameExample` 示例）
 *demo目录分析*
 * `AddTableViewController`        添加媒体的演示
 * `DisplayTableViewController`    预览媒体的演示
@@ -73,6 +73,7 @@ NSLog(@"list.count = %lu",(unsigned long)list.count);
 // 添加到控件上
 self.tableView.tableHeaderView = mediaView;
 ```
+-------
 
 ### <a id="custom"></a>属性自定义
 
@@ -86,7 +87,6 @@ mediaView.type = ACMediaTypePhoto
 ```
 
 * `preShowMedias`
-
 >预先展示的媒体数组。如果一开始有需要显示媒体资源，可以先传入进行显示，没有的话可以不赋值。
 传入的如果是图片类型，则可以是：UIImage，NSString，至于其他的都可以传入 ACMediaModel类型
 
@@ -132,6 +132,8 @@ mediaView.allowMultipleSelection = NO;
 
 * `backgroundColor`
 >底部collectionView的背景颜色，有特殊颜色要求的可以单独去设置
+
+------
 
 ## <a id="version"></a>版本更新
 * `1.3.0` : 改动比较大的一次，首先是代码整体层次上变动了下，另外添加了自己写的一个底部弹出框功能，添加几个开放属性（是否在图片中可以选择视频、选择的图片下次是否可以继续选择等）

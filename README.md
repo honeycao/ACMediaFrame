@@ -42,12 +42,96 @@
   - 添加头文件`#import "ACMediaFrame.h"`
 
 ### <a id="detail"></a>使用详情（具体看`ACMediaFrameExample`示例）
+*demo目录分析*
+* `AddTableViewController`        添加媒体的演示
+* `DisplayTableViewController`    预览媒体的演示
+* `EditTableViewController`       添加和预览混合编排的演示
 ```
-简单演示
+// 唯一获取初始化高度的方法
+CGFloat height = [ACSelectMediaView defaultViewHeight];
+
+// 初始化
+ACSelectMediaView *mediaView = [[ACSelectMediaView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, height)];
+
+// 需要展示的媒体的资源类型，当前是仅本地图库
+mediaView.type = ACMediaTypePhoto;
+
+// 是否允许 同个图片或视频进行多次选择
+mediaView.allowMultipleSelection = NO;
+
+//视情况看是否需要改变高度，目前单独使用且作为tableview的header，并不用监控并改变高度
+[mediaView observeViewHeight:^(CGFloat mediaHeight) {
+    //
+}];
+
+// 随时获取选择好媒体文件
+[mediaView observeSelectedMediaArray:^(NSArray<ACMediaModel *> *list) {
+// do something
+NSLog(@"list.count = %lu",(unsigned long)list.count);
+}];
+
+// 添加到控件上
+self.tableView.tableHeaderView = mediaView;
 ```
 
 ### <a id="custom"></a>属性自定义
+
 >demo中有些属性可能没用上，不同属性的设置可以达成不同的效果
+
+* `type`
+>需要展示的媒体的资源类型：如仅显示图片等，默认是 ACMediaTypePhotoAndCamera
+```
+e.g. 点击加号按钮，自定义所想要的媒体资源选项
+mediaView.type = ACMediaTypePhoto
+```
+
+* `preShowMedias`
+
+>预先展示的媒体数组。如果一开始有需要显示媒体资源，可以先传入进行显示，没有的话可以不赋值。
+传入的如果是图片类型，则可以是：UIImage，NSString，至于其他的都可以传入 ACMediaModel类型
+
+```
+e.g. 在预览或者之前已经有图片的情况下，需要传入进行预先展示
+mediaView.preShowMedias = @[@"bg_1", @"bg_2", @"bg_3"];
+```
+
+* `maxImageSelected`
+>最大图片选择张数. default is 9
+```
+e.g. 自定义从本地相册中所选取的最大数量
+mediaView.maxImageSelected = 5;
+```
+
+* `showDelete`
+>是否显示删除按钮. Defaults is YES
+```
+e.g. 一般在预览情况下设置为 NO
+mediaView.showDelete = NO;
+```
+
+* `showAddButton`
+>是否需要显示添加按钮. Defaults is YES 
+```
+e.g. 一般在预览情况下设置为 NO
+mediaView.showAddButton = NO;
+```
+
+* `allowPickingVideo`
+>是否允许 在选择图片的同时可以选择视频文件. default is NO
+```
+e.g. 如果希望在选择图片的时候，出现视频资源，那么可以设置为 YES
+mediaView.allowPickingVideo = NO;
+```
+
+* `allowMultipleSelection`
+>是否允许 同个图片或视频进行多次选择. default is YES
+```
+e.g.  如果不希望已经选择的图片或视频，再次被选择，那么可以设置为 NO
+mediaView.allowMultipleSelection = NO;
+```
+
+* `backgroundColor`
+>底部collectionView的背景颜色，有特殊颜色要求的可以单独去设置
 
 ## <a id="version"></a>版本更新
 * `1.3.0` : 改动比较大的一次，首先是代码整体层次上变动了下，另外添加了自己写的一个底部弹出框功能，添加几个开放属性（是否在图片中可以选择视频、选择的图片下次是否可以继续选择等）

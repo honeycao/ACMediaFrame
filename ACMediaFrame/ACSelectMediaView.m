@@ -30,6 +30,9 @@
 /** 记录从相册中已选的Asset */
 @property (nonatomic, strong) NSMutableArray *selectedAssets;
 
+/** 记录用系统方法 UIImagePickerController 得到的媒体资源  */
+@property (nonatomic, strong) NSMutableArray *mediaFromSystem;
+
 /** MWPhoto对象数组 */
 @property (nonatomic, strong) NSMutableArray *photos;
 
@@ -60,6 +63,7 @@
     _mediaArray = [NSMutableArray array];
     _preShowMedias = [NSMutableArray array];
     _selectedAssets = [NSMutableArray array];
+    _mediaFromSystem = [NSMutableArray array];
     _type = ACMediaTypePhotoAndCamera;
     _showDelete = YES;
     _showAddButton = YES;
@@ -179,20 +183,26 @@
         cell.deleteButton.hidden = !_showDelete;
         [cell setACMediaClickDeleteButton:^{
             
-            if (_preShowMedias.count != 0) {
-                //删除的是预展示图片
-                if (indexPath.row <= _preShowMedias.count - 1) {
-                    NSMutableArray *tempPre = [NSMutableArray arrayWithArray:_preShowMedias];
-                    [tempPre removeObjectAtIndex:indexPath.row];
-                    _preShowMedias = [NSArray arrayWithArray:tempPre];
-                }
-                //删除的是相册中选择的图片
-                else if (!_allowMultipleSelection){
-                    NSInteger idx = indexPath.row - _preShowMedias.count;
-                    [_selectedAssets removeObjectAtIndex:idx];
-                }
+            ACMediaModel *model = _mediaArray[indexPath.row];
+            if (_preShowMedias.count != 0 && indexPath.row <= _preShowMedias.count - 1) {
+                NSMutableArray *tempPre = [NSMutableArray arrayWithArray:_preShowMedias];
+                [tempPre removeObjectAtIndex:indexPath.row];
+                _preShowMedias = [NSArray arrayWithArray:tempPre];
+            }
+            else if ([_mediaFromSystem containsObject:model]) {
+                [_mediaFromSystem removeObject:model];
             }else {
-                [_selectedAssets removeObjectAtIndex:indexPath.row];
+                NSMutableArray *temp = [_mediaArray mutableCopy];
+                [temp removeObjectsInRange:NSMakeRange(0, _preShowMedias.count)];
+                [temp removeObjectsInArray:_mediaFromSystem];
+                NSInteger idx = 0;
+                for (ACMediaModel *md in temp) {
+                    if (md == model) {
+                        break;
+                    }
+                    idx += 1;
+                }
+                [_selectedAssets removeObjectAtIndex:idx];
             }
             
             //总数据源中删除对应项
@@ -313,6 +323,7 @@
             [_mediaArray addObjectsFromArray:images];
         }else {
             [_mediaArray removeObjectsInRange:NSMakeRange(_preShowMedias.count, _mediaArray.count - _preShowMedias.count)];
+            [_mediaArray addObjectsFromArray:_mediaFromSystem];
             [_mediaArray addObjectsFromArray:images];
         }
     }
@@ -461,7 +472,9 @@
             model.isVideo = YES;
             model.mediaURL = videoAssetURL;
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self layoutCollection:@[model]];
+                [_mediaArray addObject:model];
+                [_mediaFromSystem addObject:model];
+                [self layoutCollection:@[]];
             });
         }];
     }
@@ -486,7 +499,9 @@
             model.name = name;
             model.uploadType = data;
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self layoutCollection:@[model]];
+                [_mediaArray addObject:model];
+                [_mediaFromSystem addObject:model];
+                [self layoutCollection:@[]];
             });
         }];
     }

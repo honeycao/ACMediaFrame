@@ -109,36 +109,6 @@
     }
 }
 
-#pragma mark - 授权
-
-- (void)microphoneAuthorizationStatus {
-    AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeAudio];
-    switch (authStatus) {
-        case AVAuthorizationStatusNotDetermined:
-            //没有询问是否开启麦克风
-            [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted) {
-                if (granted) {
-                    ACLog(@"允许访问");
-                }
-                else {
-                    ACLog(@"拒绝访问");
-                }
-            }];
-            break;
-        case AVAuthorizationStatusRestricted:
-            //未授权，家长限制
-            break;
-        case AVAuthorizationStatusDenied:
-            //未授权
-            break;
-        case AVAuthorizationStatusAuthorized:
-            //已授权
-            break;
-        default:
-            break;
-    }
-}
-
 #pragma mark - privary methods
 
 /**

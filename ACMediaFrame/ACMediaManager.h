@@ -45,11 +45,4 @@
  */
 - (void)getMediaInfoFromAsset: (PHAsset *)asset completion: (void(^)(NSString *name, id pathData))completion;
 
-#pragma mark - 权限
-
-/**
- 判断麦克风权限，第一次时让用户选择是否开启权限（仅一次）
- */
-- (void)microphoneAuthorizationStatus;
-
 @end

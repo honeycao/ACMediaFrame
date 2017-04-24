@@ -287,8 +287,6 @@
             MWPhoto *photo = [MWPhoto photoWithImage:model.image];
             photo.caption = model.name;
             if (model.isVideo) {
-                //视频类型，需要判断麦克风权限，不然没有声音
-                [[ACMediaManager manager] microphoneAuthorizationStatus];
                 if (model.mediaURL) {
                     photo.videoURL = model.mediaURL;
                 }else {

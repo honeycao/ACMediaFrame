@@ -6,12 +6,23 @@
 //
 
 #import "ACMediaManager.h"
+#import "ACMediaFrameConst.h"
 
 @implementation ACMediaManager
 
++ (instancetype)manager
+{
+    static ACMediaManager *shareInstance = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        shareInstance = [[ACMediaManager alloc] init];
+    });
+    return shareInstance;
+}
+
 #pragma mark - public
 
-+ (void)getImageInfoFromImage: (UIImage *)image PHAsset: (PHAsset *)asset completion: (void(^)(NSString *name, NSData *data))completion {
+- (void)getImageInfoFromImage: (UIImage *)image PHAsset: (PHAsset *)asset completion: (void(^)(NSString *name, NSData *data))completion {
     //图片名
     NSString *imageName = [self getMediaNameWithPHAsset:asset extensionName:@"IMG.PNG"];
     NSData *imageData;
@@ -25,7 +36,7 @@
     !completion ?  : completion(imageName, imageData);
 }
 
-+ (void)getVideoPathFromURL: (NSURL *)videoURL PHAsset: (PHAsset *)asset enableSave: (BOOL)enableSave completion: (void(^)(NSString *name, UIImage *screenshot, id pathData))completion {
+- (void)getVideoPathFromURL: (NSURL *)videoURL PHAsset: (PHAsset *)asset enableSave: (BOOL)enableSave completion: (void(^)(NSString *name, UIImage *screenshot, id pathData))completion {
     //视频名
     NSString *fileName = [self getMediaNameWithPHAsset:asset extensionName:@"Video.mov"];
     //视频本地路径
@@ -56,7 +67,7 @@
     }
 }
 
-+ (void)getMediaInfoFromAsset: (PHAsset *)asset completion: (void(^)(NSString *name, id pathData))completion {
+- (void)getMediaInfoFromAsset: (PHAsset *)asset completion: (void(^)(NSString *name, id pathData))completion {
     if (!asset) {
         return;
     }
@@ -98,6 +109,36 @@
     }
 }
 
+#pragma mark - 授权
+
+- (void)microphoneAuthorizationStatus {
+    AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeAudio];
+    switch (authStatus) {
+        case AVAuthorizationStatusNotDetermined:
+            //没有询问是否开启麦克风
+            [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted) {
+                if (granted) {
+                    ACLog(@"允许访问");
+                }
+                else {
+                    ACLog(@"拒绝访问");
+                }
+            }];
+            break;
+        case AVAuthorizationStatusRestricted:
+            //未授权，家长限制
+            break;
+        case AVAuthorizationStatusDenied:
+            //未授权
+            break;
+        case AVAuthorizationStatusAuthorized:
+            //已授权
+            break;
+        default:
+            break;
+    }
+}
+
 #pragma mark - privary methods
 
 /**
@@ -107,7 +148,7 @@
  @param extension 媒体文件的拓展名（.PNG等）
  @return asset为nil时，返回默认自定义时间(按时间命名)，不为nil则返回原图名称
  */
-+ (NSString *)getMediaNameWithPHAsset: (PHAsset *)asset extensionName: (NSString *)extension {
+- (NSString *)getMediaNameWithPHAsset: (PHAsset *)asset extensionName: (NSString *)extension {
     NSDate *date = [NSDate date];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyyMMddHHmmss"];
@@ -134,7 +175,7 @@
  @param enableSave 是否将封面截图保存到本地
  @return 返回封面截图
  */
-+ (UIImage *)imageWithVideoURL: (NSURL *)videoURL enableSave: (BOOL)enableSave {
+- (UIImage *)imageWithVideoURL: (NSURL *)videoURL enableSave: (BOOL)enableSave {
     
     //1、根据视频URL创建 AVURLAsset
     AVURLAsset *urlAsset = [AVURLAsset assetWithURL:videoURL];
@@ -150,9 +191,7 @@
     //4、获取time处的视频截图
     CGImageRef cgImage = [imageGenerator copyCGImageAtTime:time actualTime:&actucalTime error:&error];
     if (error) {
-#ifdef DEBUG
-        NSLog(@"截取视频图片失败:%@",error.localizedDescription);
-#endif
+        ACLog(@"截取视频图片失败:%@",error.localizedDescription);
     }
     
     //5、将 CGImageRef 转化为 UIImage

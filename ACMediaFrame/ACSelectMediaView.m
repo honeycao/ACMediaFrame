@@ -287,6 +287,8 @@
             MWPhoto *photo = [MWPhoto photoWithImage:model.image];
             photo.caption = model.name;
             if (model.isVideo) {
+                //视频类型，需要判断麦克风权限，不然没有声音
+                [[ACMediaManager manager] microphoneAuthorizationStatus];
                 if (model.mediaURL) {
                     photo.videoURL = model.mediaURL;
                 }else {
@@ -413,7 +415,7 @@
     NSMutableArray *models = [NSMutableArray array];
     for (NSInteger index = 0; index < assets.count; index++) {
         PHAsset *asset = assets[index];
-        [ACMediaManager getMediaInfoFromAsset:asset completion:^(NSString *name, id pathData) {
+        [[ACMediaManager manager] getMediaInfoFromAsset:asset completion:^(NSString *name, id pathData) {
             ACMediaModel *model = [[ACMediaModel alloc] init];
             model.name = name;
             model.uploadType = pathData;
@@ -430,7 +432,7 @@
 
 ///选取视频后的回调
 - (void)imagePickerController:(TZImagePickerController *)picker didFinishPickingVideo:(UIImage *)coverImage sourceAssets:(id)asset {
-    [ACMediaManager getMediaInfoFromAsset:asset completion:^(NSString *name, id pathData) {
+    [[ACMediaManager manager] getMediaInfoFromAsset:asset completion:^(NSString *name, id pathData) {
         ACMediaModel *model = [[ACMediaModel alloc] init];
         model.name = name;
         model.uploadType = pathData;
@@ -464,7 +466,7 @@
             PHFetchResult *result = [PHAsset fetchAssetsWithALAssetURLs:@[imageAssetURL] options:nil];
             asset = [result firstObject];
         }
-        [ACMediaManager getVideoPathFromURL:videoAssetURL PHAsset:asset enableSave:NO completion:^(NSString *name, UIImage *screenshot, id pathData) {
+        [[ACMediaManager manager] getVideoPathFromURL:videoAssetURL PHAsset:asset enableSave:NO completion:^(NSString *name, UIImage *screenshot, id pathData) {
             ACMediaModel *model = [[ACMediaModel alloc] init];
             model.image = screenshot;
             model.name = name;
@@ -493,7 +495,7 @@
             PHFetchResult *result = [PHAsset fetchAssetsWithALAssetURLs:@[imageAssetURL] options:nil];
             asset = [result firstObject];
         }
-        [ACMediaManager getImageInfoFromImage:image PHAsset:asset completion:^(NSString *name, NSData *data) {
+        [[ACMediaManager manager] getImageInfoFromImage:image PHAsset:asset completion:^(NSString *name, NSData *data) {
             ACMediaModel *model = [[ACMediaModel alloc] init];
             model.image = image;
             model.name = name;

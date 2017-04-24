@@ -18,3 +18,10 @@
 
 /** cell上删除按钮的宽 */
 #define ACMediaDeleteButtonWidth ACMediaRatio * 18
+
+//日志输出
+#ifdef DEBUG
+#define ACLog(...) NSLog(__VA_ARGS__)
+#else
+#define ACLog(...)
+#endif

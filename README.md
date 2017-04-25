@@ -66,7 +66,12 @@ mediaView.allowMultipleSelection = NO;
 
 // 随时获取选择好媒体文件
 [mediaView observeSelectedMediaArray:^(NSArray<ACMediaModel *> *list) {
-// do something
+    // do something
+    for (ACMediaModel *model in list) {
+    //遍历得到模型中想要的数据  e.g.
+    // id uplodaType = model.uploadType;
+    // NSString *name = model.name;
+}
 NSLog(@"list.count = %lu",(unsigned long)list.count);
 }];
 
@@ -96,7 +101,7 @@ mediaView.preShowMedias = @[@"bg_1", @"bg_2", @"bg_3"];
 ```
 
 * `maxImageSelected`
->最大图片选择张数. default is 9
+>最大图片、视频选择个数，包括 `preShowMedias`的数量. default is 9
 ```
 e.g. 自定义从本地相册中所选取的最大数量
 mediaView.maxImageSelected = 5;
@@ -118,6 +123,7 @@ mediaView.showAddButton = NO;
 
 * `allowPickingVideo`
 >是否允许 在选择图片的同时可以选择视频文件. default is NO
+>选择的本地视频只是简单加载显示，当需要立刻播放选择的本地视频时，会有一个转码加载的过程，请等待（注意）
 ```
 e.g. 如果希望在选择图片的时候，出现视频资源，那么可以设置为 YES
 mediaView.allowPickingVideo = NO;
@@ -125,6 +131,7 @@ mediaView.allowPickingVideo = NO;
 
 * `allowMultipleSelection`
 >是否允许 同个图片或视频进行多次选择. default is YES
+如果设置为 NO，那么在已经选择了一张以上图片之后，就不能同时选择视频了（注意）
 ```
 e.g.  如果不希望已经选择的图片或视频，再次被选择，那么可以设置为 NO
 mediaView.allowMultipleSelection = NO;
@@ -136,6 +143,7 @@ mediaView.allowMultipleSelection = NO;
 ------
 
 ## <a id="version"></a>版本更新
+* `1.3.4` : 完善图片视频选择的一些逻辑问题。
 * `1.3.3` : 这个版本其实和上个版本一样，只不过有热心群众反馈播放视频的时候没有开启麦克风权限没有声音，所以添加了一个权限判断，但是后来自己测试的时候发现并没有这个bug，所以最终就没做什么大的调整。
 * `1.3.2` : 上一版本处理好之后，没有同时测试相册和相机选择图片的情况，所以出现了点问题，现在这版本就是修改这个问题，很感谢小伙伴的使用和提供的bug，由于自己能力有限，所以难免会有些许bug，不打紧，你们发现bug告诉我，我会尽快修复。。。
 * `1.3.1` : 对上一版本的简单改动，修改获取主控制器失败的方法，以及继续完善

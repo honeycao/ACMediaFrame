@@ -46,7 +46,7 @@ typedef void(^ACSelectMediaBackBlock)(NSArray<ACMediaModel *> *list);
 @property (nonatomic, strong) NSArray *preShowMedias;
 
 /**
- * 最大图片选择张数. default is 9
+ * 最大资源选择个数,（包括 preShowMedias 预先展示数据）. default is 9
  */
 @property (nonatomic, assign) NSInteger maxImageSelected;
 

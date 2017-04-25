@@ -34,6 +34,7 @@
     mediaView.showAddButton = NO;
     mediaView.preShowMedias = @[@"bg_1", @"bg_2", @"bg_3"];
     mediaView.allowMultipleSelection = NO;
+    mediaView.allowPickingVideo = YES;
     self.mediaView = mediaView;
     [mediaView observeViewHeight:^(CGFloat mediaHeight) {
         CGRect rect = headerView.frame;
@@ -42,6 +43,11 @@
     }];
     [mediaView observeSelectedMediaArray:^(NSArray<ACMediaModel *> *list) {
        // do something
+        for (ACMediaModel *model in list) {
+            //遍历得到模型中想要的数据  e.g.
+            // id uplodaType = model.uploadType;
+            // NSString *name = model.name;
+        }
         NSLog(@"list.count = %lu",(unsigned long)list.count);
     }];
     [headerView addSubview:mediaView];

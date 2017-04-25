@@ -27,11 +27,14 @@
 /** 总的媒体数组 */
 @property (nonatomic, strong) NSMutableArray *mediaArray;
 
-/** 记录从相册中已选的Asset */
-@property (nonatomic, strong) NSMutableArray *selectedAssets;
+/** 记录从相册中已选的Image Asset */
+@property (nonatomic, strong) NSMutableArray *selectedImageAssets;
 
-/** 记录用系统方法 UIImagePickerController 得到的媒体资源  */
-@property (nonatomic, strong) NSMutableArray *mediaFromSystem;
+/** 记录从相册中已选的Image model */
+@property (nonatomic, strong) NSMutableArray *selectedImageModels;
+
+/** 记录从相册中已选的Video model*/
+@property (nonatomic, strong) NSMutableArray *selectedVideoModels;
 
 /** MWPhoto对象数组 */
 @property (nonatomic, strong) NSMutableArray *photos;
@@ -62,8 +65,9 @@
 - (void)_setup {
     _mediaArray = [NSMutableArray array];
     _preShowMedias = [NSMutableArray array];
-    _selectedAssets = [NSMutableArray array];
-    _mediaFromSystem = [NSMutableArray array];
+    _selectedImageAssets = [NSMutableArray array];
+    _selectedVideoModels = [NSMutableArray array];
+    _selectedImageModels = [NSMutableArray array];
     _type = ACMediaTypePhotoAndCamera;
     _showDelete = YES;
     _showAddButton = YES;
@@ -97,7 +101,7 @@
 - (void)setShowAddButton:(BOOL)showAddButton {
     _showAddButton = showAddButton;
     if (_mediaArray.count > 3 || _mediaArray.count == 0) {
-        [self layoutCollection:@[]];
+        [self layoutCollection];
     }
 }
 
@@ -122,7 +126,7 @@
     }
     if (temp.count > 0) {
         _mediaArray = temp;
-        [self layoutCollection:@[]];
+        [self layoutCollection];
     }
 }
 
@@ -184,32 +188,25 @@
         [cell setACMediaClickDeleteButton:^{
             
             ACMediaModel *model = _mediaArray[indexPath.row];
-            if (_preShowMedias.count != 0 && indexPath.row <= _preShowMedias.count - 1) {
-                NSMutableArray *tempPre = [NSMutableArray arrayWithArray:_preShowMedias];
-                [tempPre removeObjectAtIndex:indexPath.row];
-                _preShowMedias = [NSArray arrayWithArray:tempPre];
-            }
-            else if ([_mediaFromSystem containsObject:model]) {
-                [_mediaFromSystem removeObject:model];
-            }else {
-                NSMutableArray *temp = [_mediaArray mutableCopy];
-                [temp removeObjectsInRange:NSMakeRange(0, _preShowMedias.count)];
-                [temp removeObjectsInArray:_mediaFromSystem];
-                NSInteger idx = 0;
-                for (ACMediaModel *md in temp) {
-                    if (md == model) {
-                        break;
+            if (!_allowMultipleSelection) {
+                if ([_selectedImageModels containsObject:model]) {
+                    for (NSInteger idx =0; idx < _selectedImageModels.count; idx++) {
+                        if (_selectedImageModels[idx] == model) {
+                            [_selectedImageAssets removeObjectAtIndex:idx];
+                            [_selectedImageModels removeObject:model];
+                            break;
+                        }
                     }
-                    idx += 1;
+                }else if ([_selectedVideoModels containsObject:model]) {
+                    [_selectedVideoModels removeObject:model];
                 }
-                [_selectedAssets removeObjectAtIndex:idx];
             }
             
             //总数据源中删除对应项
             [_mediaArray removeObjectAtIndex:indexPath.row];
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self layoutCollection:@[]];
+                [self layoutCollection];
             });
         }];
     }
@@ -316,17 +313,7 @@
 #pragma mark - 布局
 
 ///重新布局collectionview
-- (void)layoutCollection: (nullable NSArray *)images {
-
-    if (images.count > 0) {
-        if (_allowMultipleSelection) {
-            [_mediaArray addObjectsFromArray:images];
-        }else {
-            [_mediaArray removeObjectsInRange:NSMakeRange(_preShowMedias.count, _mediaArray.count - _preShowMedias.count)];
-            [_mediaArray addObjectsFromArray:_mediaFromSystem];
-            [_mediaArray addObjectsFromArray:images];
-        }
-    }
+- (void)layoutCollection {
     
     NSInteger allImageCount = _showAddButton ? _mediaArray.count + 1 : _mediaArray.count;
     NSInteger maxRow = (allImageCount - 1) / 4 + 1;
@@ -343,18 +330,22 @@
 
 /** 相册 */
 - (void)openAlbum {
-    TZImagePickerController *imagePickController = [[TZImagePickerController alloc] initWithMaxImagesCount:_maxImageSelected - _mediaArray.count delegate:self];
+    NSInteger count = 0;
+    if (!_allowMultipleSelection) {
+        count = _maxImageSelected - (_mediaArray.count - _selectedImageModels.count);
+    }else {
+        count = _maxImageSelected - _mediaArray.count;
+    }
+    TZImagePickerController *imagePickController = [[TZImagePickerController alloc] initWithMaxImagesCount:count delegate:self];
     //是否 在相册中显示拍照按钮
     imagePickController.allowTakePicture = NO;
     //是否可以选择显示原图
     imagePickController.allowPickingOriginalPhoto = NO;
     //是否 在相册中可以选择视频
     imagePickController.allowPickingVideo = _allowPickingVideo;
-    
     if (!_allowMultipleSelection) {
-        imagePickController.selectedAssets = _selectedAssets;
+        imagePickController.selectedAssets = _selectedImageAssets;
     }
-    
     [rootVC presentViewController:imagePickController animated:YES completion:nil];
 }
 
@@ -408,9 +399,19 @@
 
 //处理从相册单选或多选的照片
 - (void)imagePickerController:(TZImagePickerController *)picker didFinishPickingPhotos:(NSArray<UIImage *> *)photos sourceAssets:(NSArray *)assets isSelectOriginalPhoto:(BOOL)isSelectOriginalPhoto{
+    
+    if ([_selectedImageAssets isEqualToArray: assets]) {
+        return;
+    }
     //每次回传的都是所有的asset 所以要初始化赋值
-    _selectedAssets = [NSMutableArray arrayWithArray:assets];
+    if (!_allowMultipleSelection) {
+        _selectedImageAssets = [NSMutableArray arrayWithArray:assets];
+    }
+    
     NSMutableArray *models = [NSMutableArray array];
+    //2次选取照片公共存在的图片
+    NSMutableArray *temp = [NSMutableArray array];
+    NSMutableArray *temp2 = [NSMutableArray array];
     for (NSInteger index = 0; index < assets.count; index++) {
         PHAsset *asset = assets[index];
         [[ACMediaManager manager] getMediaInfoFromAsset:asset completion:^(NSString *name, id pathData) {
@@ -418,10 +419,37 @@
             model.name = name;
             model.uploadType = pathData;
             model.image = photos[index];
+            if (!_allowMultipleSelection) {
+                //用数组是否包含来判断是不成功的。。。
+                for (ACMediaModel *md in _selectedImageModels) {
+                    if ([md.name isEqualToString:model.name]) {
+                        [temp addObject:md];
+                        [temp2 addObject:model];
+                        break;
+                    }
+                }
+            }
             [models addObject:model];
             if (index == assets.count - 1) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self layoutCollection:models];
+                    if (!_allowMultipleSelection) {
+                        
+                        //删除公共存在的，剩下的就是已经不存在的
+                        [_selectedImageModels removeObjectsInArray:temp];
+                        //总媒体数组删先除掉不存在，这样不会影响排列的先后顺序
+                        [_mediaArray removeObjectsInArray:_selectedImageModels];
+                        //将这次选择的进行赋值，深复制
+                        _selectedImageModels = [models mutableCopy];
+                        //这次选择的删除公共存在的，剩下的就是新添加的
+                        [models removeObjectsInArray:temp2];
+                        //总媒体数组中在后面添加新数据
+                        [_mediaArray addObjectsFromArray:models];
+                    }else {
+                        [_selectedImageModels addObjectsFromArray:models];
+                        [_mediaArray addObjectsFromArray:models];
+                    }
+                    
+                    [self layoutCollection];
                 });
             }
         }];
@@ -430,6 +458,7 @@
 
 ///选取视频后的回调
 - (void)imagePickerController:(TZImagePickerController *)picker didFinishPickingVideo:(UIImage *)coverImage sourceAssets:(id)asset {
+    
     [[ACMediaManager manager] getMediaInfoFromAsset:asset completion:^(NSString *name, id pathData) {
         ACMediaModel *model = [[ACMediaModel alloc] init];
         model.name = name;
@@ -438,7 +467,18 @@
         model.isVideo = YES;
         model.asset = asset;
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self layoutCollection:@[model]];
+            
+            if (!_allowMultipleSelection) {
+                //用数组是否包含来判断是不成功的。。。
+                for (ACMediaModel *tmp in _selectedVideoModels) {
+                    if ([tmp.name isEqualToString:model.name]) {
+                        return ;
+                    }
+                }
+            }
+            [_selectedVideoModels addObject:model];
+            [_mediaArray addObject:model];
+            [self layoutCollection];
         });
     }];
 }
@@ -473,8 +513,7 @@
             model.mediaURL = videoAssetURL;
             dispatch_async(dispatch_get_main_queue(), ^{
                 [_mediaArray addObject:model];
-                [_mediaFromSystem addObject:model];
-                [self layoutCollection:@[]];
+                [self layoutCollection];
             });
         }];
     }
@@ -500,8 +539,7 @@
             model.uploadType = data;
             dispatch_async(dispatch_get_main_queue(), ^{
                 [_mediaArray addObject:model];
-                [_mediaFromSystem addObject:model];
-                [self layoutCollection:@[]];
+                [self layoutCollection];
             });
         }];
     }

@@ -114,8 +114,16 @@
         if ([object isKindOfClass:[UIImage class]]) {
             model.image = object;
         }else if ([object isKindOfClass:[NSString class]]) {
-            if ([(NSString *)object containsString:@"http://"] || [(NSString *)object containsString:@"https://"]) {
+            NSString *obj = (NSString *)object;
+            if ([obj isValidUrl]) {
                 model.imageUrlString = object;
+            }else if ([obj isGifImage]) {
+                //名字中有.gif是识别不了的（和自己的拓展名重复了，所以先去掉）
+                NSString *name_ = obj.lowercaseString;
+                if ([name_ containsString:@"gif"]) {
+                    name_ = [name_ stringByReplacingOccurrencesOfString:@".gif" withString:@""];
+                }
+                model.image = [UIImage ac_setGifWithName:name_];
             }else {
                 model.image = [UIImage imageNamed:object];
             }
@@ -289,6 +297,8 @@
                 }else {
                     photo = [photo initWithAsset:model.asset targetSize:CGSizeZero];
                 }
+            }else if (model.imageUrlString) {
+                photo = [MWPhoto photoWithURL:[NSURL URLWithString:model.imageUrlString]];
             }
             [_photos addObject:photo];
         }
@@ -419,6 +429,12 @@
             model.name = name;
             model.uploadType = pathData;
             model.image = photos[index];
+            
+            //区分gif
+            if ([NSString isGifWithImageData:pathData]) {
+                model.image = [UIImage ac_setGifWithData:pathData];
+            }
+            
             if (!_allowMultipleSelection) {
                 //用数组是否包含来判断是不成功的。。。
                 for (ACMediaModel *md in _selectedImageModels) {

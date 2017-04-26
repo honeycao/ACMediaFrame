@@ -5,9 +5,10 @@
 
 #import <UIKit/UIKit.h>
 #import "UIView+ACMediaExt.h"
+#import "UIViewController+ACMediaExt.h"
+#import "UIImage+ACGif.h"
 #import "UIImageView+ACMediaExt.h"
 #import "NSString+ACMediaExt.h"
-#import "UIViewController+ACMediaExt.h"
 
 #define  ACMedia_ScreenWidth  [UIScreen mainScreen].bounds.size.width
 #define  ACMedia_ScreenHeight [UIScreen mainScreen].bounds.size.height

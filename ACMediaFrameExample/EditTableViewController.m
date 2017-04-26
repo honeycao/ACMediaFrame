@@ -32,7 +32,8 @@
     ACSelectMediaView *mediaView = [[ACSelectMediaView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(lab.frame) + 10, CGRectGetWidth(lab.frame), height)];
     mediaView.showDelete = NO;
     mediaView.showAddButton = NO;
-    mediaView.preShowMedias = @[@"bg_1", @"bg_2", @"bg_3"];
+    //png、jpg、gif(本地和网络)
+    mediaView.preShowMedias = @[@"bg_1", @"bg_2", @"bug.gif", @"http://c.hiphotos.baidu.com/image/h%3D200/sign=ad1c53cd0355b31983f9857573ab8286/279759ee3d6d55fbb02469ea64224f4a21a4dd1f.jpg"];
     mediaView.allowMultipleSelection = NO;
     mediaView.allowPickingVideo = YES;
     self.mediaView = mediaView;

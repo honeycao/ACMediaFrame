@@ -8,6 +8,7 @@
 
 #import "AddTableViewController.h"
 #import "ACMediaFrame.h"
+#import "UIImage+ACGif.h"
 
 @interface AddTableViewController ()
 

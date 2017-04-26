@@ -94,10 +94,11 @@ mediaView.type = ACMediaTypePhoto
 * `preShowMedias`
 >预先展示的媒体数组。如果一开始有需要显示媒体资源，可以先传入进行显示，没有的话可以不赋值。
 传入的如果是图片类型，则可以是：UIImage，NSString，至于其他的都可以传入 ACMediaModel类型
+包括网络图片和gif图片
 
 ```
 e.g. 在预览或者之前已经有图片的情况下，需要传入进行预先展示
-mediaView.preShowMedias = @[@"bg_1", @"bg_2", @"bg_3"];
+mediaView.preShowMedias = @[@"bg_1", @"bg_2", @"bug.gif", @"http://c.hiphotos.baidu.com/image/h%3D200/sign=ad1c53cd0355b31983f9857573ab8286/279759ee3d6d55fbb02469ea64224f4a21a4dd1f.jpg"];
 ```
 
 * `maxImageSelected`
@@ -143,6 +144,7 @@ mediaView.allowMultipleSelection = NO;
 ------
 
 ## <a id="version"></a>版本更新
+* `1.3.5` : 添加支持gif图片选择和展示功能。
 * `1.3.4` : 完善图片视频选择的一些逻辑问题。
 * `1.3.3` : 这个版本其实和上个版本一样，只不过有热心群众反馈播放视频的时候没有开启麦克风权限没有声音，所以添加了一个权限判断，但是后来自己测试的时候发现并没有这个bug，所以最终就没做什么大的调整。
 * `1.3.2` : 上一版本处理好之后，没有同时测试相册和相机选择图片的情况，所以出现了点问题，现在这版本就是修改这个问题，很感谢小伙伴的使用和提供的bug，由于自己能力有限，所以难免会有些许bug，不打紧，你们发现bug告诉我，我会尽快修复。。。

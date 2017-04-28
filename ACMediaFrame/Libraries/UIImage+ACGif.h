@@ -14,6 +14,6 @@
 + (UIImage *)ac_setGifWithName: (NSString *)name;
 
 /** 根据gif的data 设置image */
-+ (UIImage *)ac_setGifWithData: (NSString *)data;
++ (UIImage *)ac_setGifWithData: (NSData *)data;
 
 @end

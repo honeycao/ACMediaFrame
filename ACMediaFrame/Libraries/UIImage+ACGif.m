@@ -15,7 +15,7 @@
     return [self sd_animatedGIFNamed:name];
 }
 
-+ (UIImage *)ac_setGifWithData: (NSString *)data {
++ (UIImage *)ac_setGifWithData: (NSData *)data {
     return [self sd_animatedGIFWithData:data];
 }
 

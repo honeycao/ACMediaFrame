@@ -70,11 +70,20 @@ typedef void(^ACSelectMediaBackBlock)(NSArray<ACMediaModel *> *list);
  */
 @property (nonatomic, assign) BOOL allowMultipleSelection;
     
-/** 是否允许 在相册中出现拍照选择. default is NO */
+/** 
+ * 是否允许 在相册中出现拍照选择. default is NO
+ */
 @property (nonatomic, assign) BOOL allowTakePicture;
     
-/** 是否允许 相册中出现选择原图. default is NO */
+/** 
+ * 是否允许 相册中出现选择原图. default is NO 
+ */
 @property (nonatomic, assign) BOOL allowPickingOriginalPhoto;
+    
+/** 
+ * 录像的最大持续时间(以秒为单位). default is 60 
+ */
+@property (nonatomic, assign) CGFloat videoMaximumDuration;
 
 /** 
  * 底部collectionView的 backgroundColor

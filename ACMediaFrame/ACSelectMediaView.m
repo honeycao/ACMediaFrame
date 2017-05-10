@@ -73,6 +73,7 @@
     _showAddButton = YES;
     _allowMultipleSelection = YES;
     _maxImageSelected = 9;
+    _videoMaximumDuration = 60;
     _backgroundColor = [UIColor whiteColor];
     rootVC = [self getCurrentVC];
     [self configureCollectionView];
@@ -385,7 +386,7 @@
         picker.mediaTypes = mediaTypes;
         picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModeVideo;
         picker.videoQuality = UIImagePickerControllerQualityTypeMedium; //录像质量
-        picker.videoMaximumDuration = 600.0f; //录像最长时间
+        picker.videoMaximumDuration = self.videoMaximumDuration;        //录像最长时间
     } else {
         [UIAlertController showAlertWithTitle:@"当前设备不支持录像" message:nil actionTitles:@[@"确定"] cancelTitle:nil style:UIAlertControllerStyleAlert completion:nil];
     }

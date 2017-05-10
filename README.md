@@ -138,12 +138,29 @@ e.g.  如果不希望已经选择的图片或视频，再次被选择，那么�
 mediaView.allowMultipleSelection = NO;
 ```
 
+* `allowTakePicture`
+>是否允许 在相册中出现拍照选择. default is NO
+设置为YES，那么在相册最后一格会出现一格拍照按钮，点击可以打开相机拍照，拍照成功之后会保存到相册并选中状态
+```
+e.g. 如果希望出现拍照按钮，可以设置为YES
+mediaView.allowTakePicture = YES;
+```
+
+* `allowPickingOriginalPhoto`
+>是否允许 相册中出现选择原图. default is NO 
+设置为 YES，那么相册底部会出现一格原图选项，可以保证选中的图片是原图，原图可能就比较大点，所以一般没这个必要。
+```
+e.g. 如果希望选择原图，那么可以设置为YES
+mediaView.allowPickingOriginalPhoto = YES;
+```
+
 * `backgroundColor`
 >底部collectionView的背景颜色，有特殊颜色要求的可以单独去设置
 
 ------
 
 ## <a id="version"></a>版本更新
+* `1.3.6` : 应使用者需求，继续开放了功能接口，包括：是否允许相册中拍照，是否可以选择原图。
 * `1.3.5` : 添加支持gif图片选择和展示功能。
 * `1.3.4` : 完善图片视频选择的一些逻辑问题。
 * `1.3.3` : 这个版本其实和上个版本一样，只不过有热心群众反馈播放视频的时候没有开启麦克风权限没有声音，所以添加了一个权限判断，但是后来自己测试的时候发现并没有这个bug，所以最终就没做什么大的调整。

@@ -348,9 +348,9 @@
     }
     TZImagePickerController *imagePickController = [[TZImagePickerController alloc] initWithMaxImagesCount:count delegate:self];
     //是否 在相册中显示拍照按钮
-    imagePickController.allowTakePicture = NO;
+    imagePickController.allowTakePicture = self.allowTakePicture;
     //是否可以选择显示原图
-    imagePickController.allowPickingOriginalPhoto = NO;
+    imagePickController.allowPickingOriginalPhoto = self.allowPickingOriginalPhoto;
     //是否 在相册中可以选择视频
     imagePickController.allowPickingVideo = _allowPickingVideo;
     if (!_allowMultipleSelection) {

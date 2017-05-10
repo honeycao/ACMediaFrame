@@ -69,6 +69,12 @@ typedef void(^ACSelectMediaBackBlock)(NSArray<ACMediaModel *> *list);
  * 是否允许 同个图片或视频进行多次选择. default is YES 
  */
 @property (nonatomic, assign) BOOL allowMultipleSelection;
+    
+/** 是否允许 在相册中出现拍照选择. default is NO */
+@property (nonatomic, assign) BOOL allowTakePicture;
+    
+/** 是否允许 相册中出现选择原图. default is NO */
+@property (nonatomic, assign) BOOL allowPickingOriginalPhoto;
 
 /** 
  * 底部collectionView的 backgroundColor

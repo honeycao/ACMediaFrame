@@ -14,9 +14,6 @@
 #import "MWPhotoBrowser.h"
 
 @interface ACSelectMediaView ()<UICollectionViewDelegate, UICollectionViewDataSource, TZImagePickerControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, MWPhotoBrowserDelegate>
-{
-    UIViewController *rootVC;
-}
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 
@@ -75,7 +72,6 @@
     _maxImageSelected = 9;
     _videoMaximumDuration = 60;
     _backgroundColor = [UIColor whiteColor];
-    rootVC = [self getCurrentVC];
     [self configureCollectionView];
 }
 
@@ -91,6 +87,15 @@
     _collectionView.dataSource = self;
     _collectionView.backgroundColor = _backgroundColor;
     [self addSubview:_collectionView];
+}
+
+#pragma mark - getter
+
+- (UIViewController *)rootViewController {
+    if (!_rootViewController) {
+        _rootViewController = [self getCurrentVC];
+    }
+    return _rootViewController;
 }
 
 #pragma mark - setter
@@ -357,7 +362,7 @@
     if (!_allowMultipleSelection) {
         imagePickController.selectedAssets = _selectedImageAssets;
     }
-    [rootVC presentViewController:imagePickController animated:YES completion:nil];
+    [self.rootViewController presentViewController:imagePickController animated:YES completion:nil];
 }
 
 /** 相机 */
@@ -370,7 +375,7 @@
         //设置拍照后的图片可被编辑
         picker.allowsEditing = YES;
         picker.sourceType = sourceType;
-        [rootVC presentViewController:picker animated:YES completion:nil];
+        [self.rootViewController presentViewController:picker animated:YES completion:nil];
     }else{
         [UIAlertController showAlertWithTitle:@"该设备不支持拍照" message:nil actionTitles:@[@"确定"] cancelTitle:nil style:UIAlertControllerStyleAlert completion:nil];
     }
@@ -390,7 +395,7 @@
     } else {
         [UIAlertController showAlertWithTitle:@"当前设备不支持录像" message:nil actionTitles:@[@"确定"] cancelTitle:nil style:UIAlertControllerStyleAlert completion:nil];
     }
-    [rootVC presentViewController:picker animated:YES completion:nil];
+    [self.rootViewController presentViewController:picker animated:YES completion:nil];
 
 }
 
@@ -564,6 +569,7 @@
 
 #pragma mark - private
 
+//有时候获取不到
 - (UIViewController *)getCurrentVC
 {
     UIViewController *result = nil;
@@ -589,6 +595,8 @@
         result = nextResponder;
     else
         result = window.rootViewController;
+    
+    NSAssert(result, @"\n*******\n rootViewController must not be nil. \n******");
     
     return result;
 }

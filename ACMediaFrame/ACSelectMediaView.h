@@ -85,6 +85,12 @@ typedef void(^ACSelectMediaBackBlock)(NSArray<ACMediaModel *> *list);
  */
 @property (nonatomic, assign) CGFloat videoMaximumDuration;
 
+/**
+ * 当前的主控制器(非必传)
+ * 但是有时候碰到无法自动获取的时候会抛出异常(rootViewController must not be nil)，那么就必须手动传入
+ */
+@property (nonatomic, strong) UIViewController *rootViewController;
+
 /** 
  * 底部collectionView的 backgroundColor
  */

@@ -353,6 +353,7 @@
         count = _maxImageSelected - _mediaArray.count;
     }
     TZImagePickerController *imagePickController = [[TZImagePickerController alloc] initWithMaxImagesCount:count delegate:self];
+    [self configureTZNaviBar:imagePickController];
     //是否 在相册中显示拍照按钮
     imagePickController.allowTakePicture = self.allowTakePicture;
     //是否可以选择显示原图
@@ -568,6 +569,26 @@
 }
 
 #pragma mark - private
+
+///配置 TZImagePickerController 导航栏属性
+- (void)configureTZNaviBar: (TZImagePickerController *)pick {
+    
+    if (self.naviBarBgColor) {
+        pick.naviBgColor = self.naviBarBgColor;
+    }
+    if (self.naviBarTitleColor) {
+        pick.naviTitleColor = self.naviBarTitleColor;
+    }
+    if (self.naviBarTitleFont) {
+        pick.naviTitleFont = self.naviBarTitleFont;
+    }
+    if (self.barItemTextColor) {
+        pick.barItemTextColor = self.barItemTextColor;
+    }
+    if (self.barItemTextFont) {
+        pick.barItemTextFont = self.barItemTextFont;
+    }
+}
 
 //有时候获取不到
 - (UIViewController *)getCurrentVC

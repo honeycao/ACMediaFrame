@@ -96,6 +96,23 @@ typedef void(^ACSelectMediaBackBlock)(NSArray<ACMediaModel *> *list);
  */
 @property (nonatomic, strong) UIColor *backgroundColor;
 
+/*****  自定义导航栏相关属性 *****/
+
+/** navigationbar background color */
+@property (nonatomic, strong) UIColor *naviBarBgColor;
+
+/** navigationBar title color */
+@property (nonatomic, strong) UIColor *naviBarTitleColor;
+
+/** navigationBar title font */
+@property (nonatomic, strong) UIFont *naviBarTitleFont;
+
+/** navigationItem right/left barButtonItem text color */
+@property (nonatomic, strong) UIColor *barItemTextColor;
+
+/** navigationItem right/left barButtonItem text font */
+@property (nonatomic, strong) UIFont *barItemTextFont;
+
 #pragma mark - methods
 
 /** 

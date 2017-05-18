@@ -27,7 +27,7 @@
 * 本地图片视频选择、拍照录制等一条龙轻松实现
 * 框架主体是一个view，已经实现高度配置，不用再去做任何处理
 * 框架主体形势支持：添加媒体、预览展示媒体、混合编辑（添加和预览展示一起实现）
-* 选择媒体上支持：删除、限定最大选择数数量、同个媒体资源是否多次选择等。、
+* 选择媒体上支持：删除、限定最大选择数数量、同个媒体资源是否多次选择等多种自定义功能。
 * 从本地相册选择图片用到了`TZImagePickerController`；查看图片视频用到了`MWPhotoBrowser`；底部弹出框用到`ACAlertController`替代系统弹框
 * 自定义媒体model，返回图片、视频上传数据类型，如：NSData或视频路径。不用为了得到上传的数据类型做任何处理了。
 
@@ -168,9 +168,27 @@ mediaView.videoMaximumDuration = 10.0;
 * `backgroundColor`
 >底部collectionView的背景颜色，有特殊颜色要求的可以单独去设置
 
+***一系列自定义导航栏属性***
+
+* `naviBarBgColor`
+>navigationbar background color. 
+
+* `naviBarTitleColor`
+>navigationBar title color
+
+* `naviBarTitleFont`
+>navigationBar title font
+
+* `barItemTextColor`
+>navigationItem right/left barButtonItem text color
+
+* `barItemTextFont`
+>navigationItem right/left barButtonItem text font
+
 ------
 
 ## <a id="version"></a>版本更新
+* `1.3.8` : 添加、开放属性，用于自定义相册界面的导航栏.
 * `1.3.7` : 由于会碰到无法自动获取一个主视图的情况，所以开放一个参数`rootViewController`,用于手动传入当前的主控制器，非必传的，如果自动获取失败会抛出一个异常，具体看`属性自定义`中的使用即可.
 * `1.3.6` : 应使用者需求，继续开放了功能接口，包括：是否允许相册中拍照、是否可以选择原图、设置录像最大持续时间。
 * `1.3.5` : 添加支持gif图片选择和展示功能。

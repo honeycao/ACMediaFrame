@@ -24,6 +24,7 @@
     ACSelectMediaView *mediaView = [[ACSelectMediaView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, height)];
     mediaView.type = ACMediaTypePhoto;
     mediaView.allowMultipleSelection = NO;
+    mediaView.naviBarBgColor = [UIColor redColor];
     self.tableView.tableHeaderView = mediaView;
 }
 

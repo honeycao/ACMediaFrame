@@ -190,13 +190,16 @@
     }else{
         ACMediaModel *model = [[ACMediaModel alloc] init];
         model = _mediaArray[indexPath.row];
-        if (!model.isVideo && model.imageUrlString) {
-        [cell.icon ac_setImageWithUrlString:model.imageUrlString placeholderImage:nil];
+        
+        if (model.imageUrlString) {
+            [cell.icon ac_setImageWithUrlString:model.imageUrlString placeholderImage:nil];
         }else {
             cell.icon.image = model.image;
+            // 直接按照下面方式再次加载就会正常显示
+//            UIImage *ig = [UIImage ac_setGifWithName:@"bug"];
+//            cell.icon.image = ig;
         }
         
-        cell.icon.image = model.image;
         cell.videoImageView.hidden = !model.isVideo;
         cell.deleteButton.hidden = !_showDelete;
         [cell setACMediaClickDeleteButton:^{

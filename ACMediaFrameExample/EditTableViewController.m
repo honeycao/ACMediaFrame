@@ -33,7 +33,15 @@
     mediaView.showDelete = NO;
     mediaView.showAddButton = NO;
     //png、jpg、gif(本地和网络)
-    mediaView.preShowMedias = @[@"bg_1", @"bg_2", @"bug.gif", @"http://c.hiphotos.baidu.com/image/h%3D200/sign=ad1c53cd0355b31983f9857573ab8286/279759ee3d6d55fbb02469ea64224f4a21a4dd1f.jpg", @"http://img15.3lian.com/2015/h1/280/d/5.jpg"];
+    
+    //预展示视频
+    ACMediaModel *md = [ACMediaModel new];
+    md.mediaURL = [NSURL URLWithString:@"http://baobab.wdjcdn.com/1451897812703c.mp4"];
+    md.isVideo = YES;
+    //封面
+    md.image = [UIImage imageNamed:@"memory"];
+    
+    mediaView.preShowMedias = @[md, @"bug.gif", @"bg_1", @"bg_2", @"http://c.hiphotos.baidu.com/image/h%3D200/sign=ad1c53cd0355b31983f9857573ab8286/279759ee3d6d55fbb02469ea64224f4a21a4dd1f.jpg", @"http://img15.3lian.com/2015/h1/280/d/5.jpg"];
     mediaView.allowMultipleSelection = NO;
     mediaView.allowPickingVideo = YES;
     self.mediaView = mediaView;

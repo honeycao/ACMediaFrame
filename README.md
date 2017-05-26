@@ -94,10 +94,17 @@ mediaView.type = ACMediaTypePhoto
 * `preShowMedias`
 >预先展示的媒体数组。如果一开始有需要显示媒体资源，可以先传入进行显示，没有的话可以不赋值。
 传入的如果是图片类型，则可以是：UIImage，NSString，至于其他的都可以传入 ACMediaModel类型
-包括网络图片和gif图片
+包括网络图片和gif图片、视频。
 
 ```
-e.g. 在预览或者之前已经有图片的情况下，需要传入进行预先展示
+e.g. 在预览或者之前已经有图片的情况下，需要传入进行预先展示(其中包括预展示视频、gif等)
+
+//视频必须是传入这样一个model参数
+ACMediaModel *md = [ACMediaModel new];
+md.mediaURL = [NSURL URLWithString:@"http://baobab.wdjcdn.com/1451897812703c.mp4"];
+md.isVideo = YES;
+md.image = [UIImage imageNamed:@"memory"]; //封面图
+
 mediaView.preShowMedias = @[@"bg_1", @"bg_2", @"bug.gif", @"http://c.hiphotos.baidu.com/image/h%3D200/sign=ad1c53cd0355b31983f9857573ab8286/279759ee3d6d55fbb02469ea64224f4a21a4dd1f.jpg"];
 ```
 

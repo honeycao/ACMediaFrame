@@ -194,10 +194,8 @@
         if (model.imageUrlString) {
             [cell.icon ac_setImageWithUrlString:model.imageUrlString placeholderImage:nil];
         }else {
+#warning    这个地方可能会存在一个问题
             cell.icon.image = model.image;
-            // 直接按照下面方式再次加载就会正常显示
-//            UIImage *ig = [UIImage ac_setGifWithName:@"bug"];
-//            cell.icon.image = ig;
         }
         
         cell.videoImageView.hidden = !model.isVideo;

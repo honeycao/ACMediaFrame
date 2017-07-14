@@ -1,7 +1,7 @@
 # ACMediaFrame
 一个完整的媒体库选择和展示的框架。包括本地图片、视频选取，拍摄、录像等，并得到对应的用于上传的数据类型，再也不用担心媒体文件上传了。
 
-![ACMediaFrameExampleGif.gif](https://github.com/honeycao/ACMediaFrame/blob/master/ACMediaFrameExampleGif.gif)
+![ACMediaFrameExample.gif](https://gitlab.com/ImageLibrary/githubImage/raw/master/ACMediaFrame/ACMediaFrame.gif)
 
 ## 导航
 * [基本要求](#Requirements)

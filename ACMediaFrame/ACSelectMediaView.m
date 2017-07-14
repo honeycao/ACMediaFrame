@@ -27,11 +27,8 @@
 /** 记录从相册中已选的Image Asset */
 @property (nonatomic, strong) NSMutableArray *selectedImageAssets;
 
-/** 记录从相册中已选的Image model */
-@property (nonatomic, strong) NSMutableArray *selectedImageModels;
-
-/** 记录从相册中已选的Video model*/
-@property (nonatomic, strong) NSMutableArray *selectedVideoModels;
+/** 字典存储从相册中已选的 Asset 以及对应显示的下标: key为asset, value为下标 */
+@property (nonatomic, strong) NSMutableDictionary *selectedAssetsDic;
 
 /** MWPhoto对象数组 */
 @property (nonatomic, strong) NSMutableArray *photos;
@@ -63,8 +60,7 @@
     _mediaArray = [NSMutableArray array];
     _preShowMedias = [NSMutableArray array];
     _selectedImageAssets = [NSMutableArray array];
-    _selectedVideoModels = [NSMutableArray array];
-    _selectedImageModels = [NSMutableArray array];
+    self.selectedAssetsDic = [NSMutableDictionary dictionary];
     _type = ACMediaTypePhotoAndCamera;
     _showDelete = YES;
     _showAddButton = YES;
@@ -178,7 +174,11 @@
 #pragma mark -  Collection View DataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return _showAddButton ? _mediaArray.count + 1 : _mediaArray.count;
+    NSInteger num = self.mediaArray.count < 9 ? self.mediaArray.count : 9;
+    if (num == 9) {
+        return 9;
+    }
+    return _showAddButton ? num + 1 : num;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -204,20 +204,13 @@
             
             ACMediaModel *model = _mediaArray[indexPath.row];
             if (!_allowMultipleSelection) {
-                if ([_selectedImageModels containsObject:model]) {
-                    for (NSInteger idx =0; idx < _selectedImageModels.count; idx++) {
-                        if (_selectedImageModels[idx] == model) {
-                            [_selectedImageAssets removeObjectAtIndex:idx];
-                            [_selectedImageModels removeObject:model];
-                            break;
-                        }
-                    }
-                }else if ([_selectedVideoModels containsObject:model]) {
-                    [_selectedVideoModels removeObject:model];
+                
+                if ([self.selectedImageAssets containsObject:model.asset]) {
+                   [self.selectedImageAssets removeObject:model.asset];
                 }
+                [self adjustSelectedAssetsDicWithDeletedIndex:indexPath.row deletedAsset:model.asset];
             }
             
-            //总数据源中删除对应项
             [_mediaArray removeObjectAtIndex:indexPath.row];
             
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -349,7 +342,7 @@
 - (void)openAlbum {
     NSInteger count = 0;
     if (!_allowMultipleSelection) {
-        count = _maxImageSelected - (_mediaArray.count - _selectedImageModels.count);
+        count = _maxImageSelected - (_mediaArray.count - _selectedImageAssets.count);
     }else {
         count = _maxImageSelected - _mediaArray.count;
     }
@@ -415,69 +408,13 @@
 
 #pragma mark - TZImagePickerController Delegate
 
-//处理从相册单选或多选的照片
-- (void)imagePickerController:(TZImagePickerController *)picker didFinishPickingPhotos:(NSArray<UIImage *> *)photos sourceAssets:(NSArray *)assets isSelectOriginalPhoto:(BOOL)isSelectOriginalPhoto{
-    
-    if ([_selectedImageAssets isEqualToArray: assets]) {
-        return;
-    }
-    //每次回传的都是所有的asset 所以要初始化赋值
-    if (!_allowMultipleSelection) {
-        _selectedImageAssets = [NSMutableArray arrayWithArray:assets];
-    }
-    
-    NSMutableArray *models = [NSMutableArray array];
-    //2次选取照片公共存在的图片
-    NSMutableArray *temp = [NSMutableArray array];
-    NSMutableArray *temp2 = [NSMutableArray array];
-    for (NSInteger index = 0; index < assets.count; index++) {
-        PHAsset *asset = assets[index];
-        [[ACMediaManager manager] getMediaInfoFromAsset:asset completion:^(NSString *name, id pathData) {
-            ACMediaModel *model = [[ACMediaModel alloc] init];
-            model.name = name;
-            model.uploadType = pathData;
-            model.image = photos[index];
-            
-            //区分gif
-            if ([NSString isGifWithImageData:pathData]) {
-                model.image = [UIImage ac_setGifWithData:pathData];
-            }
-            
-            if (!_allowMultipleSelection) {
-                //用数组是否包含来判断是不成功的。。。
-                for (ACMediaModel *md in _selectedImageModels) {
-                    if ([md.name isEqualToString:model.name]) {
-                        [temp addObject:md];
-                        [temp2 addObject:model];
-                        break;
-                    }
-                }
-            }
-            [models addObject:model];
-            if (index == assets.count - 1) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if (!_allowMultipleSelection) {
-                        
-                        //删除公共存在的，剩下的就是已经不存在的
-                        [_selectedImageModels removeObjectsInArray:temp];
-                        //总媒体数组删先除掉不存在，这样不会影响排列的先后顺序
-                        [_mediaArray removeObjectsInArray:_selectedImageModels];
-                        //将这次选择的进行赋值，深复制
-                        _selectedImageModels = [models mutableCopy];
-                        //这次选择的删除公共存在的，剩下的就是新添加的
-                        [models removeObjectsInArray:temp2];
-                        //总媒体数组中在后面添加新数据
-                        [_mediaArray addObjectsFromArray:models];
-                    }else {
-                        [_selectedImageModels addObjectsFromArray:models];
-                        [_mediaArray addObjectsFromArray:models];
-                    }
-                    
-                    [self layoutCollection];
-                });
-            }
-        }];
-    }
+//相册选取图片
+- (void)imagePickerController:(TZImagePickerController *)picker
+       didFinishPickingPhotos:(NSArray<UIImage *> *)photos
+                 sourceAssets:(NSArray *)assets
+        isSelectOriginalPhoto:(BOOL)isSelectOriginalPhoto
+{
+    [self handleAssetsFromAlbum:assets photos:photos];
 }
 
 ///选取视频后的回调
@@ -492,17 +429,17 @@
         model.asset = asset;
         dispatch_async(dispatch_get_main_queue(), ^{
             
-            if (!_allowMultipleSelection) {
-                //用数组是否包含来判断是不成功的。。。
-                for (ACMediaModel *tmp in _selectedVideoModels) {
-                    if ([tmp.name isEqualToString:model.name]) {
-                        return ;
+            if (!self.allowMultipleSelection) {
+                //去重，判断是否有想同
+                for (ACMediaModel *md in self.mediaArray) {
+                    if ([md.asset isEqual:asset]) {
+                        return;
                     }
                 }
             }
-            [_selectedVideoModels addObject:model];
-            [_mediaArray addObject:model];
+            [self.mediaArray addObject:model];
             [self layoutCollection];
+            
         });
     }];
 }
@@ -569,7 +506,86 @@
     }
 }
 
-#pragma mark - private
+#pragma mark - private methods
+
+/** 从相册中选择图片之后的数据处理 */
+- (void)handleAssetsFromAlbum: (NSArray *)assets photos: (NSArray *)photos
+{
+    NSMutableArray *selectedAssets = [self.selectedImageAssets mutableCopy];
+    
+    if ([selectedAssets isEqualToArray: assets]) {
+        return;
+    }
+    
+    NSMutableArray *newAssets = [NSMutableArray arrayWithArray:assets];
+    NSMutableArray *deletedAssets = [selectedAssets mutableCopy];
+    NSArray *existentAssets = [NSArray array];
+    
+    if (!self.allowMultipleSelection) {
+        
+        NSPredicate *pre = [NSPredicate predicateWithFormat:@"SELF in %@",assets];
+        //取交集
+        existentAssets = [selectedAssets filteredArrayUsingPredicate:pre];
+        
+        //已选好的图片数组 - 共同存在的数组 = 已经被删除的数组
+        [deletedAssets removeObjectsInArray:existentAssets];
+        
+        //从相册新选好的图片数组 - 共同存在的数组 = 新选取的数组
+        [newAssets removeObjectsInArray:existentAssets];
+        
+        for (PHAsset *delete in deletedAssets) {
+            NSInteger idx = [[self.selectedAssetsDic objectForKey:delete] integerValue];
+            [self.mediaArray removeObjectAtIndex:idx];
+            [self adjustSelectedAssetsDicWithDeletedIndex:idx deletedAsset:delete];
+        }
+    }
+    
+    for (PHAsset *new in newAssets) {
+        NSInteger index = [assets indexOfObject:new];
+        __weak typeof(self) weakSelf = self;
+        [[ACMediaManager manager] getMediaInfoFromAsset:new completion:^(NSString *name, id pathData) {
+            
+            ACMediaModel *model = [[ACMediaModel alloc] init];
+            model.name = name;
+            model.asset = new;
+            model.uploadType = pathData;
+            model.image = photos[index];
+            
+            if ([NSString isGifWithImageData:pathData]) {
+                model.image = [UIImage ac_setGifWithData:pathData];
+            }
+            
+            if (!weakSelf.allowMultipleSelection) {
+                [self.selectedAssetsDic setObject:[NSNumber numberWithInteger:self.mediaArray.count] forKey:new];
+                self.selectedImageAssets = [NSMutableArray arrayWithArray:assets];
+            }else {
+                [self.selectedImageAssets addObjectsFromArray:assets];
+            }
+            [self.mediaArray addObject:model];
+            
+            //最后一个处理完就在主线程中进行布局
+            if ([new isEqual:[newAssets lastObject]]) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self layoutCollection];
+                });
+            }
+        }];
+    }
+}
+
+/** 数据源下标有改变的时候，调整字典中其余下标值 */
+- (void)adjustSelectedAssetsDicWithDeletedIndex: (NSInteger)deletedIndex deletedAsset: (PHAsset *)deletedAsset
+{
+    if (deletedAsset) {
+        [self.selectedAssetsDic removeObjectForKey:deletedAsset];
+    }
+    for (PHAsset *asset in self.selectedAssetsDic.allKeys) {
+        NSInteger idx = [[self.selectedAssetsDic objectForKey:asset] integerValue];
+        if (idx > deletedIndex) {
+            [self.selectedAssetsDic setObject:[NSNumber numberWithInteger:idx-1] forKey:asset];
+        }
+    }
+}
 
 ///配置 TZImagePickerController 导航栏属性
 - (void)configureTZNaviBar: (TZImagePickerController *)pick {

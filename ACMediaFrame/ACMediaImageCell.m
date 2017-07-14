@@ -29,11 +29,11 @@
     [self.contentView addSubview:_icon];
 
     _deleteButton = [[UIButton alloc] init];
-    [_deleteButton setBackgroundImage:[UIImage imageNamed:@"ACMediaFrame.bundle/deleteButton"] forState:UIControlStateNormal];
+    [_deleteButton setBackgroundImage:[UIImage imageForResourcePath:@"ACMediaFrame.bundle/deleteButton" ofType:@"png" inBundle:[NSBundle bundleForClass:[self class]]] forState:UIControlStateNormal];
     [_deleteButton addTarget:self action:@selector(clickDeleteButton) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:_deleteButton];
     
-    _videoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ACMediaFrame.bundle/ShowVideo"]];
+    _videoImageView = [[UIImageView alloc] initWithImage:[UIImage imageForResourcePath:@"ACMediaFrame.bundle/ShowVideo" ofType:@"png" inBundle:[NSBundle bundleForClass:[self class]]]];
     [self.contentView addSubview:_videoImageView];
     
 }

@@ -16,4 +16,9 @@
 /** 根据gif的data 设置image */
 + (UIImage *)ac_setGifWithData: (NSData *)data;
 
+/**
+ 给 UIImage 设置bundle图片
+ */
++ (UIImage *)imageForResourcePath:(NSString *)path ofType:(NSString *)type inBundle:(NSBundle *)bundle;
+
 @end

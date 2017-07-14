@@ -184,7 +184,7 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     ACMediaImageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([ACMediaImageCell class]) forIndexPath:indexPath];
     if (indexPath.row == _mediaArray.count) {
-        cell.icon.image = [UIImage imageNamed:@"ACMediaFrame.bundle/AddMedia"];
+        cell.icon.image = [UIImage imageForResourcePath:@"ACMediaFrame.bundle/AddMedia" ofType:@"png" inBundle:[NSBundle bundleForClass:[self class]]];
         cell.videoImageView.hidden = YES;
         cell.deleteButton.hidden = YES;
     }else{

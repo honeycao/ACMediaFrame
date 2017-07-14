@@ -19,4 +19,8 @@
     return [self sd_animatedGIFWithData:data];
 }
 
++ (UIImage *)imageForResourcePath:(NSString *)path ofType:(NSString *)type inBundle:(NSBundle *)bundle {
+    return [UIImage imageWithContentsOfFile:[bundle pathForResource:path ofType:type]];
+}
+
 @end

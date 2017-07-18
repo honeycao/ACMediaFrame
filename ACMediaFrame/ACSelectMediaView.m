@@ -27,7 +27,7 @@
 /** 记录从相册中已选的Image Asset */
 @property (nonatomic, strong) NSMutableArray *selectedImageAssets;
 
-/** 字典存储从相册中已选的 Asset 以及对应显示的下标: key为asset, value为下标 */
+/** 字典存储从相册中已选的 Asset 以及对应显示的下标: key为asset, value为下标（下标是mediaArray中对应的下标） */
 @property (nonatomic, strong) NSMutableDictionary *selectedAssetsDic;
 
 /** MWPhoto对象数组 */
@@ -194,7 +194,7 @@
         if (model.imageUrlString) {
             [cell.icon ac_setImageWithUrlString:model.imageUrlString placeholderImage:nil];
         }else {
-#warning    这个地方可能会存在一个问题
+            //这个地方可能会存在一个问题
             cell.icon.image = model.image;
         }
         
@@ -204,10 +204,6 @@
             
             ACMediaModel *model = _mediaArray[indexPath.row];
             if (!_allowMultipleSelection) {
-                
-                if ([self.selectedImageAssets containsObject:model.asset]) {
-                   [self.selectedImageAssets removeObject:model.asset];
-                }
                 [self adjustSelectedAssetsDicWithDeletedIndex:indexPath.row deletedAsset:model.asset];
             }
             
@@ -329,7 +325,6 @@
     NSInteger maxRow = (allImageCount - 1) / 4 + 1;
     _collectionView.height = allImageCount == 0 ? 0 : maxRow * ACMedia_ScreenWidth/4;
     self.height = _collectionView.height;
-    //block回调
     !_block ?  : _block(_collectionView.height);
     !_backBlock ?  : _backBlock(_mediaArray);
     
@@ -538,6 +533,10 @@
             [self.mediaArray removeObjectAtIndex:idx];
             [self adjustSelectedAssetsDicWithDeletedIndex:idx deletedAsset:delete];
         }
+        if (newAssets.count == 0) {
+            [self layoutCollection];
+            return;
+        }
     }
     
     for (PHAsset *new in newAssets) {
@@ -573,11 +572,14 @@
     }
 }
 
-/** 数据源下标有改变的时候，调整字典中其余下标值 */
+/** 数据源有删减的时候，调整字典中所删除的下标之后其余下标值、更新selectedImageAssets中的数据 */
 - (void)adjustSelectedAssetsDicWithDeletedIndex: (NSInteger)deletedIndex deletedAsset: (PHAsset *)deletedAsset
 {
     if (deletedAsset) {
         [self.selectedAssetsDic removeObjectForKey:deletedAsset];
+    }
+    if ([self.selectedImageAssets containsObject:deletedAsset]) {
+        [self.selectedImageAssets removeObject:deletedAsset];
     }
     for (PHAsset *asset in self.selectedAssetsDic.allKeys) {
         NSInteger idx = [[self.selectedAssetsDic objectForKey:asset] integerValue];

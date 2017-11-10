@@ -14,6 +14,41 @@
 * [Hope](#hope)
 
 
+
+
+iOS11上`MWPhotoBrowser`出现一点问题，第三方库作者并未更新，所以需要使用者自己修改源代码。
+
+具体问题以及解决：[iOS 11 display multiple images swipe issue](https://github.com/mwaterfall/MWPhotoBrowser/issues/620)
+
+如果上面的看不懂，也可以按照下面我的模板修改即可：
+
+修改`MWPhotoBrowser`文件夹下的 `MWPhotoBrowser.m`文件 
+
+```
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    if (@available(iOS 11.0, *)) {
+        // do nothing
+    } else {
+        [self layoutVisiblePages];
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	...
+	//前面的不变，只是下面这部分有改动
+	// Layout
+    if (@available(iOS 11.0, *)) {
+        [self layoutVisiblePages];
+    }
+    [self.view setNeedsLayout];
+}
+```
+
+
+
+
+
 ## <a id="Requirements"></a>基本要求
 
 * iOS 8.0  or later
@@ -95,8 +130,8 @@ mediaView.type = ACMediaTypePhoto
 
 * `preShowMedias`
 >预先展示的媒体数组。如果一开始有需要显示媒体资源，可以先传入进行显示，没有的话可以不赋值。
-传入的如果是图片类型，则可以是：UIImage，NSString，至于其他的都可以传入 ACMediaModel类型
-包括网络图片和gif图片、视频。
+>传入的如果是图片类型，则可以是：UIImage，NSString，至于其他的都可以传入 ACMediaModel类型
+>包括网络图片和gif图片、视频。
 
 ```
 e.g. 在预览或者之前已经有图片的情况下，需要传入进行预先展示(其中包括预展示视频、gif等)
@@ -141,7 +176,7 @@ mediaView.allowPickingVideo = NO;
 
 * `allowMultipleSelection`
 >是否允许 同个图片或视频进行多次选择. default is YES
-如果设置为 NO，那么在已经选择了一张以上图片之后，就不能同时选择视频了（注意）
+>如果设置为 NO，那么在已经选择了一张以上图片之后，就不能同时选择视频了（注意）
 ```
 e.g.  如果不希望已经选择的图片或视频，再次被选择，那么可以设置为 NO
 mediaView.allowMultipleSelection = NO;
@@ -149,7 +184,7 @@ mediaView.allowMultipleSelection = NO;
 
 * `allowTakePicture`
 >是否允许 在相册中出现拍照选择. default is NO
-设置为YES，那么在相册最后一格会出现一格拍照按钮，点击可以打开相机拍照，拍照成功之后会保存到相册并选中状态
+>设置为YES，那么在相册最后一格会出现一格拍照按钮，点击可以打开相机拍照，拍照成功之后会保存到相册并选中状态
 ```
 e.g. 如果希望出现拍照按钮，可以设置为YES
 mediaView.allowTakePicture = YES;
@@ -157,7 +192,7 @@ mediaView.allowTakePicture = YES;
 
 * `allowPickingOriginalPhoto`
 >是否允许 相册中出现选择原图. default is NO 
-设置为 YES，那么相册底部会出现一格原图选项，可以保证选中的图片是原图，原图可能就比较大点，所以一般没这个必要。
+>设置为 YES，那么相册底部会出现一格原图选项，可以保证选中的图片是原图，原图可能就比较大点，所以一般没这个必要。
 ```
 e.g. 如果希望选择原图，那么可以设置为YES
 mediaView.allowPickingOriginalPhoto = YES;
@@ -172,7 +207,7 @@ mediaView.videoMaximumDuration = 10.0;
 
 * `rootViewController`
 >当前的主控制器(非必传)
-但是有时候碰到无法自动获取的时候会抛出异常(rootViewController must not be nil)，那么就必须手动传入
+>但是有时候碰到无法自动获取的时候会抛出异常(rootViewController must not be nil)，那么就必须手动传入
 
 * `backgroundColor`
 >底部collectionView的背景颜色，有特殊颜色要求的可以单独去设置
@@ -215,7 +250,7 @@ mediaView.videoMaximumDuration = 10.0;
   * 修改了添加框架的头文件等
 * `1.0.1` : 添加一个媒体类型，默认媒体资源是本地图片、视频，拍摄的图片、录像等，现在可以自己选择类型，例如：当只需要图片时，就设置媒体类型属性即可。 
 * `1.0.0` : 最初原型，封装的选择媒体以及布局的页面，把媒体资源的处理全进行封装，减少重复工作，只需添加到视图上，然后接收获取的媒体数据。
-   
+
 ## <a id="hope"></a>Hope
 * 代码使用过程中，发现任何问题，可以随时[issues me](https://github.com/honeycao/ACMediaFrame/issues/new)
 * 如果有更多建议或者想法也可以直接联系我 QQ:331864805

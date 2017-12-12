@@ -174,9 +174,9 @@
 #pragma mark -  Collection View DataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    NSInteger num = self.mediaArray.count < 9 ? self.mediaArray.count : 9;
-    if (num == 9) {
-        return 9;
+    NSInteger num = self.mediaArray.count < _maxImageSelected ? self.mediaArray.count : _maxImageSelected;
+    if (num == _maxImageSelected) {
+        return _maxImageSelected;
     }
     return _showAddButton ? num + 1 : num;
 }
@@ -320,8 +320,11 @@
 
 ///重新布局collectionview
 - (void)layoutCollection {
-    
     NSInteger allImageCount = _showAddButton ? _mediaArray.count + 1 : _mediaArray.count;
+    //图片最大数也不显示添加按钮
+    if (_mediaArray.count == _maxImageSelected && _showAddButton) {
+        allImageCount -= 1;
+    }
     NSInteger maxRow = (allImageCount - 1) / 4 + 1;
     _collectionView.height = allImageCount == 0 ? 0 : maxRow * ACMedia_ScreenWidth/4;
     self.height = _collectionView.height;

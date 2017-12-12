@@ -23,6 +23,7 @@
     CGFloat height = [ACSelectMediaView defaultViewHeight];
     ACSelectMediaView *mediaView = [[ACSelectMediaView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, height)];
     mediaView.type = ACMediaTypePhoto;
+    mediaView.maxImageSelected = 4;
     mediaView.allowMultipleSelection = NO;
     mediaView.naviBarBgColor = [UIColor redColor];
     self.tableView.tableHeaderView = mediaView;

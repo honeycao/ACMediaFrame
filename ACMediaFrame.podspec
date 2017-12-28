@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.dependency 'ACAlertController', '~> 1.0.0'
-  s.dependency 'TZImagePickerController', '~> 1.7.9'
+  s.dependency 'TZImagePickerController'
   s.dependency 'MWPhotoBrowser', '~>2.1.2'
 
 end

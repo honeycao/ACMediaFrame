@@ -1,27 +1,23 @@
 //
 //  ACSelectMediaView.h
 //
-//  Created by caoyq on 17/04/12.
-//  Copyright © 2016年 ArthurCao. All rights reserved.
+//  Created by ArthurCao<https://github.com/honeycao> on 2017/04/12.
+//  Version: 2.0.4.
+//  Update: 2017/12/28.
 //
 
 #import <UIKit/UIKit.h>
 #import "ACMediaModel.h"
+#import "ACMediaFrameConst.h"
 
 /** 媒体资源的类型 */
 typedef NS_ENUM(NSInteger, ACMediaType) {
-    /** 本地图片和相机 */
-    ACMediaTypePhotoAndCamera = 0,
-    /** 本地图片 */
-    ACMediaTypePhoto,
-    /** 相机拍摄 */
-    ACMediaTypeCamera,
-    /** 录像 */
-    ACMediaTypeVideotape,
-    /** 视频 */
-    ACMediaTypeVideo,
-    /** 所有媒体资源 */
-    ACMediaTypeAll
+    ACMediaTypePhotoAndCamera = 0, /**< 本地图片和相机 */
+    ACMediaTypePhoto, /**< 本地图片 */
+    ACMediaTypeCamera, /**< 相机拍摄 */
+    ACMediaTypeVideotape, /**< 录像 */
+    ACMediaTypeVideo, /**< 视频 */
+    ACMediaTypeAll /**< 所有媒体资源 */
 };
 
 typedef void(^ACMediaHeightBlock)(CGFloat mediaHeight);
@@ -31,7 +27,7 @@ typedef void(^ACSelectMediaBackBlock)(NSArray<ACMediaModel *> *list);
 /** 选择媒体 并 排列展示 的页面 */
 @interface ACSelectMediaView : UIView
 
-#pragma mark - properties
+#pragma mark - 自定义的属性
 
 /** 
  * 需要展示的媒体的资源类型：如仅显示图片等，默认是 ACMediaTypePhotoAndCamera
@@ -46,7 +42,7 @@ typedef void(^ACSelectMediaBackBlock)(NSArray<ACMediaModel *> *list);
 @property (nonatomic, strong) NSArray *preShowMedias;
 
 /**
- * 最大资源选择个数,（包括 preShowMedias 预先展示数据）. default is 9
+ * 可选择的最大资源数,（包括 preShowMedias 预先展示数据）. default is 9
  */
 @property (nonatomic, assign) NSInteger maxImageSelected;
 
@@ -91,12 +87,27 @@ typedef void(^ACSelectMediaBackBlock)(NSArray<ACMediaModel *> *list);
  */
 @property (nonatomic, strong) UIViewController *rootViewController;
 
-/** 
- * 底部collectionView的 backgroundColor
- */
+#pragma mark - UI布局
+
+/** 一行显示图片个数. default is 4. */
+@property (nonatomic, assign) NSInteger rowImageCount;
+/** item行间距. default is 10. */
+@property (nonatomic, assign) CGFloat lineSpacing;
+/** item列间距. default is 10. */
+@property (nonatomic, assign) CGFloat interitemSpacing;
+/** section边距. default is (10, 10, 10, 10). */
+@property (nonatomic, assign) UIEdgeInsets sectionInset;
+/** 添加按钮的图片. 不想使用自带的图片可以自定义传入. */
+@property (nonatomic, strong) UIImage *addImage;
+/** 删除按钮的图片. 不想使用自带的图片可以自定义传入. */
+@property (nonatomic, strong) UIImage *deleteImage;
+/** 视频标签图片. 不想使用自带的图片可以自定义传入. */
+@property (nonatomic, strong) UIImage *videoTagImage;
+
+/** 图片底层视图的背景色 */
 @property (nonatomic, strong) UIColor *backgroundColor;
 
-/*****  自定义导航栏相关属性 *****/
+#pragma mark - 自定义相册的导航栏相关属性
 
 /** navigationbar background color */
 @property (nonatomic, strong) UIColor *naviBarBgColor;
@@ -113,6 +124,12 @@ typedef void(^ACSelectMediaBackBlock)(NSArray<ACMediaModel *> *list);
 /** navigationItem right/left barButtonItem text font */
 @property (nonatomic, strong) UIFont *barItemTextFont;
 
+/** 顶部statusBar 是否为系统默认的黑色. default is NO. */
+@property (nonatomic, assign) BOOL isStatusBarDefault;
+
+/** 自定义返回按钮样式及其属性 */
+@property (nonatomic, strong) UIButton *barBackButton;
+
 #pragma mark - methods
 
 /** 
@@ -126,12 +143,14 @@ typedef void(^ACSelectMediaBackBlock)(NSArray<ACMediaModel *> *list);
 - (void)observeSelectedMediaArray: (ACSelectMediaBackBlock)backBlock;
 
 /**
- * 视图一开始默认高度
+ * 视图一开始默认高度，该方法在 2.0.4版本开始就不需要了.
  */
-+ (CGFloat)defaultViewHeight;
++ (CGFloat)defaultViewHeight ACMediaDeprecated("使用 reload 自动刷新高度");
 
 /**
- * 刷新
+  刷新，自动变更高度约束.
+ 
+  使用了 observeViewHeight 方法，该方法可不用.
  */
 - (void)reload;
 

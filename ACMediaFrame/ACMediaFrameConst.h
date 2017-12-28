@@ -1,14 +1,13 @@
 //
 //  ACMediaFrameConst.h
-//  ACMediaFrame
+//
+//  Version: 2.0.4.
+//  Created by ArthurCao<https://github.com/honeycao> on 2017/03/16.
+//  Update: 2017/12/27.
 //
 
 #import <UIKit/UIKit.h>
-#import "UIView+ACMediaExt.h"
-#import "UIViewController+ACMediaExt.h"
-#import "UIImage+ACGif.h"
-#import "UIImageView+ACMediaExt.h"
-#import "NSString+ACMediaExt.h"
+#import <objc/message.h>
 
 #define  ACMedia_ScreenWidth  [UIScreen mainScreen].bounds.size.width
 #define  ACMedia_ScreenHeight [UIScreen mainScreen].bounds.size.height
@@ -20,9 +19,6 @@
 /** cell上删除按钮的宽 */
 #define ACMediaDeleteButtonWidth ACMediaRatio * 18
 
-//日志输出
-#ifdef DEBUG
-#define ACLog(...) NSLog(__VA_ARGS__)
-#else
-#define ACLog(...)
-#endif
+#define ACMediaWeakSelf      __weak __typeof__(self) weakSelf = self;
+
+#define ACMediaDeprecated(instead)  NS_DEPRECATED(2_0, 2_0, 2_0, 2_0, instead)

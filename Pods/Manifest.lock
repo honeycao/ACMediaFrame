@@ -9,7 +9,7 @@ PODS:
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
-  - TZImagePickerController (1.7.9)
+  - TZImagePickerController (1.9.8)
 
 DEPENDENCIES:
   - ACAlertController
@@ -22,8 +22,8 @@ SPEC CHECKSUMS:
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
   MWPhotoBrowser: 5836d7aa041dc05a13de380c246826578adc5ea5
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
-  TZImagePickerController: 0a8ff228d287ebdd7d485e8c42a2a932894f1fba
+  TZImagePickerController: 3b9413ae5d049b1fdc5b0c720ad283f35b679a50
 
 PODFILE CHECKSUM: 02fe8567d043c1fb5c6dc518be839848c5da4e77
 
-COCOAPODS: 1.2.0
+COCOAPODS: 1.3.1

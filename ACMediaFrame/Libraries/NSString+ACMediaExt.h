@@ -1,9 +1,9 @@
 //
 //  NSString+ACMediaExt.h
-//  ACMediaFrame
 //
-//  Created by caoyq on 2017/3/16.
-//  Copyright © 2017年 ArthurCao. All rights reserved.
+//  Version: 2.0.4
+//  Created by ArthurCao<https://github.com/honeycao> on 16/12/24.
+//  Update: 2017/12/27.
 //
 
 #import <Foundation/Foundation.h>

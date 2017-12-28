@@ -1,19 +1,25 @@
 //
 //  ACSelectMediaView.m
 //
-//  Created by caoyq on 17/04/12.
-//  Copyright © 2016年 ArthurCao. All rights reserved.
+//  Created by ArthurCao<https://github.com/honeycao> on 2017/04/12.
+//  Version: 2.0.4.
+//  Update: 2017/12/28.
 //
 
 #import "ACSelectMediaView.h"
-#import "ACMediaImageCell.h"
-#import "ACMediaFrameConst.h"
 #import "ACMediaManager.h"
+#import "ACMediaImageCell.h"
+//Ext
+#import "NSString+ACMediaExt.h"
+#import "UIImage+ACGif.h"
+#import "UIView+ACMediaExt.h"
+#import "UIViewController+ACMediaExt.h"
+//git
 #import "ACAlertController.h"
 #import "TZImagePickerController.h"
 #import "MWPhotoBrowser.h"
 
-@interface ACSelectMediaView ()<UICollectionViewDelegate, UICollectionViewDataSource, TZImagePickerControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, MWPhotoBrowserDelegate>
+@interface ACSelectMediaView ()<UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, TZImagePickerControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, MWPhotoBrowserDelegate>
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 
@@ -56,7 +62,9 @@
     return self;
 }
 
-- (void)_setup {
+///设置初始值
+- (void)_setup
+{
     _mediaArray = [NSMutableArray array];
     _preShowMedias = [NSMutableArray array];
     _selectedImageAssets = [NSMutableArray array];
@@ -68,15 +76,17 @@
     _maxImageSelected = 9;
     _videoMaximumDuration = 60;
     _backgroundColor = [UIColor whiteColor];
+    _rowImageCount = 4;
+    _lineSpacing = 10.0;
+    _interitemSpacing = 10.0;
+    _sectionInset = UIEdgeInsetsMake(10, 10, 10, 10);
     [self configureCollectionView];
 }
 
-- (void)configureCollectionView {
+- (void)configureCollectionView
+{
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc]init];
-    layout.itemSize = CGSizeMake(self.width/4, self.width/4);
-    layout.minimumLineSpacing = 0;
-    layout.minimumInteritemSpacing = 0;
-    layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    
     _collectionView = [[UICollectionView alloc]initWithFrame:self.bounds collectionViewLayout:layout];
     [_collectionView registerClass:[ACMediaImageCell class] forCellWithReuseIdentifier:NSStringFromClass([ACMediaImageCell class])];
     _collectionView.delegate = self;
@@ -149,14 +159,27 @@
     [_collectionView setBackgroundColor:backgroundColor];
 }
 
+- (void)setRowImageCount:(NSInteger)rowImageCount {
+    _rowImageCount = rowImageCount;
+}
+
+- (void)setLineSpacing:(CGFloat)lineSpacing {
+    _lineSpacing = lineSpacing;
+}
+
+- (void)setInteritemSpacing:(CGFloat)interitemSpacing {
+    _interitemSpacing = interitemSpacing;
+}
+
+- (void)setSectionInset:(UIEdgeInsets)sectionInset {
+    _sectionInset = sectionInset;
+}
+
 #pragma mark - public method
 
 - (void)observeViewHeight:(ACMediaHeightBlock)value {
     _block = value;
-    //预防先加载数据源的情况
-    if (_mediaArray.count > 3) {
-        _block(_collectionView.height);
-    }
+    [self layoutCollection];
 }
 
 - (void)observeSelectedMediaArray: (ACSelectMediaBackBlock)backBlock {
@@ -164,44 +187,44 @@
 }
 
 + (CGFloat)defaultViewHeight {
-    return ACMedia_ScreenWidth/4;
+    return 1;
 }
 
 - (void)reload {
-    [self.collectionView reloadData];
+    [self layoutCollection];
 }
 
 #pragma mark -  Collection View DataSource
 
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
     NSInteger num = self.mediaArray.count < _maxImageSelected ? self.mediaArray.count : _maxImageSelected;
+    //图片最大数不显示添加按钮
     if (num == _maxImageSelected) {
         return _maxImageSelected;
     }
     return _showAddButton ? num + 1 : num;
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
     ACMediaImageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([ACMediaImageCell class]) forIndexPath:indexPath];
     if (indexPath.row == _mediaArray.count) {
-        cell.icon.image = [UIImage imageForResourcePath:@"ACMediaFrame.bundle/AddMedia" ofType:@"png" inBundle:[NSBundle bundleForClass:[self class]]];
-        cell.videoImageView.hidden = YES;
-        cell.deleteButton.hidden = YES;
+        [cell showAddWithImage:self.addImage];
     }else{
         ACMediaModel *model = [[ACMediaModel alloc] init];
         model = _mediaArray[indexPath.row];
         
         if (model.imageUrlString) {
-            [cell.icon ac_setImageWithUrlString:model.imageUrlString placeholderImage:nil];
+            [cell showIconWithUrlString:model.imageUrlString image:nil];
         }else {
             //这个地方可能会存在一个问题
-            cell.icon.image = model.image;
+            [cell showIconWithUrlString:nil image:model.image];
         }
+        [cell videoImage:self.videoTagImage show:model.isVideo];
+        [cell deleteButtonWithImage:self.deleteImage show:_showDelete];
         
-        cell.videoImageView.hidden = !model.isVideo;
-        cell.deleteButton.hidden = !_showDelete;
-        [cell setACMediaClickDeleteButton:^{
-            
+        cell.ACMediaClickDeleteButton = ^{
             ACMediaModel *model = _mediaArray[indexPath.row];
             if (!_allowMultipleSelection) {
                 [self adjustSelectedAssetsDicWithDeletedIndex:indexPath.row deletedAsset:model.asset];
@@ -212,12 +235,29 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self layoutCollection];
             });
-        }];
+        };
     }
     return cell;
 }
 
 #pragma mark - collection view delegate
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
+    return self.lineSpacing;
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
+    return self.interitemSpacing;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    CGFloat itemW = (self.width - self.sectionInset.left - (self.rowImageCount - 1) * self.interitemSpacing - self.sectionInset.right) / self.rowImageCount;
+    return CGSizeMake(itemW, itemW);
+}
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+    return self.sectionInset;
+}
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row == _mediaArray.count && _mediaArray.count >= _maxImageSelected) {
@@ -225,7 +265,7 @@
         return;
     }
     
-    __weak typeof(self) weakSelf = self;
+    ACMediaWeakSelf
     //点击的是添加媒体的按钮
     if (indexPath.row == _mediaArray.count) {
         switch (_type) {
@@ -318,15 +358,14 @@
 
 #pragma mark - 布局
 
-///重新布局collectionview
+///计算高度，刷新collectionview，并返回相应的高度和数据
 - (void)layoutCollection {
-    NSInteger allImageCount = _showAddButton ? _mediaArray.count + 1 : _mediaArray.count;
+    NSInteger itemCount = _showAddButton ? _mediaArray.count + 1 : _mediaArray.count;
     //图片最大数也不显示添加按钮
     if (_mediaArray.count == _maxImageSelected && _showAddButton) {
-        allImageCount -= 1;
+        itemCount -= 1;
     }
-    NSInteger maxRow = (allImageCount - 1) / 4 + 1;
-    _collectionView.height = allImageCount == 0 ? 0 : maxRow * ACMedia_ScreenWidth/4;
+    _collectionView.height = [self collectionHeightWithCount:itemCount];
     self.height = _collectionView.height;
     !_block ?  : _block(_collectionView.height);
     !_backBlock ?  : _backBlock(_mediaArray);
@@ -334,9 +373,17 @@
     [_collectionView reloadData];
 }
 
+- (CGFloat)collectionHeightWithCount: (NSInteger)count
+{
+    NSInteger maxRow = count == 0 ? 0 : (count - 1) / self.rowImageCount + 1;
+    CGFloat itemH = (self.width - self.sectionInset.left - (self.rowImageCount - 1) * self.interitemSpacing - self.sectionInset.right) / self.rowImageCount;
+    CGFloat h = maxRow == 0 ? 0 : (maxRow * itemH + (maxRow - 1) * self.lineSpacing + self.sectionInset.top + self.sectionInset.bottom);
+    return h;
+}
+
 #pragma mark - actions
 
-/** 相册 */
+///相册
 - (void)openAlbum {
     NSInteger count = 0;
     if (!_allowMultipleSelection) {
@@ -344,17 +391,9 @@
     }else {
         count = _maxImageSelected - _mediaArray.count;
     }
+    
     TZImagePickerController *imagePickController = [[TZImagePickerController alloc] initWithMaxImagesCount:count delegate:self];
     [self configureTZNaviBar:imagePickController];
-    //是否 在相册中显示拍照按钮
-    imagePickController.allowTakePicture = self.allowTakePicture;
-    //是否可以选择显示原图
-    imagePickController.allowPickingOriginalPhoto = self.allowPickingOriginalPhoto;
-    //是否 在相册中可以选择视频
-    imagePickController.allowPickingVideo = _allowPickingVideo;
-    if (!_allowMultipleSelection) {
-        imagePickController.selectedAssets = _selectedImageAssets;
-    }
     [self.rootViewController presentViewController:imagePickController animated:YES completion:nil];
 }
 
@@ -592,8 +631,15 @@
     }
 }
 
-///配置 TZImagePickerController 导航栏属性
+///配置 TZImagePickerController属性、导航栏属性
 - (void)configureTZNaviBar: (TZImagePickerController *)pick {
+    
+    pick.allowTakePicture = self.allowTakePicture;
+    pick.allowPickingOriginalPhoto = self.allowPickingOriginalPhoto;
+    pick.allowPickingVideo = self.allowPickingVideo;
+    if (!_allowMultipleSelection) {
+        pick.selectedAssets = self.selectedImageAssets;
+    }
     
     if (self.naviBarBgColor) {
         pick.naviBgColor = self.naviBarBgColor;
@@ -610,6 +656,12 @@
     if (self.barItemTextFont) {
         pick.barItemTextFont = self.barItemTextFont;
     }
+    if (self.barBackButton) {
+        pick.navLeftBarButtonSettingBlock = ^(UIButton *leftButton) {
+            leftButton = _barBackButton;
+        };
+    }
+    pick.isStatusBarDefault = self.isStatusBarDefault;
 }
 
 //有时候获取不到

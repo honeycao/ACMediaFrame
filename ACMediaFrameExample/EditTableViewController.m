@@ -22,14 +22,13 @@
     [super viewDidLoad];
     self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
     
-    CGFloat height = [ACSelectMediaView defaultViewHeight];
     UIView *headerView = [[UIView alloc] init];
     
     UILabel *lab = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, self.view.frame.size.width, 20)];
     lab.text = @"展示区域";
     [headerView addSubview:lab];
     
-    ACSelectMediaView *mediaView = [[ACSelectMediaView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(lab.frame) + 10, CGRectGetWidth(lab.frame), height)];
+    ACSelectMediaView *mediaView = [[ACSelectMediaView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(lab.frame) + 10, CGRectGetWidth(lab.frame), 1)];
     mediaView.showDelete = NO;
     mediaView.showAddButton = NO;
     //png、jpg、gif(本地和网络)
@@ -52,12 +51,6 @@
     }];
     [mediaView observeSelectedMediaArray:^(NSArray<ACMediaModel *> *list) {
        // do something
-        for (ACMediaModel *model in list) {
-            //遍历得到模型中想要的数据  e.g.
-            // id uplodaType = model.uploadType;
-            // NSString *name = model.name;
-        }
-        NSLog(@"list.count = %lu",(unsigned long)list.count);
     }];
     [headerView addSubview:mediaView];
     

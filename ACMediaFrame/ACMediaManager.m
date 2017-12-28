@@ -1,8 +1,9 @@
 //
 //  ACMediaManager.m
 //
-//  Created by caoyq on 16/12/22.
-//  Copyright © 2016年 ArthurCao. All rights reserved.
+//  Version: 2.0.4.
+//  Created by ArthurCao<https://github.com/honeycao> on 2016/12/22.
+//  Update: 2017/12/27.
 //
 
 #import "ACMediaManager.h"
@@ -161,7 +162,7 @@
     //4、获取time处的视频截图
     CGImageRef cgImage = [imageGenerator copyCGImageAtTime:time actualTime:&actucalTime error:&error];
     if (error) {
-        ACLog(@"截取视频图片失败:%@",error.localizedDescription);
+//        NSLog(@"截取视频图片失败:%@",error.localizedDescription);
     }
     
     //5、将 CGImageRef 转化为 UIImage

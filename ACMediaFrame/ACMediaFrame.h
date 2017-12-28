@@ -1,13 +1,14 @@
 //
 //  ACMediaFrame.h
 //
-//  Created by caoyq on 2017/3/16.
-//  Copyright (c) 2017 ACMediaFrame (https://github.com/honeycao/ACMediaFrame/)
+//  Version: 2.0.4.
+//  Created by ArthurCao<https://github.com/honeycao> on 2017/03/16.
+//  Update: 2017/12/27.
 //
 
 #import <Foundation/Foundation.h>
 #import "ACSelectMediaView.h"
-#import "ACMediaManager.h"
+#import "ACMediaModel.h"
 
 
 

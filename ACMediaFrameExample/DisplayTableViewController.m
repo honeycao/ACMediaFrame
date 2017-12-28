@@ -19,11 +19,16 @@
     [super viewDidLoad];
     self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
     
-    CGFloat height = [ACSelectMediaView defaultViewHeight];
-    ACSelectMediaView *mediaView = [[ACSelectMediaView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, height)];
+    ACSelectMediaView *mediaView = [[ACSelectMediaView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, 1)];
+    mediaView.preShowMedias = @[@"bg_1", @"bg_2", @"bg_3"];
     mediaView.showDelete = NO;
     mediaView.showAddButton = NO;
-    mediaView.preShowMedias = @[@"bg_1", @"bg_2", @"bg_3"];
+    mediaView.rowImageCount = 3;
+    mediaView.lineSpacing = 20;
+    mediaView.interitemSpacing = 20;
+    mediaView.maxImageSelected = 12;
+    mediaView.sectionInset = UIEdgeInsetsMake(20, 20, 20, 20);
+    [mediaView reload];
     self.tableView.tableHeaderView = mediaView;
 
 }

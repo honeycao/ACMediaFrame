@@ -8,7 +8,7 @@
 
 #import "AddTableViewController.h"
 #import "ACMediaFrame.h"
-#import "UIImage+ACGif.h"
+#import "UIView+ACMediaExt.h"
 
 @interface AddTableViewController ()
 
@@ -20,12 +20,16 @@
     [super viewDidLoad];
     self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
     
-    CGFloat height = [ACSelectMediaView defaultViewHeight];
-    ACSelectMediaView *mediaView = [[ACSelectMediaView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, height)];
+    ACSelectMediaView *mediaView = [[ACSelectMediaView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, 1)];
     mediaView.type = ACMediaTypePhoto;
-    mediaView.maxImageSelected = 4;
-    mediaView.allowMultipleSelection = NO;
+    mediaView.maxImageSelected = 6;
+//    mediaView.allowMultipleSelection = NO;
     mediaView.naviBarBgColor = [UIColor redColor];
+    mediaView.rowImageCount = 3;
+    mediaView.lineSpacing = 20;
+    mediaView.interitemSpacing = 20;
+    mediaView.sectionInset = UIEdgeInsetsMake(20, 20, 20, 20);
+    [mediaView reload];
     self.tableView.tableHeaderView = mediaView;
 }
 

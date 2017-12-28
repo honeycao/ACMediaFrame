@@ -1,9 +1,9 @@
 //
 //  UIImageView+ACMediaExt.m
-//  ACMediaFrameExample
 //
-//  Created by caoyq on 2017/3/27.
-//  Copyright © 2017年 ArthurCao. All rights reserved.
+//  Version: 2.0.4.
+//  Created by ArthurCao<https://github.com/honeycao> on 2017/3/27.
+//  Update: 2017/12/27.
 //
 
 #import "UIImageView+ACMediaExt.h"

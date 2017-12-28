@@ -1,8 +1,9 @@
 //
 //  ACMediaImageCell.h
 //
-//  Created by caoyq on 16/12/2.
-//  Copyright © 2016年 SnSoft. All rights reserved.
+//  Version: 2.0.4.
+//  Created by ArthurCao<https://github.com/honeycao> on 2016/12/2.
+//  Update: 2017/12/27.
 //
 
 #import <UIKit/UIKit.h>
@@ -10,13 +11,13 @@
 /** 用于展示的 媒体图片cell */
 @interface ACMediaImageCell : UICollectionViewCell
 
-@property (nonatomic, strong) UIImageView *icon;
+- (void)showAddWithImage: (UIImage *)addImage;
 
-/** 删除按钮 */
-@property (nonatomic, strong) UIButton *deleteButton;
+- (void)showIconWithUrlString: (NSString *)urlString image: (UIImage *)image;
 
-/** 视频标志 */
-@property (nonatomic, strong) UIImageView *videoImageView;
+- (void)deleteButtonWithImage: (UIImage *)deleteImage show: (BOOL)show;
+
+- (void)videoImage: (UIImage *)videoImage show: (BOOL)show;
 
 /** 点击删除按钮的回调block */
 @property (nonatomic, copy) void(^ACMediaClickDeleteButton)();

@@ -83,12 +83,12 @@ iOS11上`MWPhotoBrowser`出现一点问题，第三方库作者并未更新，�
 * `AddTableViewController`        添加媒体的演示
 * `DisplayTableViewController`    预览媒体的演示
 * `EditTableViewController`       添加和预览混合编排的演示
+**作为tableHeaderView使用**
+
 ```
-// 唯一获取初始化高度的方法
-CGFloat height = [ACSelectMediaView defaultViewHeight];
 
 // 初始化
-ACSelectMediaView *mediaView = [[ACSelectMediaView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, height)];
+ACSelectMediaView *mediaView = [[ACSelectMediaView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, 1)];
 
 // 需要展示的媒体的资源类型，当前是仅本地图库
 mediaView.type = ACMediaTypePhoto;
@@ -112,9 +112,16 @@ mediaView.allowMultipleSelection = NO;
 NSLog(@"list.count = %lu",(unsigned long)list.count);
 }];
 
+//刷新方法 在 observeViewHeight 存在时可忽略
+[mediaView reload];
+
 // 添加到控件上
 self.tableView.tableHeaderView = mediaView;
 ```
+
+
+**注意：作为`tableFooterView`的时候，有一点不同就是设置`tableFooterView`方法写入`observeViewHeight`方法中，具体可以查看`demo1`写法。**
+
 -------
 
 ### <a id="custom"></a>属性自定义
@@ -232,6 +239,8 @@ mediaView.videoMaximumDuration = 10.0;
 ------
 
 ## <a id="version"></a>版本更新
+* `2.0.4`：支持自定义区域的布局、demo修改等
+* `2.0.3`：优化图片到达最大张数时添加图片的按钮隐藏
 * `2.0.2` : 支持 cocoapods 导入，当前版本 2.0.2
 * `2.0.0` : 修改之前选择图片、删除图片之间的一些逻辑问题。
 * `1.3.9` : 之前对预展示视频写的不够清楚，于是这次就对如何集成和使用预展示视频功能，添加了相关的演示范例。

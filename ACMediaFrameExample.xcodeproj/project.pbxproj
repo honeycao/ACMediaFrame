@@ -27,6 +27,7 @@
 		370285B91E879A7F009C1CE7 /* UIView+ACMediaExt.m in Sources */ = {isa = PBXBuildFile; fileRef = 370285AF1E879A7F009C1CE7 /* UIView+ACMediaExt.m */; };
 		37483E401EB0385200589533 /* bug.gif in Resources */ = {isa = PBXBuildFile; fileRef = 37483E3F1EB0385200589533 /* bug.gif */; };
 		37483E431EB03A5900589533 /* UIImage+ACGif.m in Sources */ = {isa = PBXBuildFile; fileRef = 37483E421EB03A5900589533 /* UIImage+ACGif.m */; };
+		37FCEE4B201AC3D600300112 /* AsFooterTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FCEE4A201AC3D600300112 /* AsFooterTableViewController.m */; };
 		5CE378E03673CB64C5BF190B /* Pods_ACMediaFrameExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0939762BE9B3BF78BE7A2008 /* Pods_ACMediaFrameExample.framework */; };
 /* End PBXBuildFile section */
 
@@ -70,6 +71,8 @@
 		37483E3F1EB0385200589533 /* bug.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = bug.gif; sourceTree = "<group>"; };
 		37483E411EB03A5900589533 /* UIImage+ACGif.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ACGif.h"; sourceTree = "<group>"; };
 		37483E421EB03A5900589533 /* UIImage+ACGif.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ACGif.m"; sourceTree = "<group>"; };
+		37FCEE49201AC3D600300112 /* AsFooterTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AsFooterTableViewController.h; sourceTree = "<group>"; };
+		37FCEE4A201AC3D600300112 /* AsFooterTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AsFooterTableViewController.m; sourceTree = "<group>"; };
 		848517B4FDD86A8BB21BF4B3 /* Pods-ACMediaFrameExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ACMediaFrameExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ACMediaFrameExample/Pods-ACMediaFrameExample.debug.xcconfig"; sourceTree = "<group>"; };
 		DDB219BAB8B607FC0C3B0179 /* Pods-ACMediaFrameExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ACMediaFrameExample.release.xcconfig"; path = "Pods/Target Support Files/Pods-ACMediaFrameExample/Pods-ACMediaFrameExample.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -119,6 +122,8 @@
 				370284DB1E87923F009C1CE7 /* DisplayTableViewController.m */,
 				370284DD1E87924C009C1CE7 /* EditTableViewController.h */,
 				370284DE1E87924C009C1CE7 /* EditTableViewController.m */,
+				37FCEE49201AC3D600300112 /* AsFooterTableViewController.h */,
+				37FCEE4A201AC3D600300112 /* AsFooterTableViewController.m */,
 				37483E3F1EB0385200589533 /* bug.gif */,
 				370284C91E878740009C1CE7 /* Assets.xcassets */,
 				370284CB1E878740009C1CE7 /* LaunchScreen.storyboard */,
@@ -332,6 +337,7 @@
 			files = (
 				370285B91E879A7F009C1CE7 /* UIView+ACMediaExt.m in Sources */,
 				370284C21E878740009C1CE7 /* AppDelegate.m in Sources */,
+				37FCEE4B201AC3D600300112 /* AsFooterTableViewController.m in Sources */,
 				370285B81E879A7F009C1CE7 /* NSString+ACMediaExt.m in Sources */,
 				370284DF1E87924C009C1CE7 /* EditTableViewController.m in Sources */,
 				370285B31E879A7F009C1CE7 /* ACMediaImageCell.m in Sources */,

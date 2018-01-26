@@ -13,11 +13,11 @@
 /** 媒体资源的类型 */
 typedef NS_ENUM(NSInteger, ACMediaType) {
     ACMediaTypePhotoAndCamera = 0, /**< 本地图片和相机 */
-    ACMediaTypePhoto, /**< 本地图片 */
-    ACMediaTypeCamera, /**< 相机拍摄 */
-    ACMediaTypeVideotape, /**< 录像 */
-    ACMediaTypeVideo, /**< 视频 */
-    ACMediaTypeAll /**< 所有媒体资源 */
+    ACMediaTypePhoto,              /**< 本地图片 */
+    ACMediaTypeCamera,             /**< 相机拍摄 */
+    ACMediaTypeVideotape,          /**< 录像 */
+    ACMediaTypeVideo,              /**< 视频 */
+    ACMediaTypeAll                 /**< 所有媒体资源 */
 };
 
 typedef void(^ACMediaHeightBlock)(CGFloat mediaHeight);
@@ -83,7 +83,8 @@ typedef void(^ACSelectMediaBackBlock)(NSArray<ACMediaModel *> *list);
 
 /**
  * 当前的主控制器(非必传)
- * 但是有时候碰到无法自动获取的时候会抛出异常(rootViewController must not be nil)，那么就必须手动传入
+ *
+ * 碰到抛出异常 "rootViewController must not be nil"，那么就必须手动传入
  */
 @property (nonatomic, strong) UIViewController *rootViewController;
 

@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "ACMediaFrame"
-  s.version      = "2.0.4"
+  s.version      = "2.0.5"
   s.summary      = "An easy way to display image or video form album or camera, and get more info of image or video to upload and so on."
   s.homepage     = "https://github.com/honeycao/ACMediaFrame"
   s.license      = "MIT"

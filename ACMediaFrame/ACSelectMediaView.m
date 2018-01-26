@@ -7,6 +7,7 @@
 //
 
 #import "ACSelectMediaView.h"
+#import <MobileCoreServices/MobileCoreServices.h>
 #import "ACMediaManager.h"
 #import "ACMediaImageCell.h"
 //Ext
@@ -93,15 +94,6 @@
     _collectionView.dataSource = self;
     _collectionView.backgroundColor = _backgroundColor;
     [self addSubview:_collectionView];
-}
-
-#pragma mark - getter
-
-- (UIViewController *)rootViewController {
-    if (!_rootViewController) {
-        _rootViewController = [self getCurrentVC];
-    }
-    return _rootViewController;
 }
 
 #pragma mark - setter
@@ -394,20 +386,19 @@
     
     TZImagePickerController *imagePickController = [[TZImagePickerController alloc] initWithMaxImagesCount:count delegate:self];
     [self configureTZNaviBar:imagePickController];
-    [self.rootViewController presentViewController:imagePickController animated:YES completion:nil];
+    [[self currentViewController] presentViewController:imagePickController animated:YES completion:nil];
 }
 
 /** 相机 */
 - (void)openCamera {
     UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypeCamera;
 
-    if ([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]){
+    if ([UIImagePickerController isSourceTypeAvailable: sourceType]){
         UIImagePickerController *picker = [[UIImagePickerController alloc] init];
         picker.delegate = self;
-        //设置拍照后的图片可被编辑
         picker.allowsEditing = YES;
         picker.sourceType = sourceType;
-        [self.rootViewController presentViewController:picker animated:YES completion:nil];
+        [[self currentViewController] presentViewController:picker animated:YES completion:nil];
     }else{
         [UIAlertController showAlertWithTitle:@"该设备不支持拍照" message:nil actionTitles:@[@"确定"] cancelTitle:nil style:UIAlertControllerStyleAlert completion:nil];
     }
@@ -422,12 +413,11 @@
         picker.sourceType = UIImagePickerControllerSourceTypeCamera;
         picker.mediaTypes = mediaTypes;
         picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModeVideo;
-        picker.videoQuality = UIImagePickerControllerQualityTypeMedium; //录像质量
         picker.videoMaximumDuration = self.videoMaximumDuration;        //录像最长时间
     } else {
         [UIAlertController showAlertWithTitle:@"当前设备不支持录像" message:nil actionTitles:@[@"确定"] cancelTitle:nil style:UIAlertControllerStyleAlert completion:nil];
     }
-    [self.rootViewController presentViewController:picker animated:YES completion:nil];
+    [[self currentViewController] presentViewController:picker animated:YES completion:nil];
 
 }
 
@@ -437,10 +427,10 @@
     picker.delegate = self;
     picker.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    picker.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:picker.sourceType];
+    picker.mediaTypes = @[(NSString *)kUTTypeMovie];
+    picker.videoQuality = UIImagePickerControllerQualityTypeHigh;
     picker.allowsEditing = YES;
-    UIViewController *vc = [[UIApplication sharedApplication] keyWindow].rootViewController;
-    [vc presentViewController:picker animated:YES completion:nil];
+    [[self currentViewController] presentViewController:picker animated:YES completion:nil];
 }
 
 #pragma mark - TZImagePickerController Delegate
@@ -632,8 +622,8 @@
 }
 
 ///配置 TZImagePickerController属性、导航栏属性
-- (void)configureTZNaviBar: (TZImagePickerController *)pick {
-    
+- (void)configureTZNaviBar: (TZImagePickerController *)pick
+{
     pick.allowTakePicture = self.allowTakePicture;
     pick.allowPickingOriginalPhoto = self.allowPickingOriginalPhoto;
     pick.allowPickingVideo = self.allowPickingVideo;
@@ -664,9 +654,14 @@
     pick.isStatusBarDefault = self.isStatusBarDefault;
 }
 
-//有时候获取不到
-- (UIViewController *)getCurrentVC
+///获取当前的控制器，优先使用外界的赋值
+- (UIViewController *)currentViewController
 {
+    //if set rootViewController
+    if (self.rootViewController) {
+        return self.rootViewController;
+    }
+    
     UIViewController *result = nil;
     
     UIWindow * window = [[UIApplication sharedApplication] keyWindow];

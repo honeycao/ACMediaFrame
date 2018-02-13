@@ -22,7 +22,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.tableView.backgroundColor = [UIColor groupTableViewBackgroundColor];
 }
 
 #pragma mark - Table view data source

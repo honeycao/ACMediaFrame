@@ -87,7 +87,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="As FooterView" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="smw-h4-FIs">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="As view For Footer In Section" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="smw-h4-FIs">
                                                     <rect key="frame" x="16" y="0.0" width="324" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -134,20 +134,20 @@
             </objects>
             <point key="canvasLocation" x="1164" y="87"/>
         </scene>
-        <!--AsFooter-->
+        <!--AsSectionFooter-->
         <scene sceneID="vLj-Sc-34G">
             <objects>
                 <tableViewController id="uba-2P-0Eo" customClass="AsFooterTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="6TJ-pR-l4E">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" red="0.82293034401260501" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <connections>
                             <outlet property="dataSource" destination="uba-2P-0Eo" id="CtF-2L-AcQ"/>
                             <outlet property="delegate" destination="uba-2P-0Eo" id="0UC-Gl-iwM"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="AsFooter" id="oxf-DK-I4x"/>
+                    <navigationItem key="navigationItem" title="AsSectionFooter" id="oxf-DK-I4x"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GpF-iu-34R" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

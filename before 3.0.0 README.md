@@ -1,4 +1,4 @@
-# ACMediaFrame
+# ACMediaFrame before 3.0.0 
 最完整、最全面的媒体库选择和展示的框架。包括图片、视频选取、拍照、自定义录像等的展示，自动帮你处理得到可用于上传的数据类型，不用你作任何操作。
 
 ![ACMediaFrameExample.gif](https://gitlab.com/ImageLibrary/githubImage/raw/master/ACMediaFrame/ACMediaFrame.gif)

@@ -50,13 +50,15 @@
     self.previewView = [[TZPhotoPreviewView alloc] initWithFrame:CGRectZero];
     __weak typeof(self) weakSelf = self;
     [self.previewView setSingleTapGestureBlock:^{
-        if (weakSelf.singleTapGestureBlock) {
-            weakSelf.singleTapGestureBlock();
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (strongSelf.singleTapGestureBlock) {
+            strongSelf.singleTapGestureBlock();
         }
     }];
     [self.previewView setImageProgressUpdateBlock:^(double progress) {
-        if (weakSelf.imageProgressUpdateBlock) {
-            weakSelf.imageProgressUpdateBlock(progress);
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (strongSelf.imageProgressUpdateBlock) {
+            strongSelf.imageProgressUpdateBlock(progress);
         }
     }];
     [self addSubview:self.previewView];
@@ -90,7 +92,7 @@
 
 
 @interface TZPhotoPreviewView ()<UIScrollViewDelegate>
-
+@property (assign, nonatomic) BOOL isRequestingGIF;
 @end
 
 @implementation TZPhotoPreviewView
@@ -111,6 +113,9 @@
         _scrollView.delaysContentTouches = NO;
         _scrollView.canCancelContentTouches = YES;
         _scrollView.alwaysBounceVertical = NO;
+        if (@available(iOS 11, *)) {
+            _scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+        }
         [self addSubview:_scrollView];
         
         _imageContainerView = [[UIView alloc] init];
@@ -144,16 +149,40 @@
 
 - (void)setModel:(TZAssetModel *)model {
     _model = model;
+    self.isRequestingGIF = NO;
     [_scrollView setZoomScale:1.0 animated:NO];
     if (model.type == TZAssetModelMediaTypePhotoGif) {
         // 先显示缩略图
         [[TZImageManager manager] getPhotoWithAsset:model.asset completion:^(UIImage *photo, NSDictionary *info, BOOL isDegraded) {
             self.imageView.image = photo;
             [self resizeSubviews];
+            if (self.isRequestingGIF) {
+                return;
+            }
             // 再显示gif动图
-            [[TZImageManager manager] getOriginalPhotoDataWithAsset:model.asset completion:^(NSData *data, NSDictionary *info, BOOL isDegraded) {
+            self.isRequestingGIF = YES;
+            [[TZImageManager manager] getOriginalPhotoDataWithAsset:model.asset progressHandler:^(double progress, NSError *error, BOOL *stop, NSDictionary *info) {
+                progress = progress > 0.02 ? progress : 0.02;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    self.progressView.progress = progress;
+                    if (progress >= 1) {
+                        self.progressView.hidden = YES;
+                    } else {
+                        self.progressView.hidden = NO;
+                    }
+                });
+#ifdef DEBUG
+                NSLog(@"[TZImagePickerController] getOriginalPhotoDataWithAsset:%f error:%@", progress, error);
+#endif
+            } completion:^(NSData *data, NSDictionary *info, BOOL isDegraded) {
                 if (!isDegraded) {
-                    self.imageView.image = [UIImage sd_tz_animatedGIFWithData:data];
+                    self.isRequestingGIF = NO;
+                    self.progressView.hidden = YES;
+                    if ([TZImagePickerConfig sharedInstance].gifImagePlayBlock) {
+                        [TZImagePickerConfig sharedInstance].gifImagePlayBlock(self, self.imageView, data, info);
+                    } else {
+                        self.imageView.image = [UIImage sd_tz_animatedGIFWithData:data];
+                    }
                     [self resizeSubviews];
                 }
             }];
@@ -163,17 +192,17 @@
     }
 }
 
-- (void)setAsset:(id)asset {
+- (void)setAsset:(PHAsset *)asset {
     if (_asset && self.imageRequestID) {
         [[PHImageManager defaultManager] cancelImageRequest:self.imageRequestID];
     }
     
     _asset = asset;
     self.imageRequestID = [[TZImageManager manager] getPhotoWithAsset:asset completion:^(UIImage *photo, NSDictionary *info, BOOL isDegraded) {
-        if (![asset isEqual:_asset]) return;
+        if (![asset isEqual:self->_asset]) return;
         self.imageView.image = photo;
         [self resizeSubviews];
-        _progressView.hidden = YES;
+        self->_progressView.hidden = YES;
         if (self.imageProgressUpdateBlock) {
             self.imageProgressUpdateBlock(1);
         }
@@ -181,17 +210,17 @@
             self.imageRequestID = 0;
         }
     } progressHandler:^(double progress, NSError *error, BOOL *stop, NSDictionary *info) {
-        if (![asset isEqual:_asset]) return;
-        _progressView.hidden = NO;
-        [self bringSubviewToFront:_progressView];
+        if (![asset isEqual:self->_asset]) return;
+        self->_progressView.hidden = NO;
+        [self bringSubviewToFront:self->_progressView];
         progress = progress > 0.02 ? progress : 0.02;
-        _progressView.progress = progress;
+        self->_progressView.progress = progress;
         if (self.imageProgressUpdateBlock && progress < 1) {
             self.imageProgressUpdateBlock(progress);
         }
         
         if (progress >= 1) {
-            _progressView.hidden = YES;
+            self->_progressView.hidden = YES;
             self.imageRequestID = 0;
         }
     } networkAccessAllowed:YES];
@@ -333,8 +362,8 @@
         [_playButton removeFromSuperview];
     }
     _playButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_playButton setImage:[UIImage imageNamedFromMyBundle:@"MMVideoPreviewPlay"] forState:UIControlStateNormal];
-    [_playButton setImage:[UIImage imageNamedFromMyBundle:@"MMVideoPreviewPlayHL"] forState:UIControlStateHighlighted];
+    [_playButton setImage:[UIImage tz_imageNamedFromMyBundle:@"MMVideoPreviewPlay"] forState:UIControlStateNormal];
+    [_playButton setImage:[UIImage tz_imageNamedFromMyBundle:@"MMVideoPreviewPlayHL"] forState:UIControlStateHighlighted];
     [_playButton addTarget:self action:@selector(playButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_playButton];
 }
@@ -353,17 +382,17 @@
     }
     
     [[TZImageManager manager] getPhotoWithAsset:self.model.asset completion:^(UIImage *photo, NSDictionary *info, BOOL isDegraded) {
-        _cover = photo;
+        self->_cover = photo;
     }];
     [[TZImageManager manager] getVideoWithAsset:self.model.asset completion:^(AVPlayerItem *playerItem, NSDictionary *info) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            _player = [AVPlayer playerWithPlayerItem:playerItem];
-            _playerLayer = [AVPlayerLayer playerLayerWithPlayer:_player];
-            _playerLayer.backgroundColor = [UIColor blackColor].CGColor;
-            _playerLayer.frame = self.bounds;
-            [self.layer addSublayer:_playerLayer];
+            self->_player = [AVPlayer playerWithPlayerItem:playerItem];
+            self->_playerLayer = [AVPlayerLayer playerLayerWithPlayer:self->_player];
+            self->_playerLayer.backgroundColor = [UIColor blackColor].CGColor;
+            self->_playerLayer.frame = self.bounds;
+            [self.layer addSublayer:self->_playerLayer];
             [self configPlayButton];
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pausePlayerAndShowNaviBar) name:AVPlayerItemDidPlayToEndTimeNotification object:_player.currentItem];
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pausePlayerAndShowNaviBar) name:AVPlayerItemDidPlayToEndTimeNotification object:self->_player.currentItem];
         });
     }];
 }
@@ -387,7 +416,7 @@
         if (currentTime.value == durationTime.value) [_player.currentItem seekToTime:CMTimeMake(0, 1)];
         [_player play];
         [_playButton setImage:nil forState:UIControlStateNormal];
-        if (iOS7Later) [UIApplication sharedApplication].statusBarHidden = YES;
+        [UIApplication sharedApplication].statusBarHidden = YES;
         if (self.singleTapGestureBlock) {
             self.singleTapGestureBlock();
         }
@@ -399,7 +428,7 @@
 - (void)pausePlayerAndShowNaviBar {
     if (_player.rate != 0.0) {
         [_player pause];
-        [_playButton setImage:[UIImage imageNamedFromMyBundle:@"MMVideoPreviewPlay"] forState:UIControlStateNormal];
+        [_playButton setImage:[UIImage tz_imageNamedFromMyBundle:@"MMVideoPreviewPlay"] forState:UIControlStateNormal];
         if (self.singleTapGestureBlock) {
             self.singleTapGestureBlock();
         }
@@ -419,7 +448,8 @@
     _previewView = [[TZPhotoPreviewView alloc] initWithFrame:CGRectZero];
     __weak typeof(self) weakSelf = self;
     [_previewView setSingleTapGestureBlock:^{
-        [weakSelf signleTapAction];
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        [strongSelf signleTapAction];
     }];
     [self addSubview:_previewView];
 }

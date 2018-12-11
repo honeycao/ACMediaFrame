@@ -3,10 +3,6 @@ use_frameworks!
 
 target "ACMediaFrameExample" do
 
-   pod 'TZImagePickerController'
-
-   pod 'MWPhotoBrowser'
-   
-   pod 'ACAlertController'
+   pod 'TZImagePickerController', '~> 3.1.2'
 
 end

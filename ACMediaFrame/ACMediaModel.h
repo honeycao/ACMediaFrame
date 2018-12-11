@@ -1,37 +1,61 @@
 //
 //  ACMediaModel.h
 //
-//  Version: 2.0.4.
-//  Created by ArthurCao<https://github.com/honeycao> on 2016/12/25.
-//  Update: 2017/12/27.
+//  Created by caoyq on 2018/11/26.
+//  Copyright © 2018 AllenCao. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import <Photos/Photos.h>
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface ACMediaModel : NSObject
 
-/** 媒体名字 */
-@property (nonatomic, copy) NSString *name;
-
-/** 媒体上传格式 图片是NSData，视频主要是路径名，也有NSData */
-@property (nonatomic, strong) id uploadType;
-
-//兼容 MWPhotoBrowser 的附加属性
-
-/** 媒体照片 */
-@property (nonatomic, strong) UIImage *image;
-
-/** url string image */
-@property (nonatomic, copy) NSString *imageUrlString;
-
-/** iOS8 之后的媒体属性 */
+///文件名
+@property (nonatomic, strong) NSString *name;
+///二进制文件数据
+@property (nonatomic, strong) NSData *data;
 @property (nonatomic, strong) PHAsset *asset;
 
-/** 是否属于可播放的视频类型 */
-@property (nonatomic, assign) BOOL isVideo;
+///原始图片
+@property (nonatomic, strong) UIImage *originalImage;
 
-/** 视频的URL */
-@property (nonatomic, strong) NSURL *mediaURL;
+///视频URL
+@property (nonatomic, strong) NSURL *videoURL;
+///视频封面图
+@property (nonatomic, strong) UIImage *coverImage;
+
+#pragma mark - methods
+
+///处理 UIImagePickerControllerDelegate 得到的数据
++ (instancetype)mediaInfoWithDict: (NSDictionary *)dict;
+
+///处理 TZImagePickerControllerDelegate 中得到的图片与gif
++ (instancetype)imageInfoWithAsset: (PHAsset *)asset image: (UIImage *)image;
+///处理 TZImagePickerControllerDelegate 中得到的视频
++ (void)videoInfoWithAsset: (PHAsset *)asset coverImage: (UIImage *)coverImage completion: (void(^)(ACMediaModel *model))completion;
 
 @end
+
+@interface ACMediaModel (Tool)
+
+///获取图片二进制数据
++ (NSData *)imageDataWithImage: (UIImage *)image;
+///获取视频二进制数据
++ (void)videoDataWithAsset: (PHAsset *)asset completion: (void(^)(NSData *data, NSURL *videoURL))completion;
+
+///获取图片名
++ (NSString *)imageNameWithAsset: (PHAsset *)asset;
+///获取视频名
++ (NSString *)videoNameWithAsset: (PHAsset *)asset;
+
+///获取视频封面图
++ (UIImage *)coverImageWithVideoURL: (NSURL *)videoURL;
+
+///获取修正方向后的图片
++ (UIImage *)fixOrientation:(UIImage *)aImage;
+
+@end
+
+NS_ASSUME_NONNULL_END

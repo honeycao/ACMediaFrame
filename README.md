@@ -13,7 +13,7 @@
 
 当前版本的区分
 
-* 3.0.0 之前版本，是提供媒体库选择与展示，具体看  [before 3.0.0 README]()
+* 3.0.0 之前版本，是提供媒体库选择与展示，具体看  [before 3.0.0 README](https://github.com/honeycao/ACMediaFrame/blob/master/before%203.0.0%20README.md)
 * 3.0.0 版本，只提供媒体库的选择，相比之前更精简，自定义性更强，可自由组合。
 * 后续 会继续支持展示功能等。。。
 
@@ -35,7 +35,7 @@ pod 'ACMediaFrame'
 #import "ACMediaPickerManager.h"
 ```
 
-需要之前的展示与选择功能，可以使用 2.0.5 版本，同时参考  [before 3.0.0 README]() 进行使用。
+需要之前的展示与选择功能，可以使用 2.0.5 版本，同时参考  [before 3.0.0 README](https://github.com/honeycao/ACMediaFrame/blob/master/before%203.0.0%20README.md) 进行使用。
 ```
 pod 'ACMediaFrame', '~> 2.0.5'
 ```

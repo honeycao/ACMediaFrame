@@ -6,7 +6,6 @@
 //
 
 #import "ACMediaModel.h"
-#import "TZImageManager.h"
 
 @implementation ACMediaModel
 
@@ -29,7 +28,7 @@
         model.name = [self videoNameWithAsset:asset];
         model.data = [NSData dataWithContentsOfURL:videoURL];
         model.videoURL = videoURL;
-        model.coverImage = [self coverImageWithVideoURL:videoURL];
+        model.image = [self coverImageWithVideoURL:videoURL];
     }else if ([mediaType isEqualToString:@"public.image"]) {
         UIImage * image = [dict objectForKey:UIImagePickerControllerEditedImage];
         //如果 picker 没有设置可编辑，那么image 为 nil
@@ -37,8 +36,8 @@
             image = [dict objectForKey:UIImagePickerControllerOriginalImage];
         }
         model.name = [self imageNameWithAsset:asset];
-        model.originalImage = [self fixOrientation:image];
-        model.data = [self imageDataWithImage:model.originalImage];
+        model.image = [self fixOrientation:image];
+        model.data = [self imageDataWithImage:model.image];
     }
     
     return model;
@@ -51,7 +50,7 @@
     model.asset = asset;
     model.data = [self imageDataWithImage:image];
     model.name = [self imageNameWithAsset:asset];
-    model.originalImage = image;
+    model.image = image;
     return model;
 }
 
@@ -60,7 +59,7 @@
     ACMediaModel *model = [[ACMediaModel alloc] init];
     model.asset = asset;
     model.name = [self videoNameWithAsset:asset];
-    model.coverImage = coverImage;
+    model.image = coverImage;
     
     [self videoDataWithAsset:asset completion:^(NSData * _Nonnull data, NSURL * _Nonnull videoURL) {
         model.data = data;

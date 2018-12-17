@@ -8,8 +8,6 @@
 #import <UIKit/UIKit.h>
 #import <Photos/Photos.h>
 
-NS_ASSUME_NONNULL_BEGIN
-
 @interface ACMediaModel : NSObject
 
 ///文件名
@@ -18,13 +16,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSData *data;
 @property (nonatomic, strong) PHAsset *asset;
 
-///原始图片
-@property (nonatomic, strong) UIImage *originalImage;
+///图片、gif以及视频的封面图
+@property (nonatomic, strong) UIImage *image;
 
-///视频URL
+///视频URL(单选视频会有，多选的话只有data)
 @property (nonatomic, strong) NSURL *videoURL;
-///视频封面图
-@property (nonatomic, strong) UIImage *coverImage;
 
 #pragma mark - methods
 
@@ -57,5 +53,3 @@ NS_ASSUME_NONNULL_BEGIN
 + (UIImage *)fixOrientation:(UIImage *)aImage;
 
 @end
-
-NS_ASSUME_NONNULL_END

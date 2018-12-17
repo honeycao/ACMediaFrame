@@ -47,7 +47,7 @@
     self.mgr.didFinishPickingBlock = ^(NSArray<ACMediaModel *> * _Nonnull list) {
         weakSelf.selectedArray = list;
         ACMediaModel *model = list.firstObject;
-        weakSelf.imageView.image = model.coverImage ? model.coverImage : model.originalImage;
+        weakSelf.imageView.image = model.image;
     };
     [self.mgr picker];
     

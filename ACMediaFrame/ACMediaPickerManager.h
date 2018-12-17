@@ -36,7 +36,7 @@ typedef NS_ENUM(NSInteger, ACMediaPickerSource) {
 @property (nonatomic, assign) NSInteger maxImageSelected;
 ///是否允许选择图片，default is YES.
 @property (nonatomic, assign) BOOL allowPickingImage;
-///是否允许选择gif，default is NO.
+///是否允许选择gif，gif是伴随图片一起出现的，default is NO.
 @property (nonatomic, assign) BOOL allowPickingGif;
 ///是否允许选择视频，default is NO.
 @property (nonatomic, assign) BOOL allowPickingVideo;
@@ -49,6 +49,8 @@ typedef NS_ENUM(NSInteger, ACMediaPickerSource) {
 @property (nonatomic, assign) BOOL allowTakePicture;
 /** 是否允许 相册中出现选择原图按钮. default is NO. */
 @property (nonatomic, assign) BOOL allowPickingOriginalPhoto;
+///是否允许多选视频/gif，也受maxImageSelected限制，default is NO.
+@property (nonatomic, assign) BOOL allowPickingMultipleVideo;
 
 /**
  * 打开相册时：是否允许在视频列表中出现拍摄视频的按钮. defalut is NO。

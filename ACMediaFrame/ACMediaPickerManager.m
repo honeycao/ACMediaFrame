@@ -133,6 +133,8 @@ static NSString *const str_openCamera_error = @"设备不能打开相机";
     imagePicker.allowTakePicture = self.allowTakePicture;
     imagePicker.allowTakeVideo = self.allowTakeVideo;
     imagePicker.allowPickingOriginalPhoto = self.allowPickingOriginalPhoto;
+    imagePicker.allowPickingMultipleVideo = self.allowPickingMultipleVideo;
+    imagePicker.videoMaximumDuration = self.videoMaximumDuration;
     
     //外观
     if (self.naviBgColor) imagePicker.naviBgColor = self.naviBgColor;
@@ -156,6 +158,7 @@ static NSString *const str_openCamera_error = @"设备不能打开相机";
 
 #pragma mark - TZImagePickerControllerDelegate
 
+///单个/多个图片、多个gif、多个视频、三者混合选取的回调
 - (void)imagePickerController:(TZImagePickerController *)picker
        didFinishPickingPhotos:(NSArray<UIImage *> *)photos
                  sourceAssets:(NSArray *)assets
@@ -171,6 +174,7 @@ static NSString *const str_openCamera_error = @"设备不能打开相机";
     }
 }
 
+///单个视频选取回调
 - (void)imagePickerController:(TZImagePickerController *)picker
         didFinishPickingVideo:(UIImage *)coverImage
                  sourceAssets:(id)asset
@@ -182,6 +186,7 @@ static NSString *const str_openCamera_error = @"设备不能打开相机";
     }];
 }
 
+///单个gif选取回调
 - (void)imagePickerController:(TZImagePickerController *)picker didFinishPickingGifImage:(UIImage *)animatedImage sourceAssets:(PHAsset *)asset
 {
     ACMediaModel *model = [ACMediaModel imageInfoWithAsset:asset image:animatedImage];

@@ -8,8 +8,6 @@
 #import <UIKit/UIKit.h>
 #import "ACMediaModel.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
 ///来源
 typedef NS_ENUM(NSInteger, ACMediaPickerSource) {
     ACMediaPickerSourceFromAll = 0,   /**< 选择相册或相机 */
@@ -17,23 +15,10 @@ typedef NS_ENUM(NSInteger, ACMediaPickerSource) {
     ACMediaPickerSourceFromCamera     /**< 打开相机 */
 };
 
-///相册可供选择的资源类型
-typedef NS_ENUM(NSInteger, ACMediaAlbumType) {
-    ACMediaAlbumTypeAll,     /**< 可选择图片与视频 */
-    ACMediaAlbumTypePhoto,   /**< 只选择图片 */
-    ACMediaAlbumTypeVideo    /**< 只选择视频 */
-};
-
-///相机可供自拍摄的资源类型
-typedef NS_ENUM(NSInteger, ACMediaCameraType) {
-    ACMediaCameraTypePhoto = 0,   /**< 拍照 */
-    ACMediaCameraTypeVideo,       /**< 录制视频 */
-};
-
 /**
- * 调用相机或相册，并统一处理选中的图片、gif、视频 功能的封装.
+ * 调用相机或相册，并统一处理选中的图片、gif、视频 功能的封装。根据属性自定义功能。
  *
- * 1. 初始化 ACMediaPickerManager 的时候，在 @interface 下定义该属性的话就可以直接 init方法 初始化，不定义属性就采用 manager单例初始化，避免delegate失效。
+ * 1. 先在 @interface 下定义该属性，再用 init 初始化，避免 delegate 失效。
  *
  * 2. 设置 pickerSource 为 ACMediaPickerSourceFromAll，调用 picker 方法会弹出 UIAlertController 进行选择，如果想自定义弹框样式，那么可以不调用 picker 方法，而是手动选择 openCustomAlbum/openSystemAlbum 等方法。
  *
@@ -47,60 +32,70 @@ typedef NS_ENUM(NSInteger, ACMediaCameraType) {
  * 默认为 ACMediaPickerSourceAll，会弹出一个UIAlertController进行选择；如果为其他两种则不会弹框，直接打开相册或相机。
  */
 @property (nonatomic, assign) ACMediaPickerSource pickerSource;
-
-/**
- * 打开相册后，可选择的媒体文件类型. 默认是能选择图片与视频.
- */
-@property (nonatomic, assign) ACMediaAlbumType albumType;
-
-/** 打开相机后，自定义的操作. 默认是拍照. */
-@property (nonatomic, assign) ACMediaCameraType cameraType;
-
-/**
- * 可选择的最大个数(视频与图片). default is 9.
- */
+/** 可选择的最大个数(视频与图片). default is 9. */
 @property (nonatomic, assign) NSInteger maxImageSelected;
+///是否允许选择图片，default is YES.
+@property (nonatomic, assign) BOOL allowPickingImage;
+///是否允许选择gif，default is NO.
+@property (nonatomic, assign) BOOL allowPickingGif;
+///是否允许选择视频，default is NO.
+@property (nonatomic, assign) BOOL allowPickingVideo;
 
 /**
- * 是否允许 在相册中出现拍照按钮. default is NO.
+ * 打开相册时：是否允许在图片列表中出现拍照按钮. default is NO.
+ *
+ * 打开相机时：是否是拍照模式。
  */
 @property (nonatomic, assign) BOOL allowTakePicture;
+/** 是否允许 相册中出现选择原图按钮. default is NO. */
+@property (nonatomic, assign) BOOL allowPickingOriginalPhoto;
 
 /**
- * 是否允许 相册中出现选择原图按钮. default is NO.
+ * 打开相册时：是否允许在视频列表中出现拍摄视频的按钮. defalut is NO。
+ *
+ * 打开相机时：是否是录像模式。
  */
-@property (nonatomic, assign) BOOL allowPickingOriginalPhoto;
+@property (nonatomic, assign) BOOL allowTakeVideo;
+///录像最长时间，默认60s
+@property (nonatomic, assign) CGFloat videoMaximumDuration;
 
 /**
  * 已选择的图片、视频数组。
  *
- * 如果下一次选择不需要记录上一次的结果，可以不用传值；
- * 反之就需要进行传值。
+ * 如果下一次选择不需要记录上一次的结果，可以不用传值，反之就需要进行传值。
  *
  * 数组的值在 didFinishPickingBlock 返回的list范围内。
  */
 @property (nonatomic, strong) NSArray<ACMediaModel *> *seletedMediaArray;
-
-/**
- * 选择文件结束后的回调。调用方可以进行保存，方便下次给 seletedMediaArray 赋值。
- */
+/** 选择文件结束后的回调。调用方可以进行保存，方便下次给 seletedMediaArray 赋值。*/
 @property (nonatomic, copy) void(^didFinishPickingBlock)(NSArray<ACMediaModel *> *list);
 
-#pragma mark - methods
+/******* 外观属性 *******/
 
-+ (instancetype)manager;
+///默认是 UIStatusBarStyleLightContent
+@property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
+@property (nonatomic, strong) UIColor *naviBgColor;
+@property (nonatomic, strong) UIColor *naviTitleColor;
+@property (nonatomic, strong) UIFont *naviTitleFont;
+@property (nonatomic, strong) UIColor *barItemTextColor;
+@property (nonatomic, strong) UIFont *barItemTextFont;
+
+#pragma mark - Methods
 
 ///调用选择控制器。相册默认调用openCustomAlbum，相机默认调用openSystemCamera
 - (void)picker;
 
-/**
- * 自定义相册，支持多选。包含相册权限判定。
- */
+/// 自定义相册，支持多选，包含相册权限判定。
 - (void)openCustomAlbum;
 ///系统相册，只能单选
 - (void)openSystemAlbum;
+
+/**
+ * 打开系统相机。默认拍照。
+ *
+ * 属性 allowTakePicture 为 YES，表示拍照，优先级最高。
+ * 属性 allowTakeVideo 为 YES，表示录像。
+ */
 - (void)openSystemCamera;
 
 @end
-
-NS_ASSUME_NONNULL_END

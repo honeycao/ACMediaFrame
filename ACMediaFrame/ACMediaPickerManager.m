@@ -24,21 +24,15 @@ static NSString *const str_openCamera_error = @"设备不能打开相机";
 
 #pragma mark - init
 
-+ (instancetype)manager
-{
-    static ACMediaPickerManager *instance = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        instance = [[self alloc] init];
-    });
-    return instance;
-}
-
 - (instancetype)init
 {
     self = [super init];
     if (self) {
         self.currentViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+        self.statusBarStyle = UIStatusBarStyleLightContent;
+        self.maxImageSelected = 9;
+        self.videoMaximumDuration = 60.0;
+        self.allowPickingImage = YES;
     }
     return self;
 }
@@ -75,6 +69,7 @@ static NSString *const str_openCamera_error = @"设备不能打开相机";
 
 - (void)openCustomAlbum
 {
+    //组装所有已选的asset
     NSMutableArray *seletedAssets = [NSMutableArray array];
     for (ACMediaModel *model in self.seletedMediaArray) {
         if (model.asset) {
@@ -119,37 +114,33 @@ static NSString *const str_openCamera_error = @"设备不能打开相机";
 
 - (void)configureCameraPicker: (UIImagePickerController *)picker
 {
-    if (self.cameraType == ACMediaCameraTypePhoto) {
-        picker.allowsEditing = YES;
-    }else {
+    if (self.allowTakeVideo && !self.allowTakePicture) { //录像
         NSArray * mediaTypes =[UIImagePickerController  availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera];
         picker.mediaTypes = mediaTypes;
+        picker.videoMaximumDuration = self.videoMaximumDuration;
         picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModeVideo;
+    }else { //拍照
+        picker.allowsEditing = YES;
     }
 }
 
 - (void)configureTZImagePicker: (TZImagePickerController *)imagePicker
 {
-    imagePicker.allowTakePicture = NO;
-    imagePicker.allowTakeVideo = NO;
+    imagePicker.allowPickingImage = self.allowPickingImage;
+    imagePicker.allowPickingVideo = self.allowPickingVideo;
+    imagePicker.allowPickingGif = self.allowPickingGif;
+    
+    imagePicker.allowTakePicture = self.allowTakePicture;
+    imagePicker.allowTakeVideo = self.allowTakeVideo;
     imagePicker.allowPickingOriginalPhoto = self.allowPickingOriginalPhoto;
     
-    BOOL pickingImage = YES;
-    BOOL pickingVideo = YES;
-    switch (self.albumType) {
-        case ACMediaAlbumTypePhoto:
-            pickingVideo = NO;
-            break;
-        case ACMediaAlbumTypeVideo:
-            pickingImage = NO;
-            break;
-        default:
-            break;
-    }
-    imagePicker.allowPickingImage = pickingImage;
-    imagePicker.allowPickingVideo = pickingVideo;
-    // gif as image.
-    imagePicker.allowPickingGif = pickingImage;
+    //外观
+    if (self.naviBgColor) imagePicker.naviBgColor = self.naviBgColor;
+    if (self.naviTitleColor) imagePicker.naviTitleColor = self.naviTitleColor;
+    if (self.naviTitleFont) imagePicker.naviTitleFont = self.naviTitleFont;
+    if (self.barItemTextColor) imagePicker.barItemTextColor = self.barItemTextColor;
+    if (self.barItemTextFont) imagePicker.barItemTextFont = self.barItemTextFont;
+    imagePicker.statusBarStyle = self.statusBarStyle;
 }
 
 #pragma mark - UIImagePickerControllerDelegate

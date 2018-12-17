@@ -29,7 +29,16 @@
 - (IBAction)didClickButtonAction:(id)sender {
     
     self.mgr = [[ACMediaPickerManager alloc] init];
-    self.mgr.albumType = ACMediaAlbumTypeAll;
+    //外观
+    self.mgr.naviBgColor = [UIColor whiteColor];
+    self.mgr.naviTitleColor = [UIColor blackColor];
+    self.mgr.naviTitleFont = [UIFont boldSystemFontOfSize:18.0f];
+    self.mgr.barItemTextColor = [UIColor blackColor];
+    self.mgr.barItemTextFont = [UIFont systemFontOfSize:15.0f];
+    self.mgr.statusBarStyle = UIStatusBarStyleDefault;
+    
+    self.mgr.allowPickingImage = YES;
+    self.mgr.allowPickingGif = YES;
     self.mgr.maxImageSelected = 2;
     if (self.selectedArray.count > 0) {
         self.mgr.seletedMediaArray = self.selectedArray;

@@ -14,8 +14,7 @@
 当前版本的区分
 
 * 3.0.0 之前版本，是提供媒体库选择与展示，具体看  [before 3.0.0 README](https://github.com/honeycao/ACMediaFrame/blob/master/before%203.0.0%20README.md)
-* 3.0.0 之后版本，只提供媒体库的选择，相比之前更精简，自定义性更强，可自由组合。
-* 后续 会继续支持展示功能等。。。
+* 3.0.0 之后版本，将 UI 与核心功能进行拆分，可自由选择（预览方面暂时比较简单，可自定制）
 
 在 3.0.0 之前 存在一个 MWPhotoBrowser 第三方库，该库已不再更新所以对使用者限制很大，故从3.0.0开始直接移除无关的第三方库。
 
@@ -25,20 +24,34 @@
 
 ## <a id="used"></a>使用
 
-系统要求：iOS 8.0  or later
+系统要求：`iOS 8.0  or later`
 
-最新版本
+
 ```
+// 引用 UI + Core
 pod 'ACMediaFrame'
 
+// 单独引用 Core，不包括 UI
+pod 'ACMediaFrame/Core'
+
 //添加使用头文件
-#import "ACMediaPickerManager.h"
+#import <ACMediaFrame/ACMediaPickerManager.h>
+#import <ACMediaFrame/ACMediaDisplayView.h>
 ```
 
 需要之前的展示与选择功能，可以使用 2.0.5 版本，同时参考  [before 3.0.0 README](https://github.com/honeycao/ACMediaFrame/blob/master/before%203.0.0%20README.md) 进行使用。
 ```
 pod 'ACMediaFrame', '~> 2.0.5'
 ```
+
+
+
+**具体使用可参考 demo：**
+
+- `CoreFuncViewController`：核心功能 Core 的单独使用方式示例
+- `UIFrameViewController`：使用 Core + UI 组合的示例
+
+
 
 ---
 
@@ -47,17 +60,15 @@ pod 'ACMediaFrame', '~> 2.0.5'
 * 封装系统相册、相机方法以及自定义的相册
 * 统一处理选择的数据；图片、gif、视频
 * 自定义使用系统或自定义相册等
+* 提供 类九宫格 + 预览 + 选取图片/视频的 UI 功能
 
 调用者无需处理选择的媒体文件，使用本框架直接可以得到想要的数据（都封装好了）
-
-时间紧迫外加功能不算复杂就只写了一个简单的demo试用，其他组合信息可以看`ACMediaPickerManager.h` 属性。
-
-后续会继续添加展示功能。
 
 **新版本临时提交，有bug或需求等可以多多告诉我，谢谢。**
 
 ## <a id="version"></a>版本更新
 
+* `3.1.0`：新增 UI 库，同时拆分为两个文件夹 UI 与 Core，支持自由选择需要的功能
 * `3.0.1`：完善传参属性，更方便自定义
 
 - `3.0.0`：全面整改，当前版本已不提供视图，只有功能，重新对选择图片、视频的封装

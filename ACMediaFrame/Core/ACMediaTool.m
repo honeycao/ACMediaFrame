@@ -1,16 +1,30 @@
 //
-//  ACMediaModel.m
+//  ACMediaTool.m
 //
-//  Created by caoyq on 2018/11/26.
-//  Copyright © 2018 AllenCao. All rights reserved.
+//  Created by caoyq on 2021/4/21.
+//  Copyright © 2021 ArthurCao. All rights reserved.
 //
 
-#import "ACMediaModel.h"
+#import "ACMediaTool.h"
 
-@implementation ACMediaModel
+@implementation ACMediaTool
 
-+ (instancetype)mediaInfoWithDict: (NSDictionary *)dict
-{
++ (UIViewController *)topNavigationController {
+    UIViewController *topVc = [UIApplication sharedApplication].keyWindow.rootViewController;
+    if ([topVc isKindOfClass:[UITabBarController class]]) {
+        topVc = ((UITabBarController *)topVc).selectedViewController;
+    }
+    NSArray *vcs = nil;
+    if ([topVc isKindOfClass:[UINavigationController class]]) {
+        vcs = ((UINavigationController *)topVc).viewControllers;
+    }else {
+        vcs = topVc.navigationController.viewControllers;
+    }
+    return vcs ? vcs.lastObject : nil;
+}
+
+// dict -> model
++ (ACMediaModel *)mediaInfoWithDict: (NSDictionary *)dict {
     ACMediaModel *model = [[ACMediaModel alloc] init];
     
     NSString *mediaType = [dict objectForKey:UIImagePickerControllerMediaType]; //UIImagePickerControllerPHAsset
@@ -22,6 +36,7 @@
         asset = [result firstObject];
     }
     model.asset = asset;
+    model.mediaType = [self getAssetType:asset];
     
     if ([mediaType isEqualToString:@"public.movie"]) {
         NSURL *videoURL = [dict objectForKey:UIImagePickerControllerMediaURL];
@@ -43,23 +58,23 @@
     return model;
 }
 
-+ (instancetype)imageInfoWithAsset: (PHAsset *)asset image: (UIImage *)image
-{
+// asset -> model
++ (ACMediaModel *)imageInfoWithAsset: (PHAsset *)asset image: (UIImage *)image {
     ACMediaModel *model = [[ACMediaModel alloc] init];
-    
     model.asset = asset;
+    model.mediaType = [self getAssetType:asset];
     model.data = [self imageDataWithImage:image];
     model.name = [self imageNameWithAsset:asset];
     model.image = image;
     return model;
 }
 
-+ (void)videoInfoWithAsset: (PHAsset *)asset coverImage: (UIImage *)coverImage completion: (void(^)(ACMediaModel *model))completion
-{
++ (void)videoInfoWithAsset: (PHAsset *)asset coverImage: (UIImage *)coverImage completion: (void(^)(ACMediaModel *model))completion {
     ACMediaModel *model = [[ACMediaModel alloc] init];
     model.asset = asset;
     model.name = [self videoNameWithAsset:asset];
     model.image = coverImage;
+    model.mediaType = ACMediaModelTypeVideo;
     
     [self videoDataWithAsset:asset completion:^(NSData * _Nonnull data, NSURL * _Nonnull videoURL) {
         model.data = data;
@@ -68,14 +83,26 @@
     }];
 }
 
-@end
-
-@implementation ACMediaModel (Tool)
++ (ACMediaModelType)getAssetType:(PHAsset *)asset {
+    ACMediaModelType type = ACMediaModelTypePhoto;
+    PHAsset *phAsset = (PHAsset *)asset;
+    if (phAsset.mediaType == PHAssetMediaTypeVideo)      type = ACMediaModelTypeVideo;
+    else if (phAsset.mediaType == PHAssetMediaTypeAudio) type = ACMediaModelTypeAudio;
+    else if (phAsset.mediaType == PHAssetMediaTypeImage) {
+        if (@available(iOS 9.1, *)) {
+            // if (asset.mediaSubtypes == PHAssetMediaSubtypePhotoLive) type = TZAssetModelMediaTypeLivePhoto;
+        }
+        // Gif
+        if ([[phAsset valueForKey:@"filename"] hasSuffix:@"GIF"]) {
+            type = ACMediaModelTypePhotoGif;
+        }
+    }
+    return type;
+}
 
 #pragma mark - data
 
-+ (NSData *)imageDataWithImage: (UIImage *)image
-{
++ (NSData *)imageDataWithImage: (UIImage *)image {
     NSData *imageData = nil;
     if (UIImagePNGRepresentation(image) == nil)
     {
@@ -87,8 +114,7 @@
     return imageData;
 }
 
-+ (void)videoDataWithAsset: (PHAsset *)asset completion: (void(^)(NSData *data, NSURL *videoURL))completion
-{
++ (void)videoDataWithAsset: (PHAsset *)asset completion: (void(^)(NSData *data, NSURL *videoURL))completion {
     PHVideoRequestOptions *option = [[PHVideoRequestOptions alloc] init];
     option.networkAccessAllowed = YES;
     [[PHImageManager defaultManager] requestPlayerItemForVideo:asset options:option resultHandler:^(AVPlayerItem *playerItem, NSDictionary *info) {
@@ -102,18 +128,15 @@
 
 #pragma mark - name
 
-+ (NSString *)imageNameWithAsset: (PHAsset *)asset
-{
++ (NSString *)imageNameWithAsset: (PHAsset *)asset {
     return [self mediaNameWithAsset:asset suffixName:@"IMG.PNG"];
 }
 
-+ (NSString *)videoNameWithAsset: (PHAsset *)asset
-{
++ (NSString *)videoNameWithAsset: (PHAsset *)asset {
     return [self mediaNameWithAsset:asset suffixName:@"Video.MOV"];
 }
 
-+ (NSString *)mediaNameWithAsset: (PHAsset *)asset suffixName: (NSString *)suffixName
-{
++ (NSString *)mediaNameWithAsset: (PHAsset *)asset suffixName: (NSString *)suffixName {
     //default user current time as name.
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyyMMddHHmmss"];
@@ -132,8 +155,7 @@
 
 #pragma mark - image
 
-+ (UIImage *)coverImageWithVideoURL: (NSURL *)videoURL
-{
++ (UIImage *)coverImageWithVideoURL: (NSURL *)videoURL {
     AVURLAsset *urlAsset = [AVURLAsset assetWithURL:videoURL];
     AVAssetImageGenerator *imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:urlAsset];
     imageGenerator.appliesPreferredTrackTransform = YES;
@@ -158,8 +180,7 @@
     return image;
 }
 
-+ (UIImage *)fixOrientation:(UIImage *)aImage
-{
++ (UIImage *)fixOrientation:(UIImage *)aImage {
     if (aImage.imageOrientation == UIImageOrientationUp)
         return aImage;
     

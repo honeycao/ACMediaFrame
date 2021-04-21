@@ -49,7 +49,7 @@ typedef NS_ENUM(NSInteger, ACMediaPickerSource) {
 @property (nonatomic, assign) BOOL allowTakePicture;
 /** 是否允许 相册中出现选择原图按钮. default is NO. */
 @property (nonatomic, assign) BOOL allowPickingOriginalPhoto;
-///是否允许多选视频/gif，也受maxImageSelected限制，default is NO.
+/// 是否允许多选视频/gif，也受maxImageSelected限制，default is NO.
 @property (nonatomic, assign) BOOL allowPickingMultipleVideo;
 
 /**
@@ -69,6 +69,8 @@ typedef NS_ENUM(NSInteger, ACMediaPickerSource) {
  * 数组的值在 didFinishPickingBlock 返回的list范围内。
  */
 @property (nonatomic, strong) NSArray<ACMediaModel *> *seletedMediaArray;
+/** 当前的控制器，defalut is 栈顶控制器 */
+@property (nonatomic, weak) UIViewController *currentViewController;
 /** 选择文件结束后的回调。调用方可以进行保存，方便下次给 seletedMediaArray 赋值。*/
 @property (nonatomic, copy) void(^didFinishPickingBlock)(NSArray<ACMediaModel *> *list);
 

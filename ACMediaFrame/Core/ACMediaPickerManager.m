@@ -7,6 +7,7 @@
 
 #import "ACMediaPickerManager.h"
 #import "TZImagePickerController.h"
+#import "ACMediaTool.h"
 
 static NSString *const str_openAlbum  = @"打开本地相册";
 static NSString *const str_openCamera = @"打开相机";
@@ -15,17 +16,13 @@ static NSString *const str_openCamera_error = @"设备不能打开相机";
 
 @interface ACMediaPickerManager()<UIImagePickerControllerDelegate, UINavigationControllerDelegate, TZImagePickerControllerDelegate>
 
-/** 当前的控制器 */
-@property (nonatomic, strong) UIViewController *currentViewController;
-
 @end
 
 @implementation ACMediaPickerManager
 
 #pragma mark - init
 
-- (instancetype)init
-{
+- (instancetype)init {
     self = [super init];
     if (self) {
         self.currentViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
@@ -33,14 +30,14 @@ static NSString *const str_openCamera_error = @"设备不能打开相机";
         self.maxImageSelected = 9;
         self.videoMaximumDuration = 60.0;
         self.allowPickingImage = YES;
+        self.currentViewController = [ACMediaTool topNavigationController];
     }
     return self;
 }
 
 #pragma mark - public
 
-- (void)picker
-{
+- (void)picker {
     switch (self.pickerSource) {
         case ACMediaPickerSourceFromAlbum:
             [self openCustomAlbum];
@@ -67,8 +64,7 @@ static NSString *const str_openCamera_error = @"设备不能打开相机";
     }
 }
 
-- (void)openCustomAlbum
-{
+- (void)openCustomAlbum {
     //组装所有已选的asset
     NSMutableArray *seletedAssets = [NSMutableArray array];
     for (ACMediaModel *model in self.seletedMediaArray) {
@@ -83,8 +79,7 @@ static NSString *const str_openCamera_error = @"设备不能打开相机";
     [self.currentViewController presentViewController:imagePickController animated:YES completion:nil];
 }
 
-- (void)openSystemCamera
-{
+- (void)openSystemCamera {
     UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypeCamera;
     
     if ([UIImagePickerController isSourceTypeAvailable: sourceType]){
@@ -98,8 +93,7 @@ static NSString *const str_openCamera_error = @"设备不能打开相机";
     }
 }
 
-- (void)openSystemAlbum
-{
+- (void)openSystemAlbum {
     UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     if ([UIImagePickerController isSourceTypeAvailable:sourceType]) {
         UIImagePickerController *picker = [[UIImagePickerController alloc] init];
@@ -112,8 +106,7 @@ static NSString *const str_openCamera_error = @"设备不能打开相机";
 
 #pragma mark - private
 
-- (void)configureCameraPicker: (UIImagePickerController *)picker
-{
+- (void)configureCameraPicker: (UIImagePickerController *)picker {
     if (self.allowTakeVideo && !self.allowTakePicture) { //录像
         NSArray * mediaTypes =[UIImagePickerController  availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera];
         picker.mediaTypes = mediaTypes;
@@ -124,8 +117,7 @@ static NSString *const str_openCamera_error = @"设备不能打开相机";
     }
 }
 
-- (void)configureTZImagePicker: (TZImagePickerController *)imagePicker
-{
+- (void)configureTZImagePicker: (TZImagePickerController *)imagePicker {
     imagePicker.allowPickingImage = self.allowPickingImage;
     imagePicker.allowPickingVideo = self.allowPickingVideo;
     imagePicker.allowPickingGif = self.allowPickingGif;
@@ -147,9 +139,8 @@ static NSString *const str_openCamera_error = @"设备不能打开相机";
 
 #pragma mark - UIImagePickerControllerDelegate
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
-{
-    ACMediaModel *model = [ACMediaModel mediaInfoWithDict:info];
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
+    ACMediaModel *model = [ACMediaTool mediaInfoWithDict:info];
     if (self.didFinishPickingBlock) {
         self.didFinishPickingBlock(@[model]);
     }
@@ -158,15 +149,14 @@ static NSString *const str_openCamera_error = @"设备不能打开相机";
 
 #pragma mark - TZImagePickerControllerDelegate
 
-///单个/多个图片、多个gif、多个视频、三者混合选取的回调
+// 单个/多个图片、多个gif、多个视频、三者混合选取的回调
 - (void)imagePickerController:(TZImagePickerController *)picker
        didFinishPickingPhotos:(NSArray<UIImage *> *)photos
                  sourceAssets:(NSArray *)assets
-        isSelectOriginalPhoto:(BOOL)isSelectOriginalPhoto
-{
+        isSelectOriginalPhoto:(BOOL)isSelectOriginalPhoto {
     NSMutableArray *list = [NSMutableArray array];
     for (NSInteger idx = 0; idx < photos.count; idx++) {
-        ACMediaModel *model = [ACMediaModel imageInfoWithAsset:assets[idx] image:photos[idx]];
+        ACMediaModel *model = [ACMediaTool imageInfoWithAsset:assets[idx] image:photos[idx]];
         [list addObject:model];
     }
     if (self.didFinishPickingBlock) {
@@ -174,22 +164,20 @@ static NSString *const str_openCamera_error = @"设备不能打开相机";
     }
 }
 
-///单个视频选取回调
+// 单个视频选取回调
 - (void)imagePickerController:(TZImagePickerController *)picker
         didFinishPickingVideo:(UIImage *)coverImage
-                 sourceAssets:(id)asset
-{
-    [ACMediaModel videoInfoWithAsset:asset coverImage:coverImage completion:^(ACMediaModel * _Nonnull model) {
+                 sourceAssets:(id)asset {
+    [ACMediaTool videoInfoWithAsset:asset coverImage:coverImage completion:^(ACMediaModel * _Nonnull model) {
         if (self.didFinishPickingBlock) {
             self.didFinishPickingBlock(@[model]);
         }
     }];
 }
 
-///单个gif选取回调
-- (void)imagePickerController:(TZImagePickerController *)picker didFinishPickingGifImage:(UIImage *)animatedImage sourceAssets:(PHAsset *)asset
-{
-    ACMediaModel *model = [ACMediaModel imageInfoWithAsset:asset image:animatedImage];
+// 单个gif选取回调
+- (void)imagePickerController:(TZImagePickerController *)picker didFinishPickingGifImage:(UIImage *)animatedImage sourceAssets:(PHAsset *)asset {
+    ACMediaModel *model = [ACMediaTool imageInfoWithAsset:asset image:animatedImage];
     if (self.didFinishPickingBlock) {
         self.didFinishPickingBlock(@[model]);
     }

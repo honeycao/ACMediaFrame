@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="SoC-2I-Qiv">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -14,68 +12,13 @@
             <objects>
                 <navigationController id="SoC-2I-Qiv" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="q4M-JO-IGy">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
-                    <connections>
-                        <segue destination="1PW-tX-h2i" kind="relationship" relationship="rootViewController" id="dGE-Fd-Fzh"/>
-                    </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rr2-U6-S1M" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-897" y="189"/>
-        </scene>
-        <!--新版功能简单展示-->
-        <scene sceneID="Ljl-0H-dPq">
-            <objects>
-                <viewController id="1PW-tX-h2i" customClass="DemoViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="kGM-Nh-MP1"/>
-                        <viewControllerLayoutGuide type="bottom" id="xEn-QK-oan"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="NID-Ps-mTf">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RAS-kE-1xk">
-                                <rect key="frame" x="137.5" y="268.5" width="100" height="50"/>
-                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="IuQ-rx-sDC"/>
-                                    <constraint firstAttribute="width" constant="100" id="NJp-Vp-EMb"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <state key="normal" title="点击操作">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="didClickButtonAction:" destination="1PW-tX-h2i" eventType="touchUpInside" id="DEB-4M-rRI"/>
-                                </connections>
-                            </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="TUR-P7-DyR">
-                                <rect key="frame" x="112.5" y="368.5" width="150" height="150"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="TUR-P7-DyR" secondAttribute="height" multiplier="1:1" id="3vd-Zy-CDy"/>
-                                    <constraint firstAttribute="width" constant="150" id="lat-cs-sTU"/>
-                                </constraints>
-                            </imageView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="TUR-P7-DyR" firstAttribute="top" secondItem="RAS-kE-1xk" secondAttribute="bottom" constant="50" id="eS3-3q-l0T"/>
-                            <constraint firstItem="RAS-kE-1xk" firstAttribute="centerX" secondItem="NID-Ps-mTf" secondAttribute="centerX" id="guD-r0-LgD"/>
-                            <constraint firstItem="TUR-P7-DyR" firstAttribute="centerX" secondItem="RAS-kE-1xk" secondAttribute="centerX" id="xc0-YK-BZQ"/>
-                            <constraint firstItem="RAS-kE-1xk" firstAttribute="centerY" secondItem="NID-Ps-mTf" secondAttribute="centerY" constant="-40" id="z2E-5Q-A3n"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" title="新版功能简单展示" id="ESI-4v-cTJ"/>
-                    <connections>
-                        <outlet property="imageView" destination="TUR-P7-DyR" id="sne-wa-1dk"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="WTB-Hj-0QZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-172" y="188"/>
         </scene>
     </scenes>
 </document>

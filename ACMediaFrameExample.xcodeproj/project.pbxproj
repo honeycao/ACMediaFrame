@@ -12,9 +12,17 @@
 		370284C81E878740009C1CE7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 370284C61E878740009C1CE7 /* Main.storyboard */; };
 		370284CA1E878740009C1CE7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 370284C91E878740009C1CE7 /* Assets.xcassets */; };
 		370284CD1E878740009C1CE7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 370284CB1E878740009C1CE7 /* LaunchScreen.storyboard */; };
-		37C8BA1221BFB30A006779D6 /* DemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C8BA1121BFB30A006779D6 /* DemoViewController.m */; };
-		37C8BA1721BFB36F006779D6 /* ACMediaPickerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C8BA1421BFB36F006779D6 /* ACMediaPickerManager.m */; };
-		37C8BA1821BFB36F006779D6 /* ACMediaModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C8BA1521BFB36F006779D6 /* ACMediaModel.m */; };
+		371D9B25262EA64600BEE555 /* UIFrameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 371D9B24262EA64600BEE555 /* UIFrameViewController.m */; };
+		371D9B38262ED4B200BEE555 /* RootTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 371D9B37262ED4B200BEE555 /* RootTableViewController.m */; };
+		371D9B3D262ED7BE00BEE555 /* CoreFuncViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 371D9B3B262ED7BE00BEE555 /* CoreFuncViewController.m */; };
+		371D9B3E262ED7BE00BEE555 /* CoreFuncViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 371D9B3C262ED7BE00BEE555 /* CoreFuncViewController.xib */; };
+		371D9B42262FBA8C00BEE555 /* ACMediaFrame.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 371D9B41262FBA8C00BEE555 /* ACMediaFrame.bundle */; };
+		371D9B50262FBBF100BEE555 /* ACMediaDisplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 371D9B45262FBBF100BEE555 /* ACMediaDisplayView.m */; };
+		371D9B51262FBBF100BEE555 /* ACMediaImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 371D9B47262FBBF100BEE555 /* ACMediaImageCell.m */; };
+		371D9B52262FBBF100BEE555 /* ACMediaDisplayConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 371D9B4A262FBBF100BEE555 /* ACMediaDisplayConfig.m */; };
+		371D9B53262FBBF100BEE555 /* ACMediaModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 371D9B4E262FBBF100BEE555 /* ACMediaModel.m */; };
+		371D9B54262FBBF100BEE555 /* ACMediaPickerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 371D9B4F262FBBF100BEE555 /* ACMediaPickerManager.m */; };
+		371D9B59262FCD1500BEE555 /* ACMediaTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 371D9B58262FCD1500BEE555 /* ACMediaTool.m */; };
 		5CE378E03673CB64C5BF190B /* Pods_ACMediaFrameExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0939762BE9B3BF78BE7A2008 /* Pods_ACMediaFrameExample.framework */; };
 /* End PBXBuildFile section */
 
@@ -28,12 +36,26 @@
 		370284C91E878740009C1CE7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		370284CC1E878740009C1CE7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		370284CE1E878740009C1CE7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		37C8BA1021BFB30A006779D6 /* DemoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DemoViewController.h; sourceTree = "<group>"; };
-		37C8BA1121BFB30A006779D6 /* DemoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DemoViewController.m; sourceTree = "<group>"; };
-		37C8BA1321BFB36F006779D6 /* ACMediaPickerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACMediaPickerManager.h; sourceTree = "<group>"; };
-		37C8BA1421BFB36F006779D6 /* ACMediaPickerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACMediaPickerManager.m; sourceTree = "<group>"; };
-		37C8BA1521BFB36F006779D6 /* ACMediaModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACMediaModel.m; sourceTree = "<group>"; };
-		37C8BA1621BFB36F006779D6 /* ACMediaModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACMediaModel.h; sourceTree = "<group>"; };
+		371D9B23262EA64600BEE555 /* UIFrameViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIFrameViewController.h; sourceTree = "<group>"; };
+		371D9B24262EA64600BEE555 /* UIFrameViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIFrameViewController.m; sourceTree = "<group>"; };
+		371D9B36262ED4B200BEE555 /* RootTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootTableViewController.h; sourceTree = "<group>"; };
+		371D9B37262ED4B200BEE555 /* RootTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootTableViewController.m; sourceTree = "<group>"; };
+		371D9B3A262ED7BE00BEE555 /* CoreFuncViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreFuncViewController.h; sourceTree = "<group>"; };
+		371D9B3B262ED7BE00BEE555 /* CoreFuncViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoreFuncViewController.m; sourceTree = "<group>"; };
+		371D9B3C262ED7BE00BEE555 /* CoreFuncViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CoreFuncViewController.xib; sourceTree = "<group>"; };
+		371D9B41262FBA8C00BEE555 /* ACMediaFrame.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ACMediaFrame.bundle; sourceTree = "<group>"; };
+		371D9B45262FBBF100BEE555 /* ACMediaDisplayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACMediaDisplayView.m; sourceTree = "<group>"; };
+		371D9B46262FBBF100BEE555 /* ACMediaDisplayConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACMediaDisplayConfig.h; sourceTree = "<group>"; };
+		371D9B47262FBBF100BEE555 /* ACMediaImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACMediaImageCell.m; sourceTree = "<group>"; };
+		371D9B48262FBBF100BEE555 /* ACMediaDisplayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACMediaDisplayView.h; sourceTree = "<group>"; };
+		371D9B49262FBBF100BEE555 /* ACMediaImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACMediaImageCell.h; sourceTree = "<group>"; };
+		371D9B4A262FBBF100BEE555 /* ACMediaDisplayConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACMediaDisplayConfig.m; sourceTree = "<group>"; };
+		371D9B4C262FBBF100BEE555 /* ACMediaModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACMediaModel.h; sourceTree = "<group>"; };
+		371D9B4D262FBBF100BEE555 /* ACMediaPickerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACMediaPickerManager.h; sourceTree = "<group>"; };
+		371D9B4E262FBBF100BEE555 /* ACMediaModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACMediaModel.m; sourceTree = "<group>"; };
+		371D9B4F262FBBF100BEE555 /* ACMediaPickerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACMediaPickerManager.m; sourceTree = "<group>"; };
+		371D9B57262FCD1500BEE555 /* ACMediaTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACMediaTool.h; sourceTree = "<group>"; };
+		371D9B58262FCD1500BEE555 /* ACMediaTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ACMediaTool.m; sourceTree = "<group>"; };
 		848517B4FDD86A8BB21BF4B3 /* Pods-ACMediaFrameExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ACMediaFrameExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ACMediaFrameExample/Pods-ACMediaFrameExample.debug.xcconfig"; sourceTree = "<group>"; };
 		DDB219BAB8B607FC0C3B0179 /* Pods-ACMediaFrameExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ACMediaFrameExample.release.xcconfig"; path = "Pods/Target Support Files/Pods-ACMediaFrameExample/Pods-ACMediaFrameExample.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -75,8 +97,13 @@
 				370284C61E878740009C1CE7 /* Main.storyboard */,
 				370284C01E878740009C1CE7 /* AppDelegate.h */,
 				370284C11E878740009C1CE7 /* AppDelegate.m */,
-				37C8BA1021BFB30A006779D6 /* DemoViewController.h */,
-				37C8BA1121BFB30A006779D6 /* DemoViewController.m */,
+				371D9B36262ED4B200BEE555 /* RootTableViewController.h */,
+				371D9B37262ED4B200BEE555 /* RootTableViewController.m */,
+				371D9B3A262ED7BE00BEE555 /* CoreFuncViewController.h */,
+				371D9B3B262ED7BE00BEE555 /* CoreFuncViewController.m */,
+				371D9B3C262ED7BE00BEE555 /* CoreFuncViewController.xib */,
+				371D9B23262EA64600BEE555 /* UIFrameViewController.h */,
+				371D9B24262EA64600BEE555 /* UIFrameViewController.m */,
 				370284C91E878740009C1CE7 /* Assets.xcassets */,
 				370284CB1E878740009C1CE7 /* LaunchScreen.storyboard */,
 				370284CE1E878740009C1CE7 /* Info.plist */,
@@ -96,12 +123,37 @@
 		3702859D1E879A7F009C1CE7 /* ACMediaFrame */ = {
 			isa = PBXGroup;
 			children = (
-				37C8BA1621BFB36F006779D6 /* ACMediaModel.h */,
-				37C8BA1521BFB36F006779D6 /* ACMediaModel.m */,
-				37C8BA1321BFB36F006779D6 /* ACMediaPickerManager.h */,
-				37C8BA1421BFB36F006779D6 /* ACMediaPickerManager.m */,
+				371D9B4B262FBBF100BEE555 /* Core */,
+				371D9B44262FBBF100BEE555 /* UI */,
+				371D9B41262FBA8C00BEE555 /* ACMediaFrame.bundle */,
 			);
 			path = ACMediaFrame;
+			sourceTree = "<group>";
+		};
+		371D9B44262FBBF100BEE555 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				371D9B46262FBBF100BEE555 /* ACMediaDisplayConfig.h */,
+				371D9B4A262FBBF100BEE555 /* ACMediaDisplayConfig.m */,
+				371D9B48262FBBF100BEE555 /* ACMediaDisplayView.h */,
+				371D9B45262FBBF100BEE555 /* ACMediaDisplayView.m */,
+				371D9B49262FBBF100BEE555 /* ACMediaImageCell.h */,
+				371D9B47262FBBF100BEE555 /* ACMediaImageCell.m */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		371D9B4B262FBBF100BEE555 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				371D9B4C262FBBF100BEE555 /* ACMediaModel.h */,
+				371D9B4E262FBBF100BEE555 /* ACMediaModel.m */,
+				371D9B4D262FBBF100BEE555 /* ACMediaPickerManager.h */,
+				371D9B4F262FBBF100BEE555 /* ACMediaPickerManager.m */,
+				371D9B57262FCD1500BEE555 /* ACMediaTool.h */,
+				371D9B58262FCD1500BEE555 /* ACMediaTool.m */,
+			);
+			path = Core;
 			sourceTree = "<group>";
 		};
 		9D743CC2E1902784EA801125 /* Frameworks */ = {
@@ -164,6 +216,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -184,7 +237,9 @@
 			files = (
 				370284CD1E878740009C1CE7 /* LaunchScreen.storyboard in Resources */,
 				370284CA1E878740009C1CE7 /* Assets.xcassets in Resources */,
+				371D9B42262FBA8C00BEE555 /* ACMediaFrame.bundle in Resources */,
 				370284C81E878740009C1CE7 /* Main.storyboard in Resources */,
+				371D9B3E262ED7BE00BEE555 /* CoreFuncViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -215,7 +270,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-ACMediaFrameExample/Pods-ACMediaFrameExample-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-ACMediaFrameExample/Pods-ACMediaFrameExample-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/TZImagePickerController/TZImagePickerController.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -224,7 +279,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ACMediaFrameExample/Pods-ACMediaFrameExample-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ACMediaFrameExample/Pods-ACMediaFrameExample-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -234,10 +289,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				37C8BA1221BFB30A006779D6 /* DemoViewController.m in Sources */,
+				371D9B51262FBBF100BEE555 /* ACMediaImageCell.m in Sources */,
+				371D9B52262FBBF100BEE555 /* ACMediaDisplayConfig.m in Sources */,
+				371D9B54262FBBF100BEE555 /* ACMediaPickerManager.m in Sources */,
+				371D9B50262FBBF100BEE555 /* ACMediaDisplayView.m in Sources */,
 				370284C21E878740009C1CE7 /* AppDelegate.m in Sources */,
-				37C8BA1821BFB36F006779D6 /* ACMediaModel.m in Sources */,
-				37C8BA1721BFB36F006779D6 /* ACMediaPickerManager.m in Sources */,
+				371D9B53262FBBF100BEE555 /* ACMediaModel.m in Sources */,
+				371D9B59262FCD1500BEE555 /* ACMediaTool.m in Sources */,
+				371D9B38262ED4B200BEE555 /* RootTableViewController.m in Sources */,
+				371D9B3D262ED7BE00BEE555 /* CoreFuncViewController.m in Sources */,
+				371D9B25262EA64600BEE555 /* UIFrameViewController.m in Sources */,
 				370284BF1E878740009C1CE7 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,16 +1,16 @@
 PODS:
-  - TZImagePickerController (3.1.2)
+  - TZImagePickerController (3.6.0)
 
 DEPENDENCIES:
-  - TZImagePickerController (~> 3.1.2)
+  - TZImagePickerController
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - TZImagePickerController
 
 SPEC CHECKSUMS:
-  TZImagePickerController: 29b279caee3309cbaa04ef1384b036ec90297f3f
+  TZImagePickerController: a37d7eec87c54436e896a67947033ad2178d498b
 
-PODFILE CHECKSUM: d7ceb0dfca62159bece81c4d5594b3e1d3c60431
+PODFILE CHECKSUM: 59d7afde2b0a037cf7d557d11d5501b0c4071cf6
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.9.1
